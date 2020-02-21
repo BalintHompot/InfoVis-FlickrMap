@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block title %}Bokeh Visualization{% endblock %}
+{% block body %}
+<meta charset="utf-8">
+<style>
+body { background: rgb(255, 255, 255) }
+path { stroke: #333; stroke-width: 1; }
+path:hover { stroke-width: 3; }
+</style>
+<body>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/topojson.v1.min.js"></script>
+
+<script>
+var width = 1300
+var height = 800
+var padding = 20
+
+var color = d3.scaleThreshold()
+    .domain([0.028, 0.038, 0.048, 0.058, 0.068, 0.078])
+    .range(['#4d9221', '#a1d76a', '#e6f5d0', '#f7f7f7', '#fde0ef', '#e9a3c9', '#c51b7d'])
+
+var projection = d3.geoAlbers()
+    .precision(0)
+    .scale(height * 2).translate([width / 2, height / 2])
+
+var path = d3.geoPath().projection(projection)
+
+var svg = d3.select('body')
+    .append('svg')
+    .attr('width', width)
+    .attr('height', height)
+
+ console.log(svg)
+
+var us_counties = {{ us_counties | tojson}};
+var us_states = {{us_states| tojson}}
+var data_counties = {{ data_counties | tojson }};
+
+
+var all_data = [data_counties, us_states, us_counties]
+
+// pie chart data ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Create dummy data
+var data_pie = {a: 0.1, b: 0.2, c:0.4, d:0.5, e:0.6,  e:0.8}
+
+// set the color scale
+
+// Compute the position of each group on the pie:
+var pie = d3.pie()
+  .value(function(d) {return d.value; })
+var data_ready = pie(d3.entries(data_pie))
+// The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
+var radius = 50
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+initialize(null, all_data)
+
+function initialize(error, results) {
+    if (error) { console.log(error); throw error }
+
+    var data = results[0]
+
+    /// merge county and state to create id
+    for(ind in data){
+        data[ind] = {
+            id: 1000*data[ind].state + data[ind].county,
+            state: 1000 * data[ind].state,
+            county: data[ind].county,
+            unemployment: +data[ind].unemployment,
+            name: data[ind].name
+        }
+    }
+
+    var states = topojson.feature(results[1], results[1].objects.states).features
+    var counties = topojson.feature(results[2], results[2].objects.counties).features
+
+    console.log(svg)
+
+
+    states.forEach(function (f) {
+        f.properties = data.find(function (d) { return d.state === f.id })
+    })
+
+    counties.forEach(function (f) {
+        f.properties = data.find(function (d) { return d.id === f.id }) || {}
+    })
+
+    var statePaths = svg.selectAll('.state')
+        .data(states)
+        .enter().append('path')
+        .attr('class', 'state')
+        .attr('d', path)
+        .style('fill', function (d) { return color(d.properties.unemployment) })
+        .on('click', function (d) { stateZoom(d.id) })
+
+
+    function usZoom() {
+        var t = d3.transition().duration(800)
+
+        projection.scale(height * 2).translate([width / 2, height / 2])
+
+        statePaths.transition(t)
+            .attr('d', path)
+            .style('fill', function (d) { return color(d.properties.unemployment) })
+
+        svg.selectAll('.county')
+            .data([])
+            .exit().transition(t)
+            .attr('d', path)
+            .style('opacity', 0)
+            .remove()
+    }
+
+    function stateZoom(id) {
+        var state = states.find(function (d) { return d.id === id })
+        var stateCounties = counties.filter(function (d) {
+            return d.id > id && d.id < id + 1000
+        })
+
+        var t = d3.transition().duration(800)
+
+        var countyPaths = svg.selectAll('.county')
+            .data(stateCounties, function (d) { return d.id })
+
+        var enterCountyPaths = countyPaths.enter().append('path')
+            .attr('class', 'county')
+            .attr('d', path)
+            .style('fill', function (d) { return color(d.properties.unemployment) })
+            .style('opacity', 0)
+            .on('click', function () { usZoom() })
+
+        projection.fitExtent(
+            [[padding, padding], [width - padding, height - padding]],
+            state
+        )
+
+        statePaths.transition(t)
+            .attr('d', path)
+            .style('fill', '#444')
+
+        enterCountyPaths.transition(t)
+            .attr('d', path)
+            .style('opacity', 1)
+
+        countyPaths.exit().transition(t)
+            .attr('d', path)
+            .style('opacity', 0)
+            .remove()
+    }
+}
+
+</script>
+</body>
+{% endblock %}

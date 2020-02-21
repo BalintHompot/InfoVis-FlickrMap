@@ -1,0 +1,5 @@
+{
+    "owner":["WCORHUUR_P", "WPARTHUUR_P", "WKOOP_P"],
+    "price":["WHUURTSLG_P", "WHUURMIDDEN_P", "WHUURHOOG_P"],
+    "area":["WOPP0040_P", "WOPP4060_P", "WOPP6080_P", "WOPP80100_P", "WOPP100PLUS_P", "WOPPONB_P"]
+}
