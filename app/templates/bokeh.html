@@ -44,6 +44,7 @@
 
 <div class="mt-3" id="prediction-container"></div>
 
+<div id="mypiechart"></div>
 
 <div id="myplot"></div>
 
@@ -81,6 +82,7 @@
 
 			//g.textContent = 
 			Bokeh.embed.embed_item(data.plotData);
+			Bokeh.embed.embed_item(data.pieData)
 	});
 
 	function updatePlot(value, varDef) {

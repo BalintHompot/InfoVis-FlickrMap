@@ -10,6 +10,13 @@ from app import models, plots, data
 from . import main
 
 
+def mergeDicts(dictList):
+	merged = {}
+	for d in dictList:
+		for key, val in d.items():
+			merged[key] = val
+	return merged
+
 @main.route('/', methods=['GET'])
 def index():
 	return render_template("home.html")
@@ -82,8 +89,9 @@ def get_data():
 		plot_data = data.model_data.loc[data.model_data['area_name'] == plot_area]
 		plot_data = plot_data.loc[:, data.model_vars]
 		plot = plots.create_hbar(plot_area, plot_data)
+		plots_pie = plots.create_piechart(plot_area, plot_data)
 		return jsonify(prediction=pred_area, prediction_proba=proba, 
-				area_changed_proba=new_proba_prev_area, plotData=plot)
+				area_changed_proba=new_proba_prev_area, plotData= plot, pieData = plots_pie)
 	else:
 		return jsonify(prediction=pred_area, prediction_proba=proba, 
 				area_changed_proba=new_proba_prev_area)
@@ -105,4 +113,12 @@ def d3():
 	meta_data = data.stats_ams_meta.to_json(orient='records')
 	return render_template("d3.html", data=plot_data, meta_data=meta_data,
 		x_variables=data.model_vars, area_names=data.area_names, selected_area_name=area_name)
+
+@main.route('/map', methods = ['GET', 'POST'])
+def zoom_map():
+	return render_template("zoom_map.html", us_counties = data.us_counties, us_states = data.us_states, data_counties = json.loads(data.data_counties.to_json(orient='records')))
+
+@main.route('/world_map', methods = ['GET', 'POST'])
+def world_map():
+	return render_template("world_map.html", world_countries = data.world_countries, countries_mock_data = data.countries_mock_data)
 

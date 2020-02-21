@@ -9,6 +9,8 @@ function get_info_on_var(variable) {
     return [label, definition]
 }
 
+console.log("______________________")
+console.log("Rendering barchart")
 var width = 1000;
 var height = 700;
 var MOUSEOVER = false;
@@ -74,7 +76,7 @@ var chart_height = 400,
 var x = d3.scaleLinear().rangeRound([0, chart_width]),
     y = d3.scaleBand().rangeRound([chart_height, 0]).padding(0.1);
 
-var chart_group = svgContainer.append("g")
+const chart_group = svgContainer.append("g")
 	.attr("id", "chart_group")
     .attr("transform", "translate(" + 100 + "," + 50 + ")");
 
@@ -98,12 +100,24 @@ chart_group.append("g")
 chart_group.append("g")
     .call(d3.axisLeft(y));
 
+chart_group.append('g')
+    .attr('class', 'grid')
+    .attr('transform', `translate(0, ${chart_height})`)
+    .call(d3.axisBottom()
+        .scale(x)
+        .tickSize(-chart_height, 0, 0)
+        .tickFormat(''))
+
+
 var map = d3.map(data[0]); 
 
+const bar_group = chart_group.selectAll(".bar")
 
-chart_group.selectAll(".bar")
     .data(map.entries())
     .enter()
+    .append("g")
+
+    bar_group
     .append("rect")
     .attr("class", "bar")
     .attr("x", 1)
@@ -137,6 +151,52 @@ chart_group.selectAll(".bar")
     .on("mouseout", function(d) {
         hideTooltip();
         //d3.select(this).attr("fill", "steelblue");
+    })
+
+    .on("mouseenter", function (s, i) {
+        d3.select(this)
+            .transition()
+            .duration(300)
+            .attr('opacity', 0.6)
+    
+        bar_group.append('g')
+            .append("line")
+            .attr('id', "line-comparison")
+            .attr('stroke', 'black')
+            .attr('x1', x(s.value))
+            .attr('y1', 0)
+            .attr('x2', x(s.value))
+            .attr('y2', chart_height)
+      
+        bar_group
+            .append("text")
+            .attr('class', 'divergence')
+            .attr('y', (a) => y(a.key) + 23)
+            .attr('x', (a) => 
+                x(a.value) -27
+                )
+            .attr('fill', 'white')
+            .attr('text-anchor', 'middle')
+            .text((a) => {
+                var num = (a.value-s.value).toFixed(2)
+                if(num > 0){
+                    num = "+" + num
+                }
+                return num
+            })
+            .style("font", "14px arial")
+    
+        // this is only part of the implementation, check the source code
+    })
+    .on("mouseleave", function (s, i) {
+        d3.select(this)
+            .transition()
+            .duration(300)
+            .attr('opacity', 1)
+        bar_group.select("#line-comparison").remove();
+        bar_group.select(".divergence").remove();
+    
+        // this is only part of the implementation, check the source code
     });
 
 // text label for the x axis

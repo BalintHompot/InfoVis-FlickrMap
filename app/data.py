@@ -1,5 +1,6 @@
 import pandas as pd
 from . import models
+import json
 
 # Load data as panda dfs #
 stats_ams = pd.read_csv('app/data/ams_stats_infovis.csv')
@@ -35,7 +36,16 @@ for var in model_vars:
 	idx = label_var.index(var)
 	label_def_ordered.append(label_def[idx])
 	label_extra_ordered.append(label_extra[idx])
+print("data imported")
 
+### US map data
+us_states = json.load(open("app/data/map_files/us-states.json"))
+us_counties = json.load(open("app/data/map_files/us-counties.json"))
+data_counties = pd.read_csv("app/data/map_files/data.csv")
+
+## world map data
+world_countries = json.load(open("app/data/map_files/world.json"))
+countries_mock_data = json.load(open("app/data/map_files/mockelasticdata.json"))
 
 def update_data(area, var, new_value):
     model_data.loc[model_data['area_name']==area, var] = new_value
