@@ -1,747 +1,727 @@
-{
+{  "allTags" : ["cat", "dog", "food", "citylife", "yolo", "music", "love"],
    "2000": {
-      "took": 492,
-      "timed_out": false,
-      "_shards": {
-         "total": 5,
-         "successful": 3,
-         "failed": 0
-      },
-      "hits": {
-         "total": 30111166,
-         "max_score": 0,
-         "hits": []
-      },
-      "aggregations": {
+      "world_most_popular_5": [],
+      "country_data": {
          "world_map": {
-            "doc_count_error_upper_bound": 0,
-            "sum_other_doc_count": 0,
+            "most_popular_tag_error_upper_bound": 0,
+            "sum_other_most_popular_tag": 0,
             "buckets": [
                {
                   "key": "USA",
-                  "doc_count": 4231922
+                  "most_popular_tag": "cat",
+                  "country_most_popular_5": []
                },
                {
                   "key": "CAN",
-                  "doc_count": 817866
+                  "most_popular_tag": "dog",
+                  "country_most_popular_5": []
                },
                {
                   "key": "GBR",
-                  "doc_count": 213736
+                  "most_popular_tag": "music"
                },
                {
                   "key": "MOZ",
-                  "doc_count": 76607
+                  "most_popular_tag": "yolo"
                },
                {
                   "key": "TUR",
-                  "doc_count": 72724
+                  "most_popular_tag": 72724
                },
                {
                   "key": "KEN",
-                  "doc_count": 64413
+                  "most_popular_tag": 64413
                },
                {
                   "key": "BEL",
-                  "doc_count": 54416
+                  "most_popular_tag": 54416
                },
                {
                   "key": "FRA",
-                  "doc_count": 50738
+                  "most_popular_tag": 50738
                },
                {
                   "key": "NLD",
-                  "doc_count": 42092
+                  "most_popular_tag": 42092
                },
                {
                   "key": "ZAF",
-                  "doc_count": 33714
+                  "most_popular_tag": 33714
                },
                {
                   "key": "AUS",
-                  "doc_count": 29904
+                  "most_popular_tag": 29904
                },
                {
                   "key": "ARG",
-                  "doc_count": 23539
+                  "most_popular_tag": 23539
                },
                {
                   "key": "SWE",
-                  "doc_count": 23145
+                  "most_popular_tag": 23145
                },
                {
                   "key": "ESP",
-                  "doc_count": 22365
+                  "most_popular_tag": 22365
                },
                {
                   "key": "HKG",
-                  "doc_count": 14383
+                  "most_popular_tag": 14383
                },
                {
                   "key": "BRA",
-                  "doc_count": 14097
+                  "most_popular_tag": 14097
                },
                {
                   "key": "COL",
-                  "doc_count": 13908
+                  "most_popular_tag": 13908
                },
                {
                   "key": "DEU",
-                  "doc_count": 5985
+                  "most_popular_tag": 5985
                },
                {
                   "key": "MEX",
-                  "doc_count": 5396
+                  "most_popular_tag": 5396
                },
                {
                   "key": "TTO",
-                  "doc_count": 5138
+                  "most_popular_tag": 5138
                },
                {
                   "key": "CHN",
-                  "doc_count": 3478
+                  "most_popular_tag": 3478
                },
                {
                   "key": "CHL",
-                  "doc_count": 3450
+                  "most_popular_tag": 3450
                },
                {
                   "key": "KAZ",
-                  "doc_count": 2666
+                  "most_popular_tag": 2666
                },
                {
                   "key": "PER",
-                  "doc_count": 2005
+                  "most_popular_tag": 2005
                },
                {
                   "key": "IRN",
-                  "doc_count": 1586
+                  "most_popular_tag": 1586
                },
                {
                   "key": "BGR",
-                  "doc_count": 1552
+                  "most_popular_tag": 1552
                },
                {
                   "key": "POL",
-                  "doc_count": 1539
+                  "most_popular_tag": 1539
                },
                {
                   "key": "UKR",
-                  "doc_count": 1444
+                  "most_popular_tag": 1444
                },
                {
                   "key": "SGP",
-                  "doc_count": 1386
+                  "most_popular_tag": 1386
                },
                {
                   "key": "JPN",
-                  "doc_count": 1371
+                  "most_popular_tag": 1371
                },
                {
                   "key": "CZE",
-                  "doc_count": 1295
+                  "most_popular_tag": 1295
                },
                {
                   "key": "IND",
-                  "doc_count": 1126
+                  "most_popular_tag": 1126
                },
                {
                   "key": "ITA",
-                  "doc_count": 1077
+                  "most_popular_tag": 1077
                },
                {
                   "key": "JAM",
-                  "doc_count": 1014
+                  "most_popular_tag": 1014
                },
                {
                   "key": "ROU",
-                  "doc_count": 1011
+                  "most_popular_tag": 1011
                },
                {
                   "key": "RUS",
-                  "doc_count": 980
+                  "most_popular_tag": 980
                },
                {
                   "key": "EU",
-                  "doc_count": 979
+                  "most_popular_tag": 979
                },
                {
                   "key": "SRB",
-                  "doc_count": 957
+                  "most_popular_tag": 957
                },
                {
                   "key": "ECU",
-                  "doc_count": 851
+                  "most_popular_tag": 851
                },
                {
                   "key": "ISR",
-                  "doc_count": 848
+                  "most_popular_tag": 848
                },
                {
                   "key": "KOR",
-                  "doc_count": 835
+                  "most_popular_tag": 835
                },
                {
                   "key": "ARE",
-                  "doc_count": 631
+                  "most_popular_tag": 631
                },
                {
                   "key": "NCL",
-                  "doc_count": 598
+                  "most_popular_tag": 598
                },
                {
                   "key": "PRT",
-                  "doc_count": 487
+                  "most_popular_tag": 487
                },
                {
                   "key": "GRC",
-                  "doc_count": 423
+                  "most_popular_tag": 423
                },
                {
                   "key": "URY",
-                  "doc_count": 416
+                  "most_popular_tag": 416
                },
                {
                   "key": "BLR",
-                  "doc_count": 392
+                  "most_popular_tag": 392
                },
                {
                   "key": "HUN",
-                  "doc_count": 368
+                  "most_popular_tag": 368
                },
                {
                   "key": "HRV",
-                  "doc_count": 355
+                  "most_popular_tag": 355
                },
                {
                   "key": "GTM",
-                  "doc_count": 312
+                  "most_popular_tag": 312
                },
                {
                   "key": "BOL",
-                  "doc_count": 308
+                  "most_popular_tag": 308
                },
                {
                   "key": "THA",
-                  "doc_count": 294
+                  "most_popular_tag": 294
                },
                {
                   "key": "CHE",
-                  "doc_count": 291
+                  "most_popular_tag": 291
                },
                {
                   "key": "AUT",
-                  "doc_count": 284
+                  "most_popular_tag": 284
                },
                {
                   "key": "MDA",
-                  "doc_count": 249
+                  "most_popular_tag": 249
                },
                {
                   "key": "VNM",
-                  "doc_count": 236
+                  "most_popular_tag": 236
                },
                {
                   "key": "VEN",
-                  "doc_count": 228
+                  "most_popular_tag": 228
                },
                {
                   "key": "NGA",
-                  "doc_count": 216
+                  "most_popular_tag": 216
                },
                {
                   "key": "IRL",
-                  "doc_count": 190
+                  "most_popular_tag": 190
                },
                {
                   "key": "PSE",
-                  "doc_count": 188
+                  "most_popular_tag": 188
                },
                {
                   "key": "NOR",
-                  "doc_count": 184
+                  "most_popular_tag": 184
                },
                {
                   "key": "AFG",
-                  "doc_count": 181
+                  "most_popular_tag": 181
                },
                {
                   "key": "LVA",
-                  "doc_count": 177
+                  "most_popular_tag": 177
                },
                {
                   "key": "CRI",
-                  "doc_count": 175
+                  "most_popular_tag": 175
                },
                {
                   "key": "MAR",
-                  "doc_count": 172
+                  "most_popular_tag": 172
                },
                {
                   "key": "SEN",
-                  "doc_count": 162
+                  "most_popular_tag": 162
                },
                {
                   "key": "RWA",
-                  "doc_count": 156
+                  "most_popular_tag": 156
                },
                {
                   "key": "GEO",
-                  "doc_count": 151
+                  "most_popular_tag": 151
                },
                {
                   "key": "KGZ",
-                  "doc_count": 149
+                  "most_popular_tag": 149
                },
                {
                   "key": "BWA",
-                  "doc_count": 146
+                  "most_popular_tag": 146
                },
                {
                   "key": "PHL",
-                  "doc_count": 144
+                  "most_popular_tag": 144
                },
                {
                   "key": "SDN",
-                  "doc_count": 137
+                  "most_popular_tag": 137
                },
                {
                   "key": "GLP",
-                  "doc_count": 98
+                  "most_popular_tag": 98
                },
                {
                   "key": "DOM",
-                  "doc_count": 93
+                  "most_popular_tag": 93
                },
                {
                   "key": "ALB",
-                  "doc_count": 90
+                  "most_popular_tag": 90
                },
                {
                   "key": "MNE",
-                  "doc_count": 88
+                  "most_popular_tag": 88
                },
                {
                   "key": "ARM",
-                  "doc_count": 83
+                  "most_popular_tag": 83
                },
                {
                   "key": "DNK",
-                  "doc_count": 80
+                  "most_popular_tag": 80
                },
                {
                   "key": "UZB",
-                  "doc_count": 69
+                  "most_popular_tag": 69
                },
                {
                   "key": "NZL",
-                  "doc_count": 56
+                  "most_popular_tag": 56
                },
                {
                   "key": "LBN",
-                  "doc_count": 52
+                  "most_popular_tag": 52
                },
                {
                   "key": "TUN",
-                  "doc_count": 28
+                  "most_popular_tag": 28
                },
                {
                   "key": "GHA",
-                  "doc_count": 27
+                  "most_popular_tag": 27
                },
                {
                   "key": "ZWE",
-                  "doc_count": 24
+                  "most_popular_tag": 24
                },
                {
                   "key": "DZA",
-                  "doc_count": 23
+                  "most_popular_tag": 23
                },
                {
                   "key": "JEY",
-                  "doc_count": 18
+                  "most_popular_tag": 18
                },
                {
                   "key": "TWN",
-                  "doc_count": 12
+                  "most_popular_tag": 12
                },
                {
                   "key": "GRD",
-                  "doc_count": 7
+                  "most_popular_tag": 7
                }
             ]
          }
       }
    },
    "2001" : {
-      "took": 492,
-      "timed_out": false,
-      "_shards": {
-         "total": 5,
-         "successful": 3,
-         "failed": 0
-      },
-      "hits": {
-         "total": 30111166,
-         "max_score": 0,
-         "hits": []
-      },
-      "aggregations": {
+
+      "country_data": {
          "world_map": {
-            "doc_count_error_upper_bound": 0,
-            "sum_other_doc_count": 0,
+            "most_popular_tag_error_upper_bound": 0,
+            "sum_other_most_popular_tag": 0,
             "buckets": [
                {
                   "key": "USA",
-                  "doc_count": 100
+                  "most_popular_tag": "dog"
                },
                {
                   "key": "CAN",
-                  "doc_count": 200
+                  "most_popular_tag": "cat"
                },
                {
                   "key": "GBR",
-                  "doc_count": 213736
+                  "most_popular_tag": "love"
                },
                {
                   "key": "MOZ",
-                  "doc_count": 76607
+                  "most_popular_tag": "citylife"
                },
                {
                   "key": "TUR",
-                  "doc_count": 72724
+                  "most_popular_tag": 72724
                },
                {
                   "key": "KEN",
-                  "doc_count": 64413
+                  "most_popular_tag": 64413
                },
                {
                   "key": "BEL",
-                  "doc_count": 54416
+                  "most_popular_tag": 54416
                },
                {
                   "key": "FRA",
-                  "doc_count": 50738
+                  "most_popular_tag": 50738
                },
                {
                   "key": "NLD",
-                  "doc_count": 42092
+                  "most_popular_tag": 42092
                },
                {
                   "key": "ZAF",
-                  "doc_count": 33714
+                  "most_popular_tag": 33714
                },
                {
                   "key": "AUS",
-                  "doc_count": 29904
+                  "most_popular_tag": 29904
                },
                {
                   "key": "ARG",
-                  "doc_count": 23539
+                  "most_popular_tag": 23539
                },
                {
                   "key": "SWE",
-                  "doc_count": 23145
+                  "most_popular_tag": 23145
                },
                {
                   "key": "ESP",
-                  "doc_count": 22365
+                  "most_popular_tag": 22365
                },
                {
                   "key": "HKG",
-                  "doc_count": 14383
+                  "most_popular_tag": 14383
                },
                {
                   "key": "BRA",
-                  "doc_count": 14097
+                  "most_popular_tag": 14097
                },
                {
                   "key": "COL",
-                  "doc_count": 13908
+                  "most_popular_tag": 13908
                },
                {
                   "key": "DEU",
-                  "doc_count": 5985
+                  "most_popular_tag": 5985
                },
                {
                   "key": "MEX",
-                  "doc_count": 5396
+                  "most_popular_tag": 5396
                },
                {
                   "key": "TTO",
-                  "doc_count": 5138
+                  "most_popular_tag": 5138
                },
                {
                   "key": "CHN",
-                  "doc_count": 3478
+                  "most_popular_tag": 3478
                },
                {
                   "key": "CHL",
-                  "doc_count": 3450
+                  "most_popular_tag": 3450
                },
                {
                   "key": "KAZ",
-                  "doc_count": 2666
+                  "most_popular_tag": 2666
                },
                {
                   "key": "PER",
-                  "doc_count": 2005
+                  "most_popular_tag": 2005
                },
                {
                   "key": "IRN",
-                  "doc_count": 1586
+                  "most_popular_tag": 1586
                },
                {
                   "key": "BGR",
-                  "doc_count": 1552
+                  "most_popular_tag": 1552
                },
                {
                   "key": "POL",
-                  "doc_count": 1539
+                  "most_popular_tag": 1539
                },
                {
                   "key": "UKR",
-                  "doc_count": 1444
+                  "most_popular_tag": 1444
                },
                {
                   "key": "SGP",
-                  "doc_count": 1386
+                  "most_popular_tag": 1386
                },
                {
                   "key": "JPN",
-                  "doc_count": 1371
+                  "most_popular_tag": 1371
                },
                {
                   "key": "CZE",
-                  "doc_count": 1295
+                  "most_popular_tag": 1295
                },
                {
                   "key": "IND",
-                  "doc_count": 1126
+                  "most_popular_tag": 1126
                },
                {
                   "key": "ITA",
-                  "doc_count": 1077
+                  "most_popular_tag": 1077
                },
                {
                   "key": "JAM",
-                  "doc_count": 1014
+                  "most_popular_tag": 1014
                },
                {
                   "key": "ROU",
-                  "doc_count": 1011
+                  "most_popular_tag": 1011
                },
                {
                   "key": "RUS",
-                  "doc_count": 980
+                  "most_popular_tag": 980
                },
                {
                   "key": "EU",
-                  "doc_count": 979
+                  "most_popular_tag": 979
                },
                {
                   "key": "SRB",
-                  "doc_count": 957
+                  "most_popular_tag": 957
                },
                {
                   "key": "ECU",
-                  "doc_count": 851
+                  "most_popular_tag": 851
                },
                {
                   "key": "ISR",
-                  "doc_count": 848
+                  "most_popular_tag": 848
                },
                {
                   "key": "KOR",
-                  "doc_count": 835
+                  "most_popular_tag": 835
                },
                {
                   "key": "ARE",
-                  "doc_count": 631
+                  "most_popular_tag": 631
                },
                {
                   "key": "NCL",
-                  "doc_count": 598
+                  "most_popular_tag": 598
                },
                {
                   "key": "PRT",
-                  "doc_count": 487
+                  "most_popular_tag": 487
                },
                {
                   "key": "GRC",
-                  "doc_count": 423
+                  "most_popular_tag": 423
                },
                {
                   "key": "URY",
-                  "doc_count": 416
+                  "most_popular_tag": 416
                },
                {
                   "key": "BLR",
-                  "doc_count": 392
+                  "most_popular_tag": 392
                },
                {
                   "key": "HUN",
-                  "doc_count": 368
+                  "most_popular_tag": 368
                },
                {
                   "key": "HRV",
-                  "doc_count": 355
+                  "most_popular_tag": 355
                },
                {
                   "key": "GTM",
-                  "doc_count": 312
+                  "most_popular_tag": 312
                },
                {
                   "key": "BOL",
-                  "doc_count": 308
+                  "most_popular_tag": 308
                },
                {
                   "key": "THA",
-                  "doc_count": 294
+                  "most_popular_tag": 294
                },
                {
                   "key": "CHE",
-                  "doc_count": 291
+                  "most_popular_tag": 291
                },
                {
                   "key": "AUT",
-                  "doc_count": 284
+                  "most_popular_tag": 284
                },
                {
                   "key": "MDA",
-                  "doc_count": 249
+                  "most_popular_tag": 249
                },
                {
                   "key": "VNM",
-                  "doc_count": 236
+                  "most_popular_tag": 236
                },
                {
                   "key": "VEN",
-                  "doc_count": 228
+                  "most_popular_tag": 228
                },
                {
                   "key": "NGA",
-                  "doc_count": 216
+                  "most_popular_tag": 216
                },
                {
                   "key": "IRL",
-                  "doc_count": 190
+                  "most_popular_tag": 190
                },
                {
                   "key": "PSE",
-                  "doc_count": 188
+                  "most_popular_tag": 188
                },
                {
                   "key": "NOR",
-                  "doc_count": 184
+                  "most_popular_tag": 184
                },
                {
                   "key": "AFG",
-                  "doc_count": 181
+                  "most_popular_tag": 181
                },
                {
                   "key": "LVA",
-                  "doc_count": 177
+                  "most_popular_tag": 177
                },
                {
                   "key": "CRI",
-                  "doc_count": 175
+                  "most_popular_tag": 175
                },
                {
                   "key": "MAR",
-                  "doc_count": 172
+                  "most_popular_tag": 172
                },
                {
                   "key": "SEN",
-                  "doc_count": 162
+                  "most_popular_tag": 162
                },
                {
                   "key": "RWA",
-                  "doc_count": 156
+                  "most_popular_tag": 156
                },
                {
                   "key": "GEO",
-                  "doc_count": 151
+                  "most_popular_tag": 151
                },
                {
                   "key": "KGZ",
-                  "doc_count": 149
+                  "most_popular_tag": 149
                },
                {
                   "key": "BWA",
-                  "doc_count": 146
+                  "most_popular_tag": 146
                },
                {
                   "key": "PHL",
-                  "doc_count": 144
+                  "most_popular_tag": 144
                },
                {
                   "key": "SDN",
-                  "doc_count": 137
+                  "most_popular_tag": 137
                },
                {
                   "key": "GLP",
-                  "doc_count": 98
+                  "most_popular_tag": 98
                },
                {
                   "key": "DOM",
-                  "doc_count": 93
+                  "most_popular_tag": 93
                },
                {
                   "key": "ALB",
-                  "doc_count": 90
+                  "most_popular_tag": 90
                },
                {
                   "key": "MNE",
-                  "doc_count": 88
+                  "most_popular_tag": 88
                },
                {
                   "key": "ARM",
-                  "doc_count": 83
+                  "most_popular_tag": 83
                },
                {
                   "key": "DNK",
-                  "doc_count": 80
+                  "most_popular_tag": 80
                },
                {
                   "key": "UZB",
-                  "doc_count": 69
+                  "most_popular_tag": 69
                },
                {
                   "key": "NZL",
-                  "doc_count": 56
+                  "most_popular_tag": 56
                },
                {
                   "key": "LBN",
-                  "doc_count": 52
+                  "most_popular_tag": 52
                },
                {
                   "key": "TUN",
-                  "doc_count": 28
+                  "most_popular_tag": 28
                },
                {
                   "key": "GHA",
-                  "doc_count": 27
+                  "most_popular_tag": 27
                },
                {
                   "key": "ZWE",
-                  "doc_count": 24
+                  "most_popular_tag": 24
                },
                {
                   "key": "DZA",
-                  "doc_count": 23
+                  "most_popular_tag": 23
                },
                {
                   "key": "JEY",
-                  "doc_count": 18
+                  "most_popular_tag": 18
                },
                {
                   "key": "TWN",
-                  "doc_count": 12
+                  "most_popular_tag": 12
                },
                {
                   "key": "GRD",
-                  "doc_count": 7
+                  "most_popular_tag": 7
                }
             ]
          }
