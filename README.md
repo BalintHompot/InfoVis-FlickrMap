@@ -1,6 +1,12 @@
 # InfoVis Assignment #
 
-This repo contains the first assignment for the course Information Visualization. Students need to create one visualization using html/js/d3 and one visualization using the python package Bokeh.
+This is the Information Visualization of team 15. We are using the Flickr dataset to show the development of tags used over time, throughout the world. 
+
+## Week 4 ##
+Balint: Create the world map in D3
+Neeraj and Vignesh: Creating a dynamic barchart
+Urscha: Putting together the dataset for the backend
+Martijn: Looking for other datasets to add to the visualization for extra depth
 
 ## Requirements ##
 
