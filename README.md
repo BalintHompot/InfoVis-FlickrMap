@@ -6,8 +6,11 @@ This is the Information Visualization of team 15. We are using the Flickr datase
 
 ### Week 4 To-Dos ###
 Balint: Create the world map in D3
+
 Neeraj and Vignesh: Creating a dynamic barchart
+
 Urscha: Putting together the dataset for the backend
+
 Martijn: Looking for other datasets to add to the visualization for extra depth
 
 ## Requirements ##
