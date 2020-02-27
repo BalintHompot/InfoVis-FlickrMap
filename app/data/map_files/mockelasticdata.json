@@ -1,753 +1,224 @@
 {  "allTags" : ["cat", "dog", "food", "citylife", "yolo", "music", "love"],
-   "2000": {
-      "world_most_popular_5": [],
-      "country_data": {
-         "world_map": {
-            "most_popular_tag_error_upper_bound": 0,
-            "sum_other_most_popular_tag": 0,
-            "buckets": [
-               {
-                  "key": "USA",
-                  "most_popular_tag": "cat",
-                  "country_most_popular_5": []
-               },
-               {
-                  "key": "CAN",
-                  "most_popular_tag": "dog",
-                  "country_most_popular_5": []
-               },
-               {
-                  "key": "GBR",
-                  "most_popular_tag": "music"
-               },
-               {
-                  "key": "MOZ",
-                  "most_popular_tag": "yolo"
-               },
-               {
-                  "key": "TUR",
-                  "most_popular_tag": 72724
-               },
-               {
-                  "key": "KEN",
-                  "most_popular_tag": 64413
-               },
-               {
-                  "key": "BEL",
-                  "most_popular_tag": 54416
-               },
-               {
-                  "key": "FRA",
-                  "most_popular_tag": 50738
-               },
-               {
-                  "key": "NLD",
-                  "most_popular_tag": 42092
-               },
-               {
-                  "key": "ZAF",
-                  "most_popular_tag": 33714
-               },
-               {
-                  "key": "AUS",
-                  "most_popular_tag": 29904
-               },
-               {
-                  "key": "ARG",
-                  "most_popular_tag": 23539
-               },
-               {
-                  "key": "SWE",
-                  "most_popular_tag": 23145
-               },
-               {
-                  "key": "ESP",
-                  "most_popular_tag": 22365
-               },
-               {
-                  "key": "HKG",
-                  "most_popular_tag": 14383
-               },
-               {
-                  "key": "BRA",
-                  "most_popular_tag": 14097
-               },
-               {
-                  "key": "COL",
-                  "most_popular_tag": 13908
-               },
-               {
-                  "key": "DEU",
-                  "most_popular_tag": 5985
-               },
-               {
-                  "key": "MEX",
-                  "most_popular_tag": 5396
-               },
-               {
-                  "key": "TTO",
-                  "most_popular_tag": 5138
-               },
-               {
-                  "key": "CHN",
-                  "most_popular_tag": 3478
-               },
-               {
-                  "key": "CHL",
-                  "most_popular_tag": 3450
-               },
-               {
-                  "key": "KAZ",
-                  "most_popular_tag": 2666
-               },
-               {
-                  "key": "PER",
-                  "most_popular_tag": 2005
-               },
-               {
-                  "key": "IRN",
-                  "most_popular_tag": 1586
-               },
-               {
-                  "key": "BGR",
-                  "most_popular_tag": 1552
-               },
-               {
-                  "key": "POL",
-                  "most_popular_tag": 1539
-               },
-               {
-                  "key": "UKR",
-                  "most_popular_tag": 1444
-               },
-               {
-                  "key": "SGP",
-                  "most_popular_tag": 1386
-               },
-               {
-                  "key": "JPN",
-                  "most_popular_tag": 1371
-               },
-               {
-                  "key": "CZE",
-                  "most_popular_tag": 1295
-               },
-               {
-                  "key": "IND",
-                  "most_popular_tag": 1126
-               },
-               {
-                  "key": "ITA",
-                  "most_popular_tag": 1077
-               },
-               {
-                  "key": "JAM",
-                  "most_popular_tag": 1014
-               },
-               {
-                  "key": "ROU",
-                  "most_popular_tag": 1011
-               },
-               {
-                  "key": "RUS",
-                  "most_popular_tag": 980
-               },
-               {
-                  "key": "EU",
-                  "most_popular_tag": 979
-               },
-               {
-                  "key": "SRB",
-                  "most_popular_tag": 957
-               },
-               {
-                  "key": "ECU",
-                  "most_popular_tag": 851
-               },
-               {
-                  "key": "ISR",
-                  "most_popular_tag": 848
-               },
-               {
-                  "key": "KOR",
-                  "most_popular_tag": 835
-               },
-               {
-                  "key": "ARE",
-                  "most_popular_tag": 631
-               },
-               {
-                  "key": "NCL",
-                  "most_popular_tag": 598
-               },
-               {
-                  "key": "PRT",
-                  "most_popular_tag": 487
-               },
-               {
-                  "key": "GRC",
-                  "most_popular_tag": 423
-               },
-               {
-                  "key": "URY",
-                  "most_popular_tag": 416
-               },
-               {
-                  "key": "BLR",
-                  "most_popular_tag": 392
-               },
-               {
-                  "key": "HUN",
-                  "most_popular_tag": 368
-               },
-               {
-                  "key": "HRV",
-                  "most_popular_tag": 355
-               },
-               {
-                  "key": "GTM",
-                  "most_popular_tag": 312
-               },
-               {
-                  "key": "BOL",
-                  "most_popular_tag": 308
-               },
-               {
-                  "key": "THA",
-                  "most_popular_tag": 294
-               },
-               {
-                  "key": "CHE",
-                  "most_popular_tag": 291
-               },
-               {
-                  "key": "AUT",
-                  "most_popular_tag": 284
-               },
-               {
-                  "key": "MDA",
-                  "most_popular_tag": 249
-               },
-               {
-                  "key": "VNM",
-                  "most_popular_tag": 236
-               },
-               {
-                  "key": "VEN",
-                  "most_popular_tag": 228
-               },
-               {
-                  "key": "NGA",
-                  "most_popular_tag": 216
-               },
-               {
-                  "key": "IRL",
-                  "most_popular_tag": 190
-               },
-               {
-                  "key": "PSE",
-                  "most_popular_tag": 188
-               },
-               {
-                  "key": "NOR",
-                  "most_popular_tag": 184
-               },
-               {
-                  "key": "AFG",
-                  "most_popular_tag": 181
-               },
-               {
-                  "key": "LVA",
-                  "most_popular_tag": 177
-               },
-               {
-                  "key": "CRI",
-                  "most_popular_tag": 175
-               },
-               {
-                  "key": "MAR",
-                  "most_popular_tag": 172
-               },
-               {
-                  "key": "SEN",
-                  "most_popular_tag": 162
-               },
-               {
-                  "key": "RWA",
-                  "most_popular_tag": 156
-               },
-               {
-                  "key": "GEO",
-                  "most_popular_tag": 151
-               },
-               {
-                  "key": "KGZ",
-                  "most_popular_tag": 149
-               },
-               {
-                  "key": "BWA",
-                  "most_popular_tag": 146
-               },
-               {
-                  "key": "PHL",
-                  "most_popular_tag": 144
-               },
-               {
-                  "key": "SDN",
-                  "most_popular_tag": 137
-               },
-               {
-                  "key": "GLP",
-                  "most_popular_tag": 98
-               },
-               {
-                  "key": "DOM",
-                  "most_popular_tag": 93
-               },
-               {
-                  "key": "ALB",
-                  "most_popular_tag": 90
-               },
-               {
-                  "key": "MNE",
-                  "most_popular_tag": 88
-               },
-               {
-                  "key": "ARM",
-                  "most_popular_tag": 83
-               },
-               {
-                  "key": "DNK",
-                  "most_popular_tag": 80
-               },
-               {
-                  "key": "UZB",
-                  "most_popular_tag": 69
-               },
-               {
-                  "key": "NZL",
-                  "most_popular_tag": 56
-               },
-               {
-                  "key": "LBN",
-                  "most_popular_tag": 52
-               },
-               {
-                  "key": "TUN",
-                  "most_popular_tag": 28
-               },
-               {
-                  "key": "GHA",
-                  "most_popular_tag": 27
-               },
-               {
-                  "key": "ZWE",
-                  "most_popular_tag": 24
-               },
-               {
-                  "key": "DZA",
-                  "most_popular_tag": 23
-               },
-               {
-                  "key": "JEY",
-                  "most_popular_tag": 18
-               },
-               {
-                  "key": "TWN",
-                  "most_popular_tag": 12
-               },
-               {
-                  "key": "GRD",
-                  "most_popular_tag": 7
-               }
-            ],
-            "tags": {
-               "USA": {
-                  "cats": 124567,
-                  "dogs": 45466,
-                  "sun": 41723,
-                  "beach": 1002,
-                  "night": 894
-               },
-               "CAN": {
-                  "baby": 231343,
-                  "snow": 196723,
-                  "baseball": 59067,
-                  "night": 3894,
-                  "fishing": 985
-               },
-               "MEX": {
-                  "mariachi": 231343,
-                  "desert": 196723,
-                  "party": 59067,
-                  "night": 3894,
-                  "tacos": 985
-               }
-            }
+   "timesteps":
+      {
+      "2000": {
+         "country_data": {
+               "buckets": [
+                  {  
+                     "key":"WORLD",
+                     "most_popular_5": {
+                        "cat" : 5000,
+                        "dog" : 4000,
+                        "food": 3000,
+                        "citylife" : 2000,
+                        "yolo": 1000
+                     },
+                     "rest_tags": {
+                        "music": 500,
+                        "love" : 200
+                     }
+                  },
+                  {
+                     "key": "USA",
+                     "most_popular_tag" : "cat",
+                     "most_popular_5": {
+                        "cat" : 3000,
+                        "dog" : 1500,
+                        "food": 1300,
+                        "citylife" : 1000,
+                        "yolo": 900
+                     },
+                     "rest_tags": {
+                        "music": 300,
+                        "love" : 190
+                     }
+                  },
+                  {
+                     "key": "CAN",
+                     "most_popular_tag" : "dog",
+
+                     "most_popular_5": {
+                        "cat" : 2000,
+                        "dog" : 2500,
+                        "food": 1700,
+                        "citylife" : 1000,
+                        "yolo": 100
+                     },
+                     "rest_tags": {
+                        "music": 200,
+                        "love" : 10
+                     }
+                  }
+               ]
+               
+            
          }
-      }
+      
    },
-   "2001" : {
+   
+      "2001" :  {
+
+         "country_data": {
+               "buckets": [
+                  {
+                     "key":"WORLD",
+                     "most_popular_5": {
+                        "cat" : 6000,
+                        "dog" : 5000,
+                        "food": 4000,
+                        "citylife" : 3000,
+                        "yolo": 2000
+                     },
+                     "rest_tags": {
+                        "music": 500,
+                        "love" : 200
+                     }
+                  },
+                  {
+                     "key": "USA",
+                     "most_popular_tag" : "dog",
+                     "most_popular_5": {
+                        "cat" : 1000,
+                        "dog" : 3000,
+                        "food": 1300,
+                        "citylife" : 1500,
+                        "yolo": 900
+                     },
+                     "rest_tags": {
+                        "music": 300,
+                        "love" : 190
+                     }
+                  },
+                  {
+                     "key": "CAN",
+                     "most_popular_tag" : "cat",
+                     "most_popular_5": {
+                        "cat" : 5000,
+                        "dog" : 2000,
+                        "food": 2700,
+                        "citylife" : 1500,
+                        "yolo": 1100
+                     },
+                     "rest_tags": {
+                        "music": 200,
+                        "love" : 10
+                     }
+                  }
+               ]
+               
+            
+         }
+      
+   },
+   
+   "2002" :  {
 
       "country_data": {
-         "world_map": {
-            "most_popular_tag_error_upper_bound": 0,
-            "sum_other_most_popular_tag": 0,
             "buckets": [
                {
+                  "key":"WORLD",
+                  "most_popular_5": {
+                     "cat" : 20,
+                     "dog" : 400,
+                     "food": 492,
+                     "citylife" : 1000,
+                     "yolo": 2000
+                  },
+                  "rest_tags": {
+                     "music": 1500,
+                     "love" : 20
+                  }
+               },
+               {
                   "key": "USA",
-                  "most_popular_tag": "dog"
+                  "most_popular_tag" : "dog",
+                  "most_popular_5": {
+                     "cat" : 1000,
+                     "dog" : 3000,
+                     "food": 1300,
+                     "citylife" : 1500,
+                     "yolo": 900
+                  },
+                  "rest_tags": {
+                     "music": 300,
+                     "love" : 190
+                  }
                },
                {
                   "key": "CAN",
-                  "most_popular_tag": "cat"
-               },
-               {
-                  "key": "GBR",
-                  "most_popular_tag": "love"
-               },
-               {
-                  "key": "MOZ",
-                  "most_popular_tag": "citylife"
-               },
-               {
-                  "key": "TUR",
-                  "most_popular_tag": 72724
-               },
-               {
-                  "key": "KEN",
-                  "most_popular_tag": 64413
-               },
-               {
-                  "key": "BEL",
-                  "most_popular_tag": 54416
-               },
-               {
-                  "key": "FRA",
-                  "most_popular_tag": 50738
-               },
-               {
-                  "key": "NLD",
-                  "most_popular_tag": 42092
-               },
-               {
-                  "key": "ZAF",
-                  "most_popular_tag": 33714
-               },
-               {
-                  "key": "AUS",
-                  "most_popular_tag": 29904
-               },
-               {
-                  "key": "ARG",
-                  "most_popular_tag": 23539
-               },
-               {
-                  "key": "SWE",
-                  "most_popular_tag": 23145
-               },
-               {
-                  "key": "ESP",
-                  "most_popular_tag": 22365
-               },
-               {
-                  "key": "HKG",
-                  "most_popular_tag": 14383
-               },
-               {
-                  "key": "BRA",
-                  "most_popular_tag": 14097
-               },
-               {
-                  "key": "COL",
-                  "most_popular_tag": 13908
-               },
-               {
-                  "key": "DEU",
-                  "most_popular_tag": 5985
-               },
-               {
-                  "key": "MEX",
-                  "most_popular_tag": 5396
-               },
-               {
-                  "key": "TTO",
-                  "most_popular_tag": 5138
-               },
-               {
-                  "key": "CHN",
-                  "most_popular_tag": 3478
-               },
-               {
-                  "key": "CHL",
-                  "most_popular_tag": 3450
-               },
-               {
-                  "key": "KAZ",
-                  "most_popular_tag": 2666
-               },
-               {
-                  "key": "PER",
-                  "most_popular_tag": 2005
-               },
-               {
-                  "key": "IRN",
-                  "most_popular_tag": 1586
-               },
-               {
-                  "key": "BGR",
-                  "most_popular_tag": 1552
-               },
-               {
-                  "key": "POL",
-                  "most_popular_tag": 1539
-               },
-               {
-                  "key": "UKR",
-                  "most_popular_tag": 1444
-               },
-               {
-                  "key": "SGP",
-                  "most_popular_tag": 1386
-               },
-               {
-                  "key": "JPN",
-                  "most_popular_tag": 1371
-               },
-               {
-                  "key": "CZE",
-                  "most_popular_tag": 1295
-               },
-               {
-                  "key": "IND",
-                  "most_popular_tag": 1126
-               },
-               {
-                  "key": "ITA",
-                  "most_popular_tag": 1077
-               },
-               {
-                  "key": "JAM",
-                  "most_popular_tag": 1014
-               },
-               {
-                  "key": "ROU",
-                  "most_popular_tag": 1011
-               },
-               {
-                  "key": "RUS",
-                  "most_popular_tag": 980
-               },
-               {
-                  "key": "EU",
-                  "most_popular_tag": 979
-               },
-               {
-                  "key": "SRB",
-                  "most_popular_tag": 957
-               },
-               {
-                  "key": "ECU",
-                  "most_popular_tag": 851
-               },
-               {
-                  "key": "ISR",
-                  "most_popular_tag": 848
-               },
-               {
-                  "key": "KOR",
-                  "most_popular_tag": 835
-               },
-               {
-                  "key": "ARE",
-                  "most_popular_tag": 631
-               },
-               {
-                  "key": "NCL",
-                  "most_popular_tag": 598
-               },
-               {
-                  "key": "PRT",
-                  "most_popular_tag": 487
-               },
-               {
-                  "key": "GRC",
-                  "most_popular_tag": 423
-               },
-               {
-                  "key": "URY",
-                  "most_popular_tag": 416
-               },
-               {
-                  "key": "BLR",
-                  "most_popular_tag": 392
-               },
-               {
-                  "key": "HUN",
-                  "most_popular_tag": 368
-               },
-               {
-                  "key": "HRV",
-                  "most_popular_tag": 355
-               },
-               {
-                  "key": "GTM",
-                  "most_popular_tag": 312
-               },
-               {
-                  "key": "BOL",
-                  "most_popular_tag": 308
-               },
-               {
-                  "key": "THA",
-                  "most_popular_tag": 294
-               },
-               {
-                  "key": "CHE",
-                  "most_popular_tag": 291
-               },
-               {
-                  "key": "AUT",
-                  "most_popular_tag": 284
-               },
-               {
-                  "key": "MDA",
-                  "most_popular_tag": 249
-               },
-               {
-                  "key": "VNM",
-                  "most_popular_tag": 236
-               },
-               {
-                  "key": "VEN",
-                  "most_popular_tag": 228
-               },
-               {
-                  "key": "NGA",
-                  "most_popular_tag": 216
-               },
-               {
-                  "key": "IRL",
-                  "most_popular_tag": 190
-               },
-               {
-                  "key": "PSE",
-                  "most_popular_tag": 188
-               },
-               {
-                  "key": "NOR",
-                  "most_popular_tag": 184
-               },
-               {
-                  "key": "AFG",
-                  "most_popular_tag": 181
-               },
-               {
-                  "key": "LVA",
-                  "most_popular_tag": 177
-               },
-               {
-                  "key": "CRI",
-                  "most_popular_tag": 175
-               },
-               {
-                  "key": "MAR",
-                  "most_popular_tag": 172
-               },
-               {
-                  "key": "SEN",
-                  "most_popular_tag": 162
-               },
-               {
-                  "key": "RWA",
-                  "most_popular_tag": 156
-               },
-               {
-                  "key": "GEO",
-                  "most_popular_tag": 151
-               },
-               {
-                  "key": "KGZ",
-                  "most_popular_tag": 149
-               },
-               {
-                  "key": "BWA",
-                  "most_popular_tag": 146
-               },
-               {
-                  "key": "PHL",
-                  "most_popular_tag": 144
-               },
-               {
-                  "key": "SDN",
-                  "most_popular_tag": 137
-               },
-               {
-                  "key": "GLP",
-                  "most_popular_tag": 98
-               },
-               {
-                  "key": "DOM",
-                  "most_popular_tag": 93
-               },
-               {
-                  "key": "ALB",
-                  "most_popular_tag": 90
-               },
-               {
-                  "key": "MNE",
-                  "most_popular_tag": 88
-               },
-               {
-                  "key": "ARM",
-                  "most_popular_tag": 83
-               },
-               {
-                  "key": "DNK",
-                  "most_popular_tag": 80
-               },
-               {
-                  "key": "UZB",
-                  "most_popular_tag": 69
-               },
-               {
-                  "key": "NZL",
-                  "most_popular_tag": 56
-               },
-               {
-                  "key": "LBN",
-                  "most_popular_tag": 52
-               },
-               {
-                  "key": "TUN",
-                  "most_popular_tag": 28
-               },
-               {
-                  "key": "GHA",
-                  "most_popular_tag": 27
-               },
-               {
-                  "key": "ZWE",
-                  "most_popular_tag": 24
-               },
-               {
-                  "key": "DZA",
-                  "most_popular_tag": 23
-               },
-               {
-                  "key": "JEY",
-                  "most_popular_tag": 18
-               },
-               {
-                  "key": "TWN",
-                  "most_popular_tag": 12
-               },
-               {
-                  "key": "GRD",
-                  "most_popular_tag": 7
+                  "most_popular_tag" : "cat",
+                  "most_popular_5": {
+                     "cat" : 5000,
+                     "dog" : 2000,
+                     "food": 2700,
+                     "citylife" : 1500,
+                     "yolo": 1100
+                  },
+                  "rest_tags": {
+                     "music": 200,
+                     "love" : 10
+                  }
                }
             ]
+            
+         
+      },
+   
+      "2003" :  {
+
+         "country_data": {
+               "buckets": [
+                  {
+                     "key":"WORLD",
+                     "most_popular_5": {
+                        "cat" : 19000,
+                        "dog" : 500,
+                        "food": 98,
+                        "citylife" : 33,
+                        "yolo": 2000
+                     },
+                     "rest_tags": {
+                        "music": 500,
+                        "love" : 5000
+                     }
+                  },
+                  {
+                     "key": "USA",
+                     "most_popular_tag" : "dog",
+                     "most_popular_5": {
+                        "cat" : 1000,
+                        "dog" : 3000,
+                        "food": 1300,
+                        "citylife" : 1500,
+                        "yolo": 900
+                     },
+                     "rest_tags": {
+                        "music": 300,
+                        "love" : 190
+                     }
+                  },
+                  {
+                     "key": "CAN",
+                     "most_popular_tag" : "cat",
+                     "most_popular_5": {
+                        "cat" : 5000,
+                        "dog" : 2000,
+                        "food": 2700,
+                        "citylife" : 1500,
+                        "yolo": 1100
+                     },
+                     "rest_tags": {
+                        "music": 200,
+                        "love" : 10
+                     }
+                  }
+               ]
+               
+            
          }
-      }
+      
    }
+   
+}
+}
 }

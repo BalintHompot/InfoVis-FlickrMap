@@ -111,99 +111,24 @@
 
 
         <div>
+      
             <span>
-                <figure class="highcharts-figure">
-                    <div id="container"></div>
-        
-                    <button id="plain">Plain</button>
-                    <button id="inverted">Inverted</button>
-                    <button id="polar">Polar</button>
-                </figure>
-            </span>
-            <span>
+
+                <div id="map-holder"></div>
+                <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+                <!-- Create a div where the graph will take place -->
+                <div id="my_dataviz"></div>
                 <input id="slider" type="range" min="2000" max="2011" value="2000" step="1" onchange="updateSlider(this.value)" />
 
                 <span id="range">2000</span>
         
                 <button name="play" id="play">Play</button>
-                <div id="map-holder"></div>
             </span>
         </div>
 
 
         <script>
-
-            var graphXAxis = [];
-            var graphYAxis = [];
-
-            /**
-                Highcharts
-            **/
-
-            var chart = Highcharts.chart('container', {
-
-title: {
-    text: '5 Most Popular tags'
-},
-
-subtitle: {
-    text: 'source: Flickr dataset'
-},
-
-xAxis: {
-    categories: graphXAxis
-},
-
-credits: {
-        enabled: false
-    },
-
-series: [{
-    type: 'column',
-    colorByPoint: true,
-    data: graphYAxis,
-    showInLegend: false
-}]
-
-});
-
-
-$('#plain').click(function () {
-chart.update({
-    chart: {
-        inverted: false,
-        polar: false
-    },
-    subtitle: {
-        text: 'Plain'
-    }
-});
-});
-
-$('#inverted').click(function () {
-chart.update({
-    chart: {
-        inverted: true,
-        polar: false
-    },
-    subtitle: {
-        text: 'Inverted'
-    }
-});
-});
-
-$('#polar').click(function () {
-chart.update({
-    chart: {
-        inverted: false,
-        polar: true
-    },
-    subtitle: {
-        text: 'Polar'
-    }
-});
-});
-
 
             /* JavaScript goes here. */
             // globals used in graph
@@ -274,16 +199,16 @@ chart.update({
                 .range(d3.schemeSet3);
 
             console.log(countries_mock_data)
-            current_year_data = countries_mock_data["2000"]
+            current_year_data = countries_mock_data.timesteps["2000"]
             console.log(current_year_data)
 
             draw(world_countries ,current_year_data)
 
             function draw(world, data) {
 
-                    for(var idx=0; idx < data.country_data.world_map.buckets.length; idx++) {
-                        var cCode = data.country_data.world_map.buckets[idx].key.toUpperCase();
-                        var most_popular_tag = data.country_data.world_map.buckets[idx].most_popular_tag;
+                    for(var idx=0; idx < data.country_data.buckets.length; idx++) {
+                        var cCode = data.country_data.buckets[idx].key.toUpperCase();
+                        var most_popular_tag = data.country_data.buckets[idx].most_popular_tag;
                         for(var wdx=0; wdx < world.objects.subunits.geometries.length; wdx++) {
                             var cName = world.objects.subunits.geometries[wdx].id.toUpperCase();
                             if (cCode === cName) {
@@ -322,11 +247,11 @@ chart.update({
                         .attr('dy', 20)
                         .text(function(d) { return d.properties.most_popular_tag ? d.properties.most_popular_tag : ''; });
                     
-                    var toColor = svg.selectAll(".subunit")
+                    var toColor = g.selectAll(".subunit")
 
                     toColor            
                     .transition()
-                    .duration(1000)
+                    .duration(750)
                     .style("fill", heatColor)
                     
 
@@ -344,28 +269,7 @@ chart.update({
                 d3.selectAll('.subunit.ca'+datum.id)
                     .style('fill', '#cc6699');
                 
-                //Update the map..
-                //console.log("clicked :",datum.id);
-                //console.log(countries_mock_data["2000"].country_data.world_map.tags[datum.id]);
-                var p = countries_mock_data["2000"].country_data.world_map.tags[datum.id];
-                for (var key in p) {
-                    if (p.hasOwnProperty(key)) {
-                        console.log(key + " -> " + p[key]);
-                        graphXAxis.push(key);
-                        graphYAxis.push(p[key]);
-                    }
-                }
 
-                //chart.series[0].remove();
-
-                chart.series[0].setData(graphYAxis);
-
-                //chart.subtitle.setText("safd");
-
-                //chart.xAxis[0].update({categories: graphXAxis});
-                chart.xAxis[0].setCategories(graphXAxis);
-
-                chart.redraw();
 
             } 
 
@@ -397,6 +301,8 @@ chart.update({
                     .duration(2000)
                     // .call(zoom.translate(translate).scale(scale).event); // not in d3 v4
                     .call( zoom.transform, d3.zoomIdentity.translate(translate[0],translate[1]).scale(scale) ); // updated for d3 v4
+                drawStreamGraph(d.id)
+
             }
 
             function reset() {
@@ -407,6 +313,8 @@ chart.update({
                     .duration(750)
                     // .call( zoom.transform, d3.zoomIdentity.translate(0, 0).scale(1) ); // not in d3 v4
                     .call( zoom.transform, d3.zoomIdentity ); // updated for d3 v4
+                drawStreamGraph("WORLD")
+
             }
 
             function zoomed() {
@@ -437,7 +345,7 @@ chart.update({
                 .attr("fill-opacity","0.2")
             */
             function updateSlider(event){
-                current_year_data = countries_mock_data[event]
+                current_year_data = countries_mock_data.timesteps[event]
                 draw(world_countries,current_year_data);
                 $('#range').html(event);
             }
@@ -470,7 +378,7 @@ chart.update({
                             $('#range').html(sliderValue);
                         }
                         $("#slider").val(sliderValue);
-                        current_year_data = countries_mock_data[sliderValue]
+                        current_year_data = countries_mock_data.timesteps[sliderValue]
                         draw(world_countries,current_year_data);
                     
                 }, duration);
@@ -480,10 +388,139 @@ chart.update({
             }
 
         });
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        </script>
+        ////////////////////////////////// StreamGraph ///////////////////////////////////////////////////////////////////////////////////////////////////
         
 
+            function getStreamData(country_key){
+                var timeSteps = Object.keys(countries_mock_data.timesteps)
+                d = []
+                for(var timeStepInd in timeSteps){
+                    var timeStep = timeSteps[timeStepInd]
+                    var country_bucket = countries_mock_data.timesteps[timeStep].country_data.buckets.find( function (e){
+                        return e.key == country_key
+                    })
+                    var tags = Object.assign({}, country_bucket.most_popular_5, country_bucket.rest_tags)
+                    tag_list = Object.keys(tags)
+                    year_data = {"date":timeStep}
+                    for(var tagInd in tag_list){
+                        tag = tag_list[tagInd]
+            
+                        year_data[tag] = tags[tag]
+            
+                    }
+                    d.push(year_data)
+
+                }
+                return d
+            }
+
+            var margin = {top: 20, right: 30, bottom: 0, left: 10},
+    width_stream = 800 - margin.left - margin.right,
+    height_stream = 100 - margin.top - margin.bottom;
+    var svg_strem = d3.select("#my_dataviz")
+        .append("svg")
+            .attr("width", width_stream + margin.left + margin.right)
+            .attr("height", height_stream + margin.top + margin.bottom)
+        .append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+
+    drawStreamGraph("WORLD")
+
+    function drawStreamGraph(country_key){
+// append the svg object to the body of the page
+
+        svg_strem.selectAll("path")
+        .remove()
+
+
+        // Parse the Data
+        data = getStreamData(country_key)
+
+        // List of groups = header of the csv files
+        var keys = Object.keys(data[0])
+
+        // Add X axis
+        var x = d3.scaleLinear()
+            .domain(d3.extent(data, function(d) { return d.date; }))
+            .range([ 0, width_stream ]);
+        svg_strem.append("g")
+            .attr("transform", "translate(0," + height_stream*0.8 + ")")
+            .call(d3.axisBottom(x).tickSize(-height_stream*.7).tickValues([1900, 1925, 1975, 2000]))
+            .select(".domain").remove()
+        // Customization
+        svg_strem.selectAll(".tick line").attr("stroke", "#b8b8b8")
+
+        // Add X axis label:
+        svg_strem.append("text")
+            .attr("text-anchor", "end")
+            .attr("x", width_stream)
+            .attr("y", height_stream-30 )
+            .text("Time (date)");
+
+        // Add Y axis
+        var y = d3.scaleLinear()
+            .domain([-8000, 8000])
+            .range([ height_stream, 0 ]);
+
+
+        //stack the data?
+        var stackedData = d3.stack()
+            .offset(d3.stackOffsetSilhouette)
+            .keys(keys)
+            (data)
+
+        // create a tooltip
+        var Tooltip = svg_strem
+            .append("text")
+            .attr("x", 0)
+            .attr("y", 0)
+            .style("opacity", 0)
+            .style("font-size", 17)
+
+        // Three function that change the tooltip when user hover / move / leave a cell
+        var mouseover = function(d) {
+            Tooltip.style("opacity", 1)
+            d3.selectAll(".myArea").style("opacity", .2)
+            d3.select(this)
+            .style("stroke", "black")
+            .style("opacity", 1)
+        }
+        var mousemove = function(d,i) {
+            grp = keys[i]
+            Tooltip.text(grp)
+        }
+        var mouseleave = function(d) {
+            Tooltip.style("opacity", 0)
+            d3.selectAll(".myArea").style("opacity", 1).style("stroke", "none")
+        }
+
+        // Area generator
+        var area = d3.area()
+            .x(function(d) { return x(d.data.date); })
+            .y0(function(d) { return y(d[0]); })
+            .y1(function(d) { return y(d[1]); })
+
+        // Show the areas
+        svg_strem
+            .selectAll("mylayers")
+            .data(stackedData)
+            .enter()
+
+            .append("path")
+            .attr("class", "myArea")
+            .transition()
+            .duration(750)
+            .style("fill", function(d) { return myColor(d.key); })
+            .attr("d", area)
+            .on("mouseover", mouseover)
+            .on("mousemove", mousemove)
+            .on("mouseleave", mouseleave)
+    
+            
+    }
+
+    </script>
 
         
     </body>
