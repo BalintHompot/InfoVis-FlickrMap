@@ -19,7 +19,7 @@ Everyone: Assignment for next week
 
 Balint: 
 
-Urscha: Finishing the dataset: mapping country codes, filtering only useful tags, categorizing the tags.
+Urscha: Finishing the dataset: mapping country codes, looking at camera type in the metadata, filtering only useful tags, categorizing the tags.
 
 Neeraj:
 
