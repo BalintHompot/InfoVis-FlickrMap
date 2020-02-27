@@ -4,7 +4,7 @@ This is the Information Visualization of team 15. We are using the Flickr datase
 
 ## Planning ##
 
-### Week 4 To-Dos ###
+### Week 4 To-Dos - Before 27-02-2020 ###
 Balint: Create the world map in D3
 
 Neeraj and Vignesh: Creating a dynamic barchart
@@ -13,7 +13,7 @@ Urscha: Putting together the dataset for the backend
 
 Martijn: Looking for other datasets to add to the visualization for extra depth
 
-### Week 5 To-Dos ###
+### Week 5 To-Dos - Before 05-03-2020 ###
 
 Everyone: Assignment for next week
 
