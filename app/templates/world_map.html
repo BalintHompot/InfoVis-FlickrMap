@@ -50,7 +50,7 @@
         </style>
     </head>
     <body>
-        <input id="slider" type="range" min="2000" max="2011" value="2000" step="1" />
+        <input id="slider" type="range" min="2000" max="2011" value="2000" step="1" onchange="updateSlider(this.value)" />
 
         <span id="range">2000</span>
 
@@ -251,6 +251,11 @@
 
             ///////////////////////////////////////////////// Play button functions /////////////////////////////////////////////////////////////////////
             
+            function updateSlider(event){
+                current_year_data = countries_mock_data[event]
+                draw(world_countries,current_year_data);
+                $('#range').html(event);
+            }
             
             $("button").on("click", function() {
 		
@@ -279,7 +284,7 @@
                             $('#range').html(sliderValue);
                         }
                         $("#slider").val(sliderValue);
-                        current_year_data = countries_mock_data["2001"]
+                        current_year_data = countries_mock_data[sliderValue]
                         draw(world_countries,current_year_data);
                     
                 }, duration);
