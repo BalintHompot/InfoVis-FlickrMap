@@ -92,6 +92,9 @@
 .highcharts-data-table tr:hover {
     background: #f1f7ff;
 }
+.slider{
+    width: 800px;
+}
 
         </style>
     </head>
@@ -119,7 +122,7 @@
 
                 <!-- Create a div where the graph will take place -->
                 <div id="my_dataviz"></div>
-                <input id="slider" type="range" min="2000" max="2011" value="2000" step="1" onchange="updateSlider(this.value)" />
+                <input id="slider" class = "slider" type="range" min="2000" max="2002" value="2000" step="1" onchange="updateSlider(this.value)" />
 
                 <span id="range">2000</span>
         
@@ -199,7 +202,8 @@
                 .range(d3.schemeSet3);
 
             console.log(countries_mock_data)
-            current_year_data = countries_mock_data.timesteps["2000"]
+            current_date = 2000
+            current_year_data = countries_mock_data.timesteps[current_date]
             console.log(current_year_data)
 
             draw(world_countries ,current_year_data)
@@ -346,7 +350,9 @@
             */
             function updateSlider(event){
                 current_year_data = countries_mock_data.timesteps[event]
+                current_date = event
                 draw(world_countries,current_year_data);
+                updateStreamSlider()
                 $('#range').html(event);
             }
             
@@ -354,7 +360,7 @@
             $("#play").on("click", function() {
 		
             var duration = 800,
-                maxstep = 2011,
+                maxstep = 2002,
                 minstep = 2000;
             
             if (running == true) {
@@ -379,7 +385,9 @@
                         }
                         $("#slider").val(sliderValue);
                         current_year_data = countries_mock_data.timesteps[sliderValue]
+                        current_date = sliderValue
                         draw(world_countries,current_year_data);
+                        updateStreamSlider()
                     
                 }, duration);
                 running = true;
@@ -414,23 +422,36 @@
                 return d
             }
 
-            var margin = {top: 20, right: 30, bottom: 0, left: 10},
+            var margin = {top: 20, right: 0, bottom: 0, left: 0},
     width_stream = 800 - margin.left - margin.right,
     height_stream = 100 - margin.top - margin.bottom;
-    var svg_strem = d3.select("#my_dataviz")
-        .append("svg")
-            .attr("width", width_stream + margin.left + margin.right)
-            .attr("height", height_stream + margin.top + margin.bottom)
-        .append("g")
-            .attr("transform",
-                "translate(" + margin.left + "," + margin.top + ")");
+    var svg_stream = d3.select("#my_dataviz")
+    .append("svg")
+        .attr("width", width_stream + margin.left + margin.right)
+        .attr("height", height_stream + margin.top + margin.bottom)
+    .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+    var x = d3.scaleLinear()
+    var y = d3.scaleLinear()
+
+    let drag = d3.drag()
+        .on('drag', dragged)
 
     drawStreamGraph("WORLD")
+    updateStreamSlider()
 
+
+
+    function dragged(d) {
+        current_date = Math.round(x.invert(d3.mouse(this)[0]))
+        updateStreamSlider()
+    }
     function drawStreamGraph(country_key){
 // append the svg object to the body of the page
 
-        svg_strem.selectAll("path")
+        svg_stream.selectAll("path")
         .remove()
 
 
@@ -441,26 +462,27 @@
         var keys = Object.keys(data[0])
 
         // Add X axis
-        var x = d3.scaleLinear()
+        x
             .domain(d3.extent(data, function(d) { return d.date; }))
             .range([ 0, width_stream ]);
-        svg_strem.append("g")
+        svg_stream.append("g")
             .attr("transform", "translate(0," + height_stream*0.8 + ")")
             .call(d3.axisBottom(x).tickSize(-height_stream*.7).tickValues([1900, 1925, 1975, 2000]))
             .select(".domain").remove()
         // Customization
-        svg_strem.selectAll(".tick line").attr("stroke", "#b8b8b8")
+        svg_stream.selectAll(".tick line").attr("stroke", "#b8b8b8")
 
         // Add X axis label:
-        svg_strem.append("text")
+        svg_stream.append("text")
             .attr("text-anchor", "end")
             .attr("x", width_stream)
             .attr("y", height_stream-30 )
             .text("Time (date)");
 
         // Add Y axis
-        var y = d3.scaleLinear()
-            .domain([-8000, 8000])
+        var maxRange = data[0]["dog"] * 3
+        y
+            .domain([-maxRange, maxRange])
             .range([ height_stream, 0 ]);
 
 
@@ -471,7 +493,7 @@
             (data)
 
         // create a tooltip
-        var Tooltip = svg_strem
+        var Tooltip = svg_stream
             .append("text")
             .attr("x", 0)
             .attr("y", 0)
@@ -485,14 +507,21 @@
             d3.select(this)
             .style("stroke", "black")
             .style("opacity", 1)
+            console.log(d)
         }
         var mousemove = function(d,i) {
             grp = keys[i]
             Tooltip.text(grp)
+ 
         }
         var mouseleave = function(d) {
             Tooltip.style("opacity", 0)
             d3.selectAll(".myArea").style("opacity", 1).style("stroke", "none")
+        }
+
+        var clickedStream = function(d){
+            current_date = Math.round(x.invert(d3.mouse(this)[0]))
+            updateStreamSlider()
         }
 
         // Area generator
@@ -502,21 +531,40 @@
             .y1(function(d) { return y(d[1]); })
 
         // Show the areas
-        svg_strem
+        svg_stream
             .selectAll("mylayers")
             .data(stackedData)
             .enter()
 
             .append("path")
             .attr("class", "myArea")
-            .transition()
-            .duration(750)
+ 
             .style("fill", function(d) { return myColor(d.key); })
             .attr("d", area)
             .on("mouseover", mouseover)
             .on("mousemove", mousemove)
             .on("mouseleave", mouseleave)
-    
+            .on("click", clickedStream);
+
+
+    }
+
+
+
+
+    function updateStreamSlider(){
+        svg_stream.selectAll("#line-comparison").remove()
+        svg_stream
+            .append("line")
+            .attr('id', "line-comparison")
+            .attr('stroke', 'black')
+            .attr('stroke-width', 2)
+            .attr('x1', x(current_date))
+            .attr('y1', 0)
+            .attr('x2', x(current_date))
+            .attr('y2', height_stream)
+            .call(drag);
+      
             
     }
 
