@@ -13,6 +13,20 @@ Urscha: Putting together the dataset for the backend
 
 Martijn: Looking for other datasets to add to the visualization for extra depth
 
+### Week 5 To-Dos ###
+
+Everyone: Assignment for next week
+
+Balint: 
+
+Urscha: Finishing the dataset: mapping country codes, filtering only useful tags, categorizing the tags.
+
+Neeraj:
+
+Vignesh:
+
+Martijn:
+
 ## Requirements ##
 
 See the requirements.txt file
