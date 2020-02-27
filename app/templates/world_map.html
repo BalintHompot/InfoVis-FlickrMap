@@ -47,10 +47,56 @@
             stroke-linecap: round;
             stroke-linejoin: round;
             }
+
+
+
+
+
+
+
+
+            #container {
+    height: 400px; 
+}
+
+.highcharts-figure, .highcharts-data-table table {
+    min-width: 320px; 
+    max-width: 800px;
+    margin: 1em auto;
+}
+
+.highcharts-data-table table {
+    font-family: Verdana, sans-serif;
+    border-collapse: collapse;
+    border: 1px solid #EBEBEB;
+    margin: 10px auto;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+}
+.highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+}
+.highcharts-data-table th {
+	font-weight: 600;
+    padding: 0.5em;
+}
+.highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+    padding: 0.5em;
+}
+.highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+}
+.highcharts-data-table tr:hover {
+    background: #f1f7ff;
+}
+
         </style>
     </head>
     <body>
-        <input id="slider" type="range" min="2000" max="2011" value="2000" step="1" onchange="updateSlider(this.value)" />
+        <input id="slider" type="range" min="2000" max="2011" value="2000" step="1" />
 
         <span id="range">2000</span>
 
@@ -58,7 +104,111 @@
         <script src="//d3js.org/topojson.v1.min.js"></script>
         <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="https://code.highcharts.com/highcharts.js"></script>   
+        <script src="https://code.highcharts.com/highcharts-more.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>   
+        <script src="https://code.highcharts.com/modules/export-data.js"></script>
+        <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+
+        <div>
+            <span>
+                <figure class="highcharts-figure">
+                    <div id="container"></div>
+        
+                    <button id="plain">Plain</button>
+                    <button id="inverted">Inverted</button>
+                    <button id="polar">Polar</button>
+                </figure>
+            </span>
+            <span>
+                <input id="slider" type="range" min="2000" max="2011" value="2000" step="1" />
+
+                <span id="range">2000</span>
+        
+                <button name="play" id="play">Play</button>
+                <div id="map-holder"></div>
+            </span>
+        </div>
+
+
         <script>
+
+            var graphXAxis = [];
+            var graphYAxis = [];
+
+            /**
+                Highcharts
+            **/
+
+            var chart = Highcharts.chart('container', {
+
+title: {
+    text: '5 Most Popular tags'
+},
+
+subtitle: {
+    text: 'source: Flickr dataset'
+},
+
+xAxis: {
+    categories: graphXAxis
+},
+
+credits: {
+        enabled: false
+    },
+
+series: [{
+    type: 'column',
+    colorByPoint: true,
+    data: graphYAxis,
+    showInLegend: false
+}]
+
+});
+
+
+$('#plain').click(function () {
+chart.update({
+    chart: {
+        inverted: false,
+        polar: false
+    },
+    subtitle: {
+        text: 'Plain'
+    }
+});
+});
+
+$('#inverted').click(function () {
+chart.update({
+    chart: {
+        inverted: true,
+        polar: false
+    },
+    subtitle: {
+        text: 'Inverted'
+    }
+});
+});
+
+$('#polar').click(function () {
+chart.update({
+    chart: {
+        inverted: false,
+        polar: true
+    },
+    subtitle: {
+        text: 'Polar'
+    }
+});
+});
+
+
             /* JavaScript goes here. */
             // globals used in graph
 
@@ -78,10 +228,12 @@
             var minDocCount = 0, quantiles = {};
             // projection definitions
             var projection = d3.geoMercator()
-       
+                .scale((width + 1) / 2 / Math.PI)
+                .translate([width/2, height/2])
+                .precision(.1);
             var path = d3.geoPath().projection(projection);
             // SVG related definitions
-            var svg = d3.select("body").append("svg")
+            var svg = d3.select("#map-holder").append("svg")
                         .attr("height", height)    // set the height
                         .attr("width", width);    // set the width
             
@@ -187,12 +339,38 @@
             }
 
             function mouseoverLegend(datum, index) {
+                graphXAxis = [];
+                graphYAxis = [];
                 var point = d3.mouse(this)
                 d3.selectAll('.subunit-label.la'+datum.id+datum.properties.name.replace(/[ \.#']+/g,''))
                     .style('display', 'inline-block')
               
                 d3.selectAll('.subunit.ca'+datum.id)
                     .style('fill', '#cc6699');
+                
+                //Update the map..
+                //console.log("clicked :",datum.id);
+                //console.log(countries_mock_data["2000"].country_data.world_map.tags[datum.id]);
+                var p = countries_mock_data["2000"].country_data.world_map.tags[datum.id];
+                for (var key in p) {
+                    if (p.hasOwnProperty(key)) {
+                        console.log(key + " -> " + p[key]);
+                        graphXAxis.push(key);
+                        graphYAxis.push(p[key]);
+                    }
+                }
+
+                //chart.series[0].remove();
+
+                chart.series[0].setData(graphYAxis);
+
+                //chart.subtitle.setText("safd");
+
+                //chart.xAxis[0].update({categories: graphXAxis});
+                chart.xAxis[0].setCategories(graphXAxis);
+
+                chart.redraw();
+
             } 
 
             function mouseoutLegend(datum, index) {
@@ -267,7 +445,8 @@
                 $('#range').html(event);
             }
             
-            $("button").on("click", function() {
+            
+            $("#play").on("click", function() {
 		
             var duration = 800,
                 maxstep = 2011,
@@ -275,7 +454,7 @@
             
             if (running == true) {
             
-                $("button").html("Play");
+                $("#play").html("Play");
                 running = false;
                 clearInterval(timer);
                 
@@ -283,7 +462,7 @@
  
             else if (running == false) {
             
-                $("button").html("Pause");
+                $("#play").html("Pause");
                 
                 sliderValue = $("#slider").val();
                 
@@ -294,7 +473,7 @@
                             $('#range').html(sliderValue);
                         }
                         $("#slider").val(sliderValue);
-                        current_year_data = countries_mock_data[sliderValue]
+                        current_year_data = countries_mock_data["2001"]
                         draw(world_countries,current_year_data);
                     
                 }, duration);
@@ -306,6 +485,9 @@
         });
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         </script>
+        
+
+
         
     </body>
 {% endblock %}

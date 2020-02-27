@@ -360,7 +360,30 @@
                   "key": "GRD",
                   "most_popular_tag": 7
                }
-            ]
+            ],
+            "tags": {
+               "USA": {
+                  "cats": 124567,
+                  "dogs": 45466,
+                  "sun": 41723,
+                  "beach": 1002,
+                  "night": 894
+               },
+               "CAN": {
+                  "baby": 231343,
+                  "snow": 196723,
+                  "baseball": 59067,
+                  "night": 3894,
+                  "fishing": 985
+               },
+               "MEX": {
+                  "mariachi": 231343,
+                  "desert": 196723,
+                  "party": 59067,
+                  "night": 3894,
+                  "tacos": 985
+               }
+            }
          }
       }
    },
