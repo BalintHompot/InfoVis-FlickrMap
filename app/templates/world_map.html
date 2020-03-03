@@ -308,7 +308,7 @@
                     .duration(2000)
                     // .call(zoom.translate(translate).scale(scale).event); // not in d3 v4
                     .call( zoom.transform, d3.zoomIdentity.translate(translate[0],translate[1]).scale(scale) ); // updated for d3 v4
-                drawStreamGraph(d.id)
+                refreshStreamGraph(d.id)
 
             }
 
@@ -320,7 +320,7 @@
                     .duration(750)
                     // .call( zoom.transform, d3.zoomIdentity.translate(0, 0).scale(1) ); // not in d3 v4
                     .call( zoom.transform, d3.zoomIdentity ); // updated for d3 v4
-                drawStreamGraph("WORLD")
+                refreshStreamGraph("WORLD")
 
             }
 
@@ -438,6 +438,8 @@
 
     var x = d3.scaleLinear()
     var y = d3.scaleLinear()
+    var rectSize = 14
+
 
     let drag = d3.drag()
         .on('drag', dragged)
@@ -454,8 +456,7 @@
     function drawStreamGraph(country_key){
 // append the svg object to the body of the page
 
-        svg_stream.selectAll("path")
-        .remove()
+        //svg_stream.selectAll("path").remove()
 
 
         // Parse the Data
@@ -541,7 +542,6 @@
 
             .append("path")
             .attr("class", "myArea")
- 
             .style("fill", function(d) { return myColor(d.key); })
             .attr("d", area)
             .on("mouseover", mouseover)
@@ -549,6 +549,39 @@
             .on("mouseleave", mouseleave)
             .on("click", clickedStream);
 
+
+    }
+
+    function refreshStreamGraph(country_key){
+
+        // Parse the Data
+        data = getStreamData(country_key)
+
+        // List of groups = header of the csv files
+        var keys = Object.keys(data[0])
+        
+        //stack the data?
+        var stackedData = d3.stack()
+            .offset(d3.stackOffsetSilhouette)
+            .keys(keys)
+            (data)
+
+        // Area generator
+        var area = d3.area()
+            .x(function(d) { return x(d.data.date); })
+            .y0(function(d) { return y(d[0]); })
+            .y1(function(d) { return y(d[1]); })
+
+        svg_stream.selectAll("path")
+            .data(stackedData)
+            .transition()
+            .duration(750)
+            .style("fill", function(d, i) { return myColor(d.key); })
+            .attr("d", area)
+            .on("mouseover", mouseover)
+            .on("mousemove", mousemove)
+            .on("mouseleave", mouseleave)
+            .on("click", clickedStream);
 
     }
 
@@ -568,7 +601,6 @@
             .attr('x2', x(current_date))
             .attr('y2', height_stream)
             .call(drag);
-        var rectSize = 14
         svg_stream
             .append("rect")
             .attr('id', "rect-grab")
