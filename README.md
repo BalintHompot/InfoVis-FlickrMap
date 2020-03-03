@@ -25,7 +25,7 @@ Neeraj:
 
 Vignesh:
 
-Martijn:
+Martijn: Counting the tags per country and per timestep of 1 month. Converting the data to json format and adding the precalculated top 5 tags per country per timestep.
 
 ## Requirements ##
 
