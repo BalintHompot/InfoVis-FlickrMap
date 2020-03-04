@@ -6,6 +6,7 @@
                "buckets": [
                   {  
                      "key":"WORLD",
+                     "most_popular_tag" : "cat",
                      "most_popular_5": {
                         "cat" : 5000,
                         "dog" : 4000,
@@ -16,6 +17,38 @@
                      "rest_tags": {
                         "music": 500,
                         "love" : 200
+                     },
+                     "user_freq": {
+                        "total_pics": 2354,
+                        "asia": 456,
+                        "europe": 1235,
+                        "north_america": 1456,
+                        "oceania": 235,
+                        "africa": 456,
+                        "south_america": 190,
+                        "antartica": 0 
+                     },
+                     "device_data": {
+                        "camera": {
+                           "Canon": 23567,
+                           "FujiFilm": 12435,
+                           "Sony": 8956,
+                           "Nikon": 1235,
+                           "Olympus": 456,
+                           "Others": 129,
+                           "total": 46778
+                        },
+                        "mobile": {
+                           "OnePlus": 12356,
+                           "Apple": 34643,
+                           "Samsung": 24536,
+                           "Mi": 2353,
+                           "Others": 1345,
+                           "total": 75233
+                        },
+                        "others": {
+                           "total": 245
+                        }
                      }
                   },
                   {
@@ -31,6 +64,38 @@
                      "rest_tags": {
                         "music": 300,
                         "love" : 190
+                     },
+                     "user_freq": {
+                        "total_pics": 2354,
+                        "asia": 456,
+                        "europe": 1235,
+                        "north_america": 1456,
+                        "oceania": 235,
+                        "africa": 456,
+                        "south_america": 190,
+                        "antartica": 0 
+                     },
+                     "device_data": {
+                        "camera": {
+                           "Canon": 23567,
+                           "FujiFilm": 12435,
+                           "Sony": 8956,
+                           "Nikon": 1235,
+                           "Olympus": 456,
+                           "Others": 129,
+                           "total": 46778
+                        },
+                        "mobile": {
+                           "OnePlus": 12356,
+                           "Apple": 34643,
+                           "Samsung": 24536,
+                           "Mi": 2353,
+                           "Others": 1345,
+                           "total": 75233
+                        },
+                        "others": {
+                           "total": 245
+                        }
                      }
                   },
                   {
@@ -47,6 +112,38 @@
                      "rest_tags": {
                         "music": 200,
                         "love" : 10
+                     },
+                     "user_freq": {
+                        "total_pics": 2354,
+                        "asia": 456,
+                        "europe": 1235,
+                        "north_america": 1456,
+                        "oceania": 235,
+                        "africa": 456,
+                        "south_america": 190,
+                        "antartica": 0 
+                     },
+                     "device_data": {
+                        "camera": {
+                           "Canon": 23567,
+                           "FujiFilm": 12435,
+                           "Sony": 8956,
+                           "Nikon": 1235,
+                           "Olympus": 456,
+                           "Others": 129,
+                           "total": 46778
+                        },
+                        "mobile": {
+                           "OnePlus": 12356,
+                           "Apple": 34643,
+                           "Samsung": 24536,
+                           "Mi": 2353,
+                           "Others": 1345,
+                           "total": 75233
+                        },
+                        "others": {
+                           "total": 245
+                        }
                      }
                   }
                ]
@@ -72,6 +169,38 @@
                      "rest_tags": {
                         "music": 500,
                         "love" : 200
+                     },
+                     "user_freq": {
+                        "total_pics": 2354,
+                        "asia": 456,
+                        "europe": 1235,
+                        "north_america": 1456,
+                        "oceania": 235,
+                        "africa": 456,
+                        "south_america": 190,
+                        "antartica": 0 
+                     },
+                     "device_data": {
+                        "camera": {
+                           "Canon": 23567,
+                           "FujiFilm": 12435,
+                           "Sony": 8956,
+                           "Nikon": 1235,
+                           "Olympus": 456,
+                           "Others": 129,
+                           "total": 46778
+                        },
+                        "mobile": {
+                           "OnePlus": 12356,
+                           "Apple": 34643,
+                           "Samsung": 24536,
+                           "Mi": 2353,
+                           "Others": 1345,
+                           "total": 75233
+                        },
+                        "others": {
+                           "total": 245
+                        }
                      }
                   },
                   {
@@ -87,6 +216,38 @@
                      "rest_tags": {
                         "music": 300,
                         "love" : 190
+                     },
+                     "user_freq": {
+                        "total_pics": 2354,
+                        "asia": 456,
+                        "europe": 1235,
+                        "north_america": 1456,
+                        "oceania": 235,
+                        "africa": 456,
+                        "south_america": 190,
+                        "antartica": 0 
+                     },
+                     "device_data": {
+                        "camera": {
+                           "Canon": 23567,
+                           "FujiFilm": 12435,
+                           "Sony": 8956,
+                           "Nikon": 1235,
+                           "Olympus": 456,
+                           "Others": 129,
+                           "total": 46778
+                        },
+                        "mobile": {
+                           "OnePlus": 12356,
+                           "Apple": 34643,
+                           "Samsung": 24536,
+                           "Mi": 2353,
+                           "Others": 1345,
+                           "total": 75233
+                        },
+                        "others": {
+                           "total": 245
+                        }
                      }
                   },
                   {
@@ -102,6 +263,38 @@
                      "rest_tags": {
                         "music": 200,
                         "love" : 10
+                     },
+                     "user_freq": {
+                        "total_pics": 2354,
+                        "asia": 456,
+                        "europe": 1235,
+                        "north_america": 1456,
+                        "oceania": 235,
+                        "africa": 456,
+                        "south_america": 190,
+                        "antartica": 0 
+                     },
+                     "device_data": {
+                        "camera": {
+                           "Canon": 23567,
+                           "FujiFilm": 12435,
+                           "Sony": 8956,
+                           "Nikon": 1235,
+                           "Olympus": 456,
+                           "Others": 129,
+                           "total": 46778
+                        },
+                        "mobile": {
+                           "OnePlus": 12356,
+                           "Apple": 34643,
+                           "Samsung": 24536,
+                           "Mi": 2353,
+                           "Others": 1345,
+                           "total": 75233
+                        },
+                        "others": {
+                           "total": 245
+                        }
                      }
                   }
                ]
@@ -127,6 +320,38 @@
                   "rest_tags": {
                      "music": 1500,
                      "love" : 20
+                  },
+                  "user_freq": {
+                     "total_pics": 2354,
+                     "asia": 456,
+                     "europe": 1235,
+                     "north_america": 1456,
+                     "oceania": 235,
+                     "africa": 456,
+                     "south_america": 190,
+                     "antartica": 0 
+                  },
+                  "device_data": {
+                     "camera": {
+                        "Canon": 23567,
+                        "FujiFilm": 12435,
+                        "Sony": 8956,
+                        "Nikon": 1235,
+                        "Olympus": 456,
+                        "Others": 129,
+                        "total": 46778
+                     },
+                     "mobile": {
+                        "OnePlus": 12356,
+                        "Apple": 34643,
+                        "Samsung": 24536,
+                        "Mi": 2353,
+                        "Others": 1345,
+                        "total": 75233
+                     },
+                     "others": {
+                        "total": 245
+                     }
                   }
                },
                {
@@ -142,6 +367,38 @@
                   "rest_tags": {
                      "music": 300,
                      "love" : 190
+                  },
+                  "user_freq": {
+                     "total_pics": 2354,
+                     "asia": 456,
+                     "europe": 1235,
+                     "north_america": 1456,
+                     "oceania": 235,
+                     "africa": 456,
+                     "south_america": 190,
+                     "antartica": 0 
+                  },
+                  "device_data": {
+                     "camera": {
+                        "Canon": 23567,
+                        "FujiFilm": 12435,
+                        "Sony": 8956,
+                        "Nikon": 1235,
+                        "Olympus": 456,
+                        "Others": 129,
+                        "total": 46778
+                     },
+                     "mobile": {
+                        "OnePlus": 12356,
+                        "Apple": 34643,
+                        "Samsung": 24536,
+                        "Mi": 2353,
+                        "Others": 1345,
+                        "total": 75233
+                     },
+                     "others": {
+                        "total": 245
+                     }
                   }
                },
                {
@@ -157,6 +414,38 @@
                   "rest_tags": {
                      "music": 200,
                      "love" : 10
+                  },
+                  "user_freq": {
+                     "total_pics": 2354,
+                     "asia": 456,
+                     "europe": 1235,
+                     "north_america": 1456,
+                     "oceania": 235,
+                     "africa": 456,
+                     "south_america": 190,
+                     "antartica": 0 
+                  },
+                  "device_data": {
+                     "camera": {
+                        "Canon": 23567,
+                        "FujiFilm": 12435,
+                        "Sony": 8956,
+                        "Nikon": 1235,
+                        "Olympus": 456,
+                        "Others": 129,
+                        "total": 46778
+                     },
+                     "mobile": {
+                        "OnePlus": 12356,
+                        "Apple": 34643,
+                        "Samsung": 24536,
+                        "Mi": 2353,
+                        "Others": 1345,
+                        "total": 75233
+                     },
+                     "others": {
+                        "total": 245
+                     }
                   }
                }
             ]
@@ -180,6 +469,38 @@
                      "rest_tags": {
                         "music": 500,
                         "love" : 5000
+                     },
+                     "user_freq": {
+                        "total_pics": 2354,
+                        "asia": 456,
+                        "europe": 1235,
+                        "north_america": 1456,
+                        "oceania": 235,
+                        "africa": 456,
+                        "south_america": 190,
+                        "antartica": 0 
+                     },
+                     "device_data": {
+                        "camera": {
+                           "Canon": 23567,
+                           "FujiFilm": 12435,
+                           "Sony": 8956,
+                           "Nikon": 1235,
+                           "Olympus": 456,
+                           "Others": 129,
+                           "total": 46778
+                        },
+                        "mobile": {
+                           "OnePlus": 12356,
+                           "Apple": 34643,
+                           "Samsung": 24536,
+                           "Mi": 2353,
+                           "Others": 1345,
+                           "total": 75233
+                        },
+                        "others": {
+                           "total": 245
+                        }
                      }
                   },
                   {
@@ -195,6 +516,38 @@
                      "rest_tags": {
                         "music": 300,
                         "love" : 190
+                     },
+                     "user_freq": {
+                        "total_pics": 2354,
+                        "asia": 456,
+                        "europe": 1235,
+                        "north_america": 1456,
+                        "oceania": 235,
+                        "africa": 456,
+                        "south_america": 190,
+                        "antartica": 0 
+                     },
+                     "device_data": {
+                        "camera": {
+                           "Canon": 23567,
+                           "FujiFilm": 12435,
+                           "Sony": 8956,
+                           "Nikon": 1235,
+                           "Olympus": 456,
+                           "Others": 129,
+                           "total": 46778
+                        },
+                        "mobile": {
+                           "OnePlus": 12356,
+                           "Apple": 34643,
+                           "Samsung": 24536,
+                           "Mi": 2353,
+                           "Others": 1345,
+                           "total": 75233
+                        },
+                        "others": {
+                           "total": 245
+                        }
                      }
                   },
                   {
@@ -210,6 +563,38 @@
                      "rest_tags": {
                         "music": 200,
                         "love" : 10
+                     },
+                     "user_freq": {
+                        "total_pics": 2354,
+                        "asia": 456,
+                        "europe": 1235,
+                        "north_america": 1456,
+                        "oceania": 235,
+                        "africa": 456,
+                        "south_america": 190,
+                        "antartica": 0 
+                     },
+                     "device_data": {
+                        "camera": {
+                           "Canon": 23567,
+                           "FujiFilm": 12435,
+                           "Sony": 8956,
+                           "Nikon": 1235,
+                           "Olympus": 456,
+                           "Others": 129,
+                           "total": 46778
+                        },
+                        "mobile": {
+                           "OnePlus": 12356,
+                           "Apple": 34643,
+                           "Samsung": 24536,
+                           "Mi": 2353,
+                           "Others": 1345,
+                           "total": 75233
+                        },
+                        "others": {
+                           "total": 245
+                        }
                      }
                   }
                ]

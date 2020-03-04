@@ -99,6 +99,44 @@
     width: 800px;
 }
 
+
+
+/* CSS for tabs */
+body {
+  padding : 10px ;
+  
+}
+
+#exTab1 .tab-content {
+  color : white;
+  background-color: #428bca;
+  padding : 5px 15px;
+}
+
+#exTab2 h3 {
+  background-color: white;
+  padding : 5px 15px;
+}
+
+/* remove border radius for the tab */
+
+#exTab1 .nav-pills > li > a {
+  border-radius: 0;
+}
+
+/* change border radius for the tab , apply corners on top*/
+
+#exTab3 .nav-pills > li > a {
+  border-radius: 4px 4px 0 0 ;
+}
+
+#exTab3 .tab-content {
+  color : white;
+  background-color: #428bca;
+  padding : 5px 15px;
+}
+
+
         </style>
     </head>
     <body>
@@ -114,6 +152,10 @@
         <script src="https://code.highcharts.com/modules/exporting.js"></script>   
         <script src="https://code.highcharts.com/modules/export-data.js"></script>
         <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+        
 
 
         <div>
@@ -131,6 +173,39 @@
         
                 <button name="play" id="play">Play</button>
             </span>
+
+            <hr></hr>
+            <div class="container"><h2>Charts:</h2></div>
+
+            <div id="exTab2" class="container">	
+                <ul class="nav nav-tabs">
+			        <li class="active">
+                        <a  href="#1" data-toggle="tab">Device trends  </a>
+			        </li>
+			        <li>
+                        <a href="#2" data-toggle="tab">Tag trends  </a>
+			        </li>
+			        <li>
+                        <a href="#3" data-toggle="tab">Others  </a>
+			        </li>
+		        </ul>
+
+			    <div class="tab-content ">
+			        <div class="tab-pane active" id="1">
+                        <figure class="highcharts-figure">
+                            <div id="donut1"></div>
+                        </figure>
+				    </div>
+				    <div class="tab-pane" id="2">
+                        <figure class="highcharts-figure">
+                            <div id="pie1"></div>
+                        </figure>
+				    </div>
+                    <div class="tab-pane" id="3">
+                        <h3>add clearfix to tab-content (see the css)</h3>
+				    </div>
+			    </div>
+            </div>
         </div>
 
 
@@ -204,10 +279,10 @@
             var myColor = d3.scaleOrdinal().domain(countries_mock_data.allTags)
                 .range(d3.schemeSet3);
 
-            console.log(countries_mock_data)
+            //console.log(countries_mock_data)
             current_date = 2000
             current_year_data = countries_mock_data.timesteps[current_date]
-            console.log(current_year_data)
+            //console.log(current_year_data)
 
             draw(world_countries ,current_year_data)
 
@@ -216,10 +291,18 @@
                     for(var idx=0; idx < data.country_data.buckets.length; idx++) {
                         var cCode = data.country_data.buckets[idx].key.toUpperCase();
                         var most_popular_tag = data.country_data.buckets[idx].most_popular_tag;
+                        var most_popular_taglist = data.country_data.buckets[idx].most_popular_5;
+                        var user_freq = data.country_data.buckets[idx].user_freq;
+                        var device_data = data.country_data.buckets[idx].device_data;
                         for(var wdx=0; wdx < world.objects.subunits.geometries.length; wdx++) {
                             var cName = world.objects.subunits.geometries[wdx].id.toUpperCase();
                             if (cCode === cName) {
+                                //TODO is it really necessary to take the data for charts from the map data?? 
+                                // can also get it from an external json file using the country id... 
                                 world.objects.subunits.geometries[wdx].properties.most_popular_tag = most_popular_tag;
+                                world.objects.subunits.geometries[wdx].properties.most_popular_5 = most_popular_taglist;
+                                world.objects.subunits.geometries[wdx].properties.user_freq = user_freq;
+                                world.objects.subunits.geometries[wdx].properties.device_data = device_data;
                             }
                         }
                     }
@@ -260,9 +343,19 @@
                     .transition()
                     .duration(750)
                     .style("fill", heatColor)
+
+
+                    var upDatedData = {};
+                        upDatedData.properties = {};
+                        upDatedData.properties.device_data = {};
+                        upDatedData.properties.most_popular_5 = {};
+                        //TODO Have to change this logic, how to find out the key when sliding inside the countries..
+                        // For now only world changes..
+                        upDatedData.properties.device_data = data.country_data.buckets[0].device_data;
+                        upDatedData.properties.most_popular_5 = data.country_data.buckets[0].most_popular_5;
+                        refreshDonut1(upDatedData);
+                        refreshPie1(upDatedData);
                     
-
-
              
             }
 
@@ -308,7 +401,11 @@
                     .duration(2000)
                     // .call(zoom.translate(translate).scale(scale).event); // not in d3 v4
                     .call( zoom.transform, d3.zoomIdentity.translate(translate[0],translate[1]).scale(scale) ); // updated for d3 v4
+                
+                refreshDonut1(d);
+                refreshPie1(d);
                 refreshStreamGraph(d.id)
+                
 
             }
 
@@ -321,6 +418,7 @@
                     // .call( zoom.transform, d3.zoomIdentity.translate(0, 0).scale(1) ); // not in d3 v4
                     .call( zoom.transform, d3.zoomIdentity ); // updated for d3 v4
                 refreshStreamGraph("WORLD")
+                //TODO have to add reset functionality for pie and donut..
 
             }
 
@@ -425,7 +523,7 @@
                 return d
             }
 
-            var margin = {top: 20, right: 0, bottom: 0, left: 0},
+    var margin = {top: 20, right: 0, bottom: 0, left: 0},
     width_stream = 800 - margin.left - margin.right,
     height_stream = 100 - margin.top - margin.bottom;
     var svg_stream = d3.select("#my_dataviz")
@@ -511,7 +609,7 @@
             d3.select(this)
             .style("stroke", "black")
             .style("opacity", 1)
-            console.log(d)
+            //console.log(d)
         }
         var mousemove = function(d,i) {
             grp = keys[i]
@@ -616,6 +714,188 @@
       
             
     }
+
+
+
+
+    //Donut chart 1 ...
+
+function convertToDonut1(datum) {
+ var fdata = {};
+ var categories = [];
+ var data = [];
+ var device_data = datum.properties.device_data;
+ for (var key in device_data) {
+ 	categories.push(key);
+ }
+ var colors = Highcharts.getOptions().colors;
+
+  var typeData = [];
+  var deviceData = [];
+  var i;
+  var j;
+  var dataLen = categories.length;
+  var drillDataLen;
+  var brightness;
+ for (i = 0; i < dataLen; i += 1) {
+
+    // add type data
+    typeData.push({
+        name: categories[i],
+        y: device_data[categories[i]].total,  //data[i].y,
+        color: colors[i] //data[i].color
+    });
+
+    // add device data 
+    drillDataLen = device_data[categories[i]].length - 1 //data[i].drilldown.data.length;
+    if (categories[i] == "others") {
+    	drillDataLen += 1;
+    }
+    for (var keys2 in device_data[categories[i]]) {
+    	if (keys2 != 'total' || categories[i] == "others"){
+      	        brightness = 0.2 - (j / drillDataLen) / 5;
+        deviceData.push({
+            name: keys2, //device_data[categories[i]][j],
+            y: device_data[categories[i]][keys2], //data[i].drilldown.data[j],
+            color: Highcharts.color(colors[i]).brighten(brightness).get()
+        });
+      }
+    }
+}
+var retData = {};
+retData.typeData = typeData;
+retData.deviceData = deviceData;
+return retData;
+}
+
+
+function refreshDonut1(dat){
+
+    console.log(dat);
+var donut1data = convertToDonut1(dat);
+console.log(donut1data);
+
+
+// Create the chart
+Highcharts.chart('donut1', {
+    chart: {
+        type: 'pie'
+    },
+    title: {
+        text: 'Device usage trend'
+    },
+    subtitle: {
+        text: 'Source: Flickr dataset'
+    },
+    credits: {
+        enabled: false
+    },
+    plotOptions: {
+        pie: {
+            shadow: false,
+            center: ['50%', '50%']
+        }
+    },
+    tooltip: {
+        valueSuffix: '%'
+    },
+    series: [{
+        name: 'Device',
+        data: donut1data.typeData,
+        size: '60%',
+        dataLabels: {
+            formatter: function () {
+                return this.y > 5 ? this.point.name : null;
+            },
+            color: '#ffffff',
+            distance: -30
+        }
+    }, {
+        name: 'Models',
+        data: donut1data.deviceData,
+        size: '80%',
+        innerSize: '60%',
+        dataLabels: {
+            formatter: function () {
+                // display only if larger than 1
+                return this.y > 1 ? '<b>' + this.point.name + ':</b> ' +
+                    this.y + '' : null;
+            }
+        },
+        id: 'versions'
+    }],
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 400
+            },
+            chartOptions: {
+                series: [{
+                }, {
+                    id: 'versions',
+                    dataLabels: {
+                        enabled: false
+                    }
+                }]
+            }
+        }]
+    }
+});
+
+
+}
+
+function refreshPie1(dat) {
+    var newDat = [];
+    var colors = [];
+var chkData = dat.properties.most_popular_5;
+for (var key in chkData) {
+	var obj = {};
+  obj.name = key;
+  obj.y = chkData[key];
+  newDat.push(obj);
+  colors.push(myColor(key));
+}
+
+Highcharts.chart('pie1', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'Top 5 tag trends'
+    },
+    credits: {
+        enabled: false
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: false
+            },
+            showInLegend: true
+        }
+    },
+    series: [{
+        name: 'Flickr Tags',
+        colorByPoint: true,
+        colors: colors,
+        data: newDat
+    }]
+});
+}
 
     </script>
 

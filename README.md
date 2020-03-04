@@ -21,9 +21,9 @@ Balint:
 
 Urscha: Finishing the dataset: mapping country codes, looking at camera type in the metadata, filtering only useful tags, categorizing the tags.
 
-Neeraj:
+Neeraj: Charts and donut integration with the map.
 
-Vignesh:
+Vignesh: Charts and donut integration with the map.
 
 Martijn: Counting the tags per country and per timestep of 1 month. Converting the data to json format and adding the precalculated top 5 tags per country per timestep.
 
