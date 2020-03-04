@@ -213,7 +213,7 @@ body {
 
             /* JavaScript goes here. */
             // globals used in graph
-
+            require(["underscore"])
             var running = false;
             var timer;
 
@@ -275,12 +275,17 @@ body {
             /// getting json input from flask
             var countries_mock_data = {{countries_mock_data| tojson}}
             var world_countries = {{ world_countries | tojson}};
+            var csv_data_all = {{ csv_data | tojson}};
+
+            console.log(csv_data_all)
+            filtered_data = _filter(csv_data_all, ["date", "2008_11"])
+            console.log(filtered_data)
 
             var myColor = d3.scaleOrdinal().domain(countries_mock_data.allTags)
                 .range(d3.schemeSet3);
 
             //console.log(countries_mock_data)
-            current_date = 2000
+            current_date = "2007_12"
             current_year_data = countries_mock_data.timesteps[current_date]
             //console.log(current_year_data)
 

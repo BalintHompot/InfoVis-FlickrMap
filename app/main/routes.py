@@ -120,5 +120,5 @@ def zoom_map():
 
 @main.route('/world_map', methods = ['GET', 'POST'])
 def world_map():
-	return render_template("world_map.html", world_countries = data.world_countries, countries_mock_data = data.countries_mock_data)
+	return render_template("world_map.html", world_countries = data.world_countries, countries_mock_data = data.countries_mock_data, csv_data = data.csv_data_in_json)
 

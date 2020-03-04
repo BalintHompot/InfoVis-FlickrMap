@@ -46,6 +46,7 @@ data_counties = pd.read_csv("app/data/map_files/data.csv")
 ## world map data
 world_countries = json.load(open("app/data/map_files/world.json"))
 countries_mock_data = json.load(open("app/data/map_files/mockelasticdata.json"))
+csv_data_in_json = pd.read_csv("app/data/map_files/data.csv").to_json(orient = "records")
 
 def update_data(area, var, new_value):
     model_data.loc[model_data['area_name']==area, var] = new_value
