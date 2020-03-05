@@ -154,6 +154,7 @@ body {
         <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 
         
 
@@ -213,7 +214,6 @@ body {
 
             /* JavaScript goes here. */
             // globals used in graph
-            require(["underscore"])
             var running = false;
             var timer;
 
@@ -275,12 +275,21 @@ body {
             /// getting json input from flask
             var countries_mock_data = {{countries_mock_data| tojson}}
             var world_countries = {{ world_countries | tojson}};
+            /*
+            /// ALL data from csv
             var csv_data_all = {{ csv_data | tojson}};
 
-            console.log(csv_data_all)
-            filtered_data = _filter(csv_data_all, ["date", "2008_11"])
-            console.log(filtered_data)
+            /// Object for filtering
+            var filterObjectMap = 
+            {
+                "date":"2008_11"
+            }
 
+            console.log(csv_data_all)
+            filtered_data = _.filter(csv_data_all, filterObjectMap)
+            console.log("filtered")
+            console.log(filtered_data)
+            */
             var myColor = d3.scaleOrdinal().domain(countries_mock_data.allTags)
                 .range(d3.schemeSet3);
 
@@ -291,11 +300,24 @@ body {
 
             draw(world_countries ,current_year_data)
 
+            function get_most_popular(obj){
+                maxTag = -10000
+                tag = ""
+                for(ind in Object.keys(obj)){
+                    key = Object.keys(obj)[ind]
+                    if(obj[key]>maxTag){
+                        maxTag = obj[key]
+                        tag = key
+                    }
+                }
+                return tag
+            }
+
             function draw(world, data) {
 
                     for(var idx=0; idx < data.country_data.buckets.length; idx++) {
                         var cCode = data.country_data.buckets[idx].key.toUpperCase();
-                        var most_popular_tag = data.country_data.buckets[idx].most_popular_tag;
+                        var most_popular_tag = get_most_popular(data.country_data.buckets[idx].most_popular_5);
                         var most_popular_taglist = data.country_data.buckets[idx].most_popular_5;
                         var user_freq = data.country_data.buckets[idx].user_freq;
                         var device_data = data.country_data.buckets[idx].device_data;
@@ -422,7 +444,7 @@ body {
                     .duration(750)
                     // .call( zoom.transform, d3.zoomIdentity.translate(0, 0).scale(1) ); // not in d3 v4
                     .call( zoom.transform, d3.zoomIdentity ); // updated for d3 v4
-                refreshStreamGraph("WORLD")
+                refreshStreamGraph("USA")
                 //TODO have to add reset functionality for pie and donut..
 
             }
@@ -441,7 +463,6 @@ body {
 
             ///////////////////////////////////////////////// Play button functions /////////////////////////////////////////////////////////////////////
             // heat point test
-            var testpoints = [[40.810001,-73.959982],[30.253117,-97.753922],[43.660234,-79.312899],[51.512508,-0.129518],[51.512508,-0.129518],[51.512508,-0.129518],[-33.862932,151.269893],[36.132259,-115.150537],[30.253117,-97.753922],[34.040067,-118.27089],[51.512508,-0.129518],[51.512508,-0.129518],[30.323535,-97.725588],[33.416497,-111.936931],[51.381504,-2.358831],[1.329398,103.797969],[30.253117,-97.753922],[1.299279,103.821144],[55.946904,-3.206312],[33.994042,-118.480017],[41.669065,-0.912895],[55.947926,-3.192644],[30.37343,-97.782096],[33.749321,-116.714801],[30.37343,-97.782096],[51.512508,-0.129518],[30.37343,-97.782096],[30.260753,-97.755993],[45.40654,12.368631],[51.514822,-0.145142],[48.213842,16.382396],[30.37343,-97.782096],[30.574935,-98.254036],[30.37343,-97.782096],[13.730046,100.498638],[40.756176,-73.986332],[30.37343,-97.782096],[30.37343,-97.782096],[30.253117,-97.753922],[30.441049,-97.759468],[41.136795,-73.283593],[34.106252,-118.333579],[51.512508,-0.129518],[39.300299,-9.84375],[51.512508,-0.129518],[52.190503,-1.704694],[49.171133,-123.141358],[51.509062,-0.137329],[30.260753,-97.755993],[40.638364,22.941963],[33.994042,-118.480017],[51.512508,-0.129518],[4.633916,-74.08493],[4.633916,-74.08493],[5.394538,-53.028259],[29.326141,-103.558244],[34.040067,-118.27089],[35.682529,-105.931795],[36.400559,-105.612258],[35.681753,-105.928931],[36.400559,-105.612258],[36.408819,-105.574986],[17.663733,-97.991008],[48.189166,16.389722],[48.189358,16.389906],[-45.808221,170.74007],[39.889854,-75.2608],[34.118093,-118.352794],[-23.532651,-46.681551],[48.196111,16.390277],[34.005285,-84.380707],[48.196111,16.390277],[25.554986,-100.266723],[48.189166,16.389722],[49.100836,-123.187894],[50.440889,10.802993],[35.083323,-106.673469],[49.101493,-123.182101],[50.440889,10.802993],[50.440889,10.802993],[24.667142,-99.685993],[26.942807,75.76292],[55.630975,-1.624646],[48.196111,16.390277],[48.189166,16.389722],[50.264436,10.964698],[42.522241,-83.501887],[26.082446,-98.135225],[47.040218,15.64746],[50.930197,11.590619],[36.121358,-115.166029],[-40.458932,175.215282],[-40.458932,175.215272],[39.871354,-75.673291],[25.850616,-97.419354],[50.424924,10.733041],[36.121358,-115.166029],[-7.247621,-34.80606],[35.68435,139.768066],[48.189358,16.389906],[48.189358,16.389906],[26.460834,-82.134475],[-6.871072,107.610273],[49.079713,-123.125774],[39.901967,-75.180784],[25.557619,-100.262947],[36.121358,-115.166029],[52.47703,-1.909818],[34.118093,-118.352794],[36.121358,-115.166029],[40.392,-3.755564],[39.871354,-75.673291],[34.083446,-118.343093],[43.145274,-77.592315],[50.424924,10.733041],[50.440889,10.802993],[-45.808221,170.74007],[34.192245,-118.870031],[55.85504,-4.236742],[47.040218,15.64746],[55.748323,37.631778],[38.777414,-77.048578],[39.763282,-74.101645],[51.69299,-4.176435],[47.040218,15.64746],[34.005285,-84.380707],[38.959842,-74.959512],[52.908416,-2.884544],[36.121358,-115.166029],[42.487067,-83.144874],[34.040356,-118.270375],[50.426073,10.730724],[34.475925,-77.457432],[50.440889,10.802993],[39.760189,-74.096882],[36.121358,-115.166029],[37.489978,-122.027549],[51.52092,-0.197753],[5.842215,120.80944],[5.033405,119.774236]]
 
             // add circles to svg
             /*
@@ -503,7 +524,12 @@ body {
 
         });
         ////////////////////////////////// StreamGraph ///////////////////////////////////////////////////////////////////////////////////////////////////
-        
+            var allTagsEmpyty = {
+
+            }
+            for(tagInd in countries_mock_data.allTags){
+                allTagsEmpyty[countries_mock_data.allTags[tagInd]] = 0
+            }
 
             function getStreamData(country_key){
                 var timeSteps = Object.keys(countries_mock_data.timesteps)
@@ -513,24 +539,34 @@ body {
                     var country_bucket = countries_mock_data.timesteps[timeStep].country_data.buckets.find( function (e){
                         return e.key == country_key
                     })
-                    var tags = Object.assign({}, country_bucket.most_popular_5, country_bucket.rest_tags)
-                    tag_list = Object.keys(tags)
-                    year_data = {"date":timeStep}
-                    for(var tagInd in tag_list){
-                        tag = tag_list[tagInd]
-            
-                        year_data[tag] = tags[tag]
-            
+                    try{
+                        //var tags = Object.assign({}, country_bucket.most_popular_5, country_bucket.rest_tags)
+                        var tags = country_bucket.most_popular_5
+                        tag_list = Object.keys(tags)
+
+                        //year_data = {"date":timeStep}
+                        var year_data = {
+                            timeStep : timeStep,
+                            values :allTagsEmpyty}
+                        for(var tagInd in tag_list){
+                            tag = tag_list[tagInd]
+                            year_data.values[tag] = tags[tag]
+                
+                        }
+                     
+                        d.push(year_data)
+                    }catch(err){
+                        continue
                     }
-                    d.push(year_data)
+          
 
                 }
                 return d
             }
 
     var margin = {top: 20, right: 0, bottom: 0, left: 0},
-    width_stream = 800 - margin.left - margin.right,
-    height_stream = 100 - margin.top - margin.bottom;
+    width_stream = 800
+    height_stream = 100
     var svg_stream = d3.select("#my_dataviz")
     .append("svg")
         .attr("width", width_stream + margin.left + margin.right)
@@ -539,15 +575,17 @@ body {
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
-    var x = d3.scaleLinear()
+    var x = d3.scaleOrdinal()
     var y = d3.scaleLinear()
-    var rectSize = 14
+    var rectAdd = 10
+    var rectWidth = 100
+    var rectHeight = height_stream + 2*rectAdd
 
 
     let drag = d3.drag()
         .on('drag', dragged)
 
-    drawStreamGraph("WORLD")
+    drawStreamGraph("USA")
     updateStreamSlider()
 
 
@@ -565,12 +603,11 @@ body {
         // Parse the Data
         data = getStreamData(country_key)
 
-        // List of groups = header of the csv files
-        var keys = Object.keys(data[0])
+        var keys = Object.keys(data[0].values)
 
         // Add X axis
         x
-            .domain(d3.extent(data, function(d) { return d.date; }))
+            .domain(Object.keys(countries_mock_data.timesteps))
             .range([ 0, width_stream ]);
         svg_stream.append("g")
             .attr("transform", "translate(0," + height_stream*0.8 + ")")
@@ -587,17 +624,30 @@ body {
             .text("Time (date)");
 
         // Add Y axis
-        var maxRange = data[0]["dog"] * 3
+        var maxRange = 2000
         y
             .domain([-maxRange, maxRange])
             .range([ height_stream, 0 ]);
 
+        var loggedValAcc = 0
 
+        function valueAccessor(d, key) {
+            if(!loggedValAcc){
+                console.log(d)
+                console.log(key)
+                console.log(d.values[key])
+                loggedValAcc = true
+            }
+            return d.values[key];
+        }
         //stack the data?
-        var stackedData = d3.stack()
+        var stacker = d3.stack()
             .offset(d3.stackOffsetSilhouette)
             .keys(keys)
-            (data)
+            .value(valueAccessor)
+
+
+        var stackedData = stacker(data)
 
         // create a tooltip
         var Tooltip = svg_stream
@@ -630,12 +680,13 @@ body {
             current_date = Math.round(x.invert(d3.mouse(this)[0]))
             updateStreamSlider()
         }
-
+        var logged = false
         // Area generator
         var area = d3.area()
-            .x(function(d) { return x(d.data.date); })
+            .x(function(d) { if(!logged){console.log("data point date is");console.log(d); logged = true}return x(d.data.timeStep); })
             .y0(function(d) { return y(d[0]); })
             .y1(function(d) { return y(d[1]); })
+        
 
         // Show the areas
         svg_stream
@@ -661,13 +712,21 @@ body {
         data = getStreamData(country_key)
 
         // List of groups = header of the csv files
-        var keys = Object.keys(data[0])
+        var keys = Object.keys(data[0].values)
         
+        var loggedData = false
+
+        function valueAccessor(d, key) {
+            return d.values[key];
+        }
         //stack the data?
-        var stackedData = d3.stack()
+        var stacker = d3.stack()
             .offset(d3.stackOffsetSilhouette)
             .keys(keys)
-            (data)
+            .value(valueAccessor)
+        
+
+        var stackedData = stacker(data)
 
         // Area generator
         var area = d3.area()
@@ -692,6 +751,8 @@ body {
 
 
     function updateStreamSlider(){
+        console.log("curretn date in range")
+        console.log(x(current_date))
         svg_stream.selectAll("#line-comparison").remove()
         svg_stream.selectAll("#rect-grab").remove()
         svg_stream
@@ -710,10 +771,10 @@ body {
             .style("fill", "black")
             .attr("rx", 3)
             .attr("ry", 3)            
-            .attr("width", rectSize)
-            .attr("height", rectSize)
-            .attr("x", x(current_date) - (rectSize / 2))
-            .attr("y", 0 - rectSize)
+            .attr("width", rectWidth)
+            .attr("height", rectHeight)
+            .attr("x", x(current_date) - (rectWidth / 2))
+            .attr("y", 0 - rectHeight)
             .call(drag);
             
       
