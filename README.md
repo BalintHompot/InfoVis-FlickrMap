@@ -17,7 +17,7 @@ Martijn: Looking for other datasets to add to the visualization for extra depth
 
 Everyone: Assignment for next week
 
-Balint: 
+Balint: World map and steam graph
 
 Urscha: Finishing the dataset: mapping country codes, looking at camera type in the metadata, filtering only useful tags, categorizing the tags.
 
