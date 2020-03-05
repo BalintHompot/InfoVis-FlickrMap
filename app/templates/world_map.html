@@ -167,12 +167,11 @@ body {
                 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
                 <!-- Create a div where the graph will take place -->
-                <div id="my_dataviz"></div>
-                <input id="slider" class = "slider" type="range" min="2000" max="2002" value="2000" step="1" onchange="updateSlider(this.value)" />
-
-                <span id="range">2000</span>
+                <div id = "playaxis" style="display: flex; flex-direction: row;">
+                    <button name="play" id="play" style="height: 30px;">Play</button>
+                    <div id="my_dataviz"></div>
+                </div>
         
-                <button name="play" id="play">Play</button>
             </span>
 
             <hr></hr>
@@ -216,7 +215,7 @@ body {
             // globals used in graph
             var running = false;
             var timer;
-
+            var validTimeSteps = ["2007_12", "2008_01", "2008_02", "2008_03", "2008_04", "2008_05", "2008_06", "2008_07", "2008_08", "2008_09"]
             var mapdata = {};
 
             var width = 800, height = 600;
@@ -294,7 +293,8 @@ body {
                 .range(d3.schemeSet3);
 
             //console.log(countries_mock_data)
-            current_date = "2007_12"
+            current_date_ind = 0
+            current_date = validTimeSteps[current_date_ind]
             current_year_data = countries_mock_data.timesteps[current_date]
             //console.log(current_year_data)
 
@@ -475,20 +475,13 @@ body {
                 .attr("fill", "grey")
                 .attr("fill-opacity","0.2")
             */
-            function updateSlider(event){
-                current_year_data = countries_mock_data.timesteps[event]
-                current_date = event
-                draw(world_countries,current_year_data);
-                updateStreamSlider()
-                $('#range').html(event);
-            }
             
             
             $("#play").on("click", function() {
 		
             var duration = 800,
-                maxstep = 2002,
-                minstep = 2000;
+                maxstep = validTimeSteps[validTimeSteps.length],
+                minstep = validTimeSteps[0];
             
             if (running == true) {
             
@@ -502,19 +495,22 @@ body {
             
                 $("#play").html("Pause");
                 
-                sliderValue = $("#slider").val();
                 
                 timer = setInterval( function(){
-                        if (sliderValue < maxstep){
-                            sliderValue++;
-                            $("#slider").val(sliderValue);
-                            $('#range').html(sliderValue);
+                        if (current_date != maxstep){
+                            current_date_ind++;
+                            current_date = validTimeSteps[current_date_ind]
+                            current_year_data = countries_mock_data.timesteps[current_date]
+                            console.log("updated date")
+                            console.log(current_date)
+                            draw(world_countries,current_year_data);
+                            updateStreamSlider()
+                        }else{
+                            $("#play").html("Play");
+                            running = false;
+                            clearInterval(timer);
                         }
-                        $("#slider").val(sliderValue);
-                        current_year_data = countries_mock_data.timesteps[sliderValue]
-                        current_date = sliderValue
-                        draw(world_countries,current_year_data);
-                        updateStreamSlider()
+            
                     
                 }, duration);
                 running = true;
@@ -532,7 +528,7 @@ body {
             }
 
             function getStreamData(country_key){
-                var timeSteps = Object.keys(countries_mock_data.timesteps)
+                var timeSteps = validTimeSteps
                 d = []
                 for(var timeStepInd in timeSteps){
                     var timeStep = timeSteps[timeStepInd]
@@ -564,7 +560,7 @@ body {
                 return d
             }
 
-    var margin = {top: 20, right: 0, bottom: 0, left: 0},
+    var margin = {top: 150, right: 20, bottom: 20, left: 20},
     width_stream = 800
     height_stream = 100
     var svg_stream = d3.select("#my_dataviz")
@@ -575,11 +571,30 @@ body {
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
+            /// adding variables and rect for the focused stream graph
+    var focusStremTartgetBottom = -150
+    var focusStremTartgetLeft = 0
+    var focusStremTartgetRight = width_stream  - 500
+    var focusStremTartgetTop =  -30
+
+    svg_stream
+            .append("rect")
+            .attr('id', "rect-focus")
+            .style("fill", "black")
+            .attr("fill-opacity","0.05")
+            .attr("rx", 3)
+            .attr("ry", 3)
+            .style("stroke", "black")
+            .attr("width", focusStremTartgetRight - focusStremTartgetLeft)
+            .attr("height", focusStremTartgetTop - focusStremTartgetBottom)
+            .attr("x", focusStremTartgetLeft)
+            .attr("y", focusStremTartgetBottom)
+
     var x = d3.scaleOrdinal()
     var y = d3.scaleLinear()
     var rectAdd = 10
-    var rectWidth = 100
-    var rectHeight = height_stream + 2*rectAdd
+    var rectWidth =(width_stream / validTimeSteps.length) * 2
+    var rectHeight = height_stream - 2/rectAdd
 
 
     let drag = d3.drag()
@@ -588,10 +603,15 @@ body {
     drawStreamGraph("USA")
     updateStreamSlider()
 
-
+    function invertX(xpos){
+        var ypos = x.domain()[d3.bisect(x.range(), xpos) - 1];
+        return ypos
+    }
 
     function dragged(d) {
-        current_date = Math.round(x.invert(d3.mouse(this)[0]))
+        console.log(d)
+        current_date = invertX(d3.mouse(this)[0]-200)
+        console.log(current_date)
         updateStreamSlider()
     }
     function drawStreamGraph(country_key){
@@ -605,13 +625,21 @@ body {
 
         var keys = Object.keys(data[0].values)
 
+        var stramChartXRange = []
+        var rangeStep = width_stream / validTimeSteps.length
+        step = 0
+        for(t in validTimeSteps){
+            stramChartXRange.push(step)
+            step += rangeStep
+        }
+
         // Add X axis
         x
-            .domain(Object.keys(countries_mock_data.timesteps))
-            .range([ 0, width_stream ]);
+            .domain(validTimeSteps)
+            .range(stramChartXRange);
         svg_stream.append("g")
             .attr("transform", "translate(0," + height_stream*0.8 + ")")
-            .call(d3.axisBottom(x).tickSize(-height_stream*.7).tickValues([1900, 1925, 1975, 2000]))
+            .call(d3.axisBottom(x).tickSize(-height_stream*.7).tickValues(validTimeSteps))
             .select(".domain").remove()
         // Customization
         svg_stream.selectAll(".tick line").attr("stroke", "#b8b8b8")
@@ -677,7 +705,7 @@ body {
         }
 
         var clickedStream = function(d){
-            current_date = Math.round(x.invert(d3.mouse(this)[0]))
+            current_date = invertX(d3.mouse(this)[0])
             updateStreamSlider()
         }
         var logged = false
@@ -749,11 +777,16 @@ body {
 
 
 
-
     function updateStreamSlider(){
+        console.log("current date is")
+        console.log(current_date)
         console.log("curretn date in range")
         console.log(x(current_date))
+        var focusRectCornerTop = 0-rectAdd
+        var focusRectCornerRight = x(current_date) + (rectWidth / 2)
+        var focusRectCornerLeft = x(current_date) - (rectWidth / 2)
         svg_stream.selectAll("#line-comparison").remove()
+        svg_stream.selectAll("#line-focus").remove()
         svg_stream.selectAll("#rect-grab").remove()
         svg_stream
             .append("line")
@@ -761,23 +794,45 @@ body {
             .attr('stroke', 'black')
             .attr('stroke-width', 2)
             .attr('x1', x(current_date))
-            .attr('y1', 0)
+            .attr('y1', 0-rectAdd)
             .attr('x2', x(current_date))
-            .attr('y2', height_stream)
+            .attr('y2', height_stream - rectAdd)
             .call(drag);
         svg_stream
             .append("rect")
             .attr('id', "rect-grab")
             .style("fill", "black")
+            .attr("fill-opacity","0.05")
             .attr("rx", 3)
-            .attr("ry", 3)            
+            .attr("ry", 3)
+            .style("stroke", "black")
             .attr("width", rectWidth)
             .attr("height", rectHeight)
             .attr("x", x(current_date) - (rectWidth / 2))
-            .attr("y", 0 - rectHeight)
+            .attr("y", 0-rectAdd)
             .call(drag);
-            
-      
+        svg_stream
+            .append("line")
+            .attr('id', "line-focus")
+            .attr('stroke', 'grey')
+            .attr('stroke-width', 2)
+            .style("stroke-dasharray", ("3, 3"))
+            .attr('x1', focusRectCornerLeft)
+            .attr('y1', focusRectCornerTop)
+            .attr('x2', focusStremTartgetLeft)
+            .attr('y2', focusStremTartgetTop)
+            .call(drag);
+        svg_stream
+            .append("line")
+            .attr('id', "line-focus")
+            .attr('stroke', 'grey')
+            .attr('stroke-width', 2)
+            .style("stroke-dasharray", ("3, 3"))
+            .attr('x1', focusRectCornerRight)
+            .attr('y1', focusRectCornerTop)
+            .attr('x2', focusStremTartgetRight)
+            .attr('y2', focusStremTartgetTop)
+            .call(drag);
             
     }
 
