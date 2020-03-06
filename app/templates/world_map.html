@@ -581,7 +581,7 @@ body {
             .append("rect")
             .attr('id', "rect-focus")
             .style("fill", "black")
-            .attr("fill-opacity","0.05")
+            .attr("fill-opacity","0.01")
             .attr("rx", 3)
             .attr("ry", 3)
             .style("stroke", "black")
@@ -593,12 +593,19 @@ body {
     var x = d3.scaleOrdinal()
     var y = d3.scaleLinear()
     var rectAdd = 10
-    var rectWidth =(width_stream / validTimeSteps.length) * 2
+    var rectWidthRightSteps = 2
+    var rectWidthLeftSteps = 2
+    var rectWidthRight =(width_stream / validTimeSteps.length) * rectWidthRightSteps
+    var rectWidthLeft = (width_stream / validTimeSteps.length) * rectWidthLeftSteps
     var rectHeight = height_stream - 2/rectAdd
 
 
     let drag = d3.drag()
         .on('drag', dragged)
+    let dragLeft = d3.drag()
+        .on('drag', draggedLeft) 
+    let dragRight = d3.drag()
+        .on('drag', draggedRight)
 
     drawStreamGraph("USA")
     updateStreamSlider()
@@ -610,10 +617,48 @@ body {
 
     function dragged(d) {
         console.log(d)
-        current_date = invertX(d3.mouse(this)[0]-200)
+        current_date = invertX(d3.mouse(this)[0]-300)
+        current_date_ind = validTimeSteps.findIndex((element) => element == current_date)
         console.log(current_date)
         updateStreamSlider()
     }
+
+    function draggedLeft(d) {
+        current_time_pos = x(current_date)
+        current_mouse_pos = d3.mouse(this)[0] - 300
+        time_step_size = (width_stream / validTimeSteps.length)
+        if(current_time_pos - current_mouse_pos > time_step_size * (rectWidthLeftSteps+1)){
+            rectWidthLeftSteps = Math.min(rectWidthLeftSteps+1, current_date_ind )
+            console.log("DRAGGING LEFT")
+            console.log(current_date_ind)
+            console.log(rectWidthLeftSteps)
+            rectWidthLeft = time_step_size * rectWidthLeftSteps
+            console.log(rectWidthLeft)
+            updateStreamSlider()
+        }else if(current_time_pos - current_mouse_pos < time_step_size * (rectWidthLeftSteps-1)){
+            rectWidthLeftSteps = Math.max(1, rectWidthLeftSteps-1)
+            rectWidthLeft = time_step_size * rectWidthLeftSteps
+            updateStreamSlider()
+        }
+    }
+
+    function draggedRight(d) {
+        current_time_pos = x(current_date)
+        current_mouse_pos = d3.mouse(this)[0] - 300
+        time_step_size = (width_stream / validTimeSteps.length)
+        if(current_mouse_pos - current_time_pos > time_step_size * (rectWidthRightSteps+1)){
+            rectWidthRightSteps = Math.min(rectWidthRightSteps+1, validTimeSteps.length - current_date_ind - 1)
+            rectWidthRight = time_step_size * rectWidthRightSteps
+            updateStreamSlider()
+        }else if(current_mouse_pos - current_time_pos < time_step_size * (rectWidthRightSteps-1)){
+            rectWidthRightSteps = Math.max(1, rectWidthRightSteps-1)
+            rectWidthRight = time_step_size * rectWidthRightSteps
+            updateStreamSlider()
+        }
+    }
+
+
+
     function drawStreamGraph(country_key){
 // append the svg object to the body of the page
 
@@ -706,6 +751,7 @@ body {
 
         var clickedStream = function(d){
             current_date = invertX(d3.mouse(this)[0])
+            current_date_ind = validTimeSteps.findIndex((element) => element == current_date)
             updateStreamSlider()
         }
         var logged = false
@@ -783,11 +829,13 @@ body {
         console.log("curretn date in range")
         console.log(x(current_date))
         var focusRectCornerTop = 0-rectAdd
-        var focusRectCornerRight = x(current_date) + (rectWidth / 2)
-        var focusRectCornerLeft = x(current_date) - (rectWidth / 2)
+        var focusRectCornerRight = x(current_date) + (rectWidthRight)
+        var focusRectCornerLeft = x(current_date) - (rectWidthLeft)
         svg_stream.selectAll("#line-comparison").remove()
         svg_stream.selectAll("#line-focus").remove()
         svg_stream.selectAll("#rect-grab").remove()
+        svg_stream.selectAll("#focus-grab").remove()
+
         svg_stream
             .append("line")
             .attr('id', "line-comparison")
@@ -806,9 +854,9 @@ body {
             .attr("rx", 3)
             .attr("ry", 3)
             .style("stroke", "black")
-            .attr("width", rectWidth)
+            .attr("width", focusRectCornerRight - focusRectCornerLeft)
             .attr("height", rectHeight)
-            .attr("x", x(current_date) - (rectWidth / 2))
+            .attr("x", focusRectCornerLeft)
             .attr("y", 0-rectAdd)
             .call(drag);
         svg_stream
@@ -833,6 +881,37 @@ body {
             .attr('x2', focusStremTartgetRight)
             .attr('y2', focusStremTartgetTop)
             .call(drag);
+
+        /// add draggable rect to adjust size of focus window
+        svg_stream
+            .append("rect")
+            .attr('id', "focus-grab")
+            .style("fill", "black")
+            .attr("rx", 3)
+            .attr("ry", 3)
+            .style("stroke", "black")
+            .attr("width",10)
+            .attr("height", 10)
+            .attr("x", focusRectCornerLeft-5)
+            .attr("y", rectHeight-15)
+            .call(dragLeft);
+        svg_stream
+            .append("rect")
+            .attr('id', "focus-grab")
+            .style("fill", "black")
+            .attr("rx", 3)
+            .attr("ry", 3)
+            .style("stroke", "black")
+            .attr("width", 10)
+            .attr("height", 10)
+            .attr("x", focusRectCornerRight-5)
+            .attr("y", rectHeight-15)
+            .call(dragRight);
+
+        //calling update on map
+        current_year_data = countries_mock_data.timesteps[current_date]
+        draw(world_countries ,current_year_data)
+        
             
     }
 

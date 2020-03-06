@@ -18,6 +18,13 @@
                         "music": 500,
                         "love" : 200
                      },
+                     "categories": {
+                        "nature" : 5000,
+                        "food" : 4000,
+                        "country": 3000,
+                        "party" : 2000,
+                        "family": 1000
+                     },
                      "user_freq": {
                         "total_pics": 2354,
                         "asia": 456,
