@@ -823,7 +823,7 @@ body {
     }
 
     function refreshStreamGraph(country_key, svg_stream, validTimeSteps_graph, width_stream_graph, height_stream_graph, x, y){
-
+        svg_stream.selectAll(".tick").remove()
         // Parse the Data
         data = getStreamData(country_key, validTimeSteps_graph)
         console.log("refreshing with data")
@@ -835,6 +835,20 @@ body {
         // List of groups = header of the csv files
         var keys = Object.keys(countries_mock_data.timesteps[current_date].country_data.buckets[0].most_popular_5) 
         
+        svg_stream.append("g")
+            .attr("transform", "translate(0," + height_stream_graph*0.8 + ")")
+            .call(d3.axisBottom(x).tickSize(-height_stream_graph*.7).tickValues(validTimeSteps_graph))
+            .select(".domain").remove()
+        // Customization
+        svg_stream.selectAll(".tick line").attr("stroke", "#b8b8b8")
+
+        // Add X axis label:
+        svg_stream.append("text")
+            .attr("text-anchor", "end")
+            .attr("x", width_stream_graph)
+            .attr("y", height_stream_graph-30 )
+            .text("Time (date)");
+
         //stack the data?
         var stackedData = d3.stack()
             .offset(d3.stackOffsetSilhouette)
