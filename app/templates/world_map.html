@@ -535,7 +535,9 @@ body {
 
             function getStreamData(country_key, timeSteps){
                 d = []
+                maxYear = 0
                 for(var timeStepInd in timeSteps){
+                    year_count = 0
                     var timeStep = timeSteps[timeStepInd]
                     var country_bucket = countries_mock_data.timesteps[timeStep].country_data.buckets.find( function (e){
                         return e.key == country_key
@@ -553,6 +555,7 @@ body {
                         for(var tagInd in tag_list){
                             tag = tag_list[tagInd]
                             year_data[tag] = tags[tag]
+                            year_count += tags[tag]
                 
                         }
                      
@@ -560,10 +563,13 @@ body {
                     }catch(err){
                         continue
                     }
+                    if (year_count>maxYear){
+                        maxYear = year_count
+                    }
           
 
                 }
-                return d
+                return [d, maxYear/1.8]
             }
 
     var margin = {top: 150, right: 20, bottom: 20, left: 20},
@@ -733,14 +739,14 @@ body {
 
 
         // Parse the Data
-        data = getStreamData(country_key, validTimeSteps_graph)
+        [data, yRange] = getStreamData(country_key, validTimeSteps_graph)
         console.log("data in drawstream")
         console.log(data)
 
         var keys = Object.keys(countries_mock_data.timesteps[current_date].country_data.buckets[0].most_popular_5) 
 
         x = getX(validTimeSteps_graph, width_stream_graph)
-        y = getY(200, height_stream_graph)
+        y = getY(yRange, height_stream_graph)
 
         svg_stream.append("g")
             .attr("transform", "translate(0," + height_stream_graph*0.8 + ")")
@@ -825,13 +831,13 @@ body {
     function refreshStreamGraph(country_key, svg_stream, validTimeSteps_graph, width_stream_graph, height_stream_graph, x, y){
         svg_stream.selectAll(".tick").remove()
         // Parse the Data
-        data = getStreamData(country_key, validTimeSteps_graph)
+        [data, yRange] = getStreamData(country_key, validTimeSteps_graph)
         console.log("refreshing with data")
         console.log(data)
 
 
         x = getX(validTimeSteps_graph, width_stream_graph)
-        y = getY(200, height_stream_graph)
+        y = getY(yRange, height_stream_graph)
         // List of groups = header of the csv files
         var keys = Object.keys(countries_mock_data.timesteps[current_date].country_data.buckets[0].most_popular_5) 
         
@@ -854,6 +860,9 @@ body {
             .offset(d3.stackOffsetSilhouette)
             .keys(keys)
             (data)
+
+
+
 
         // Area generator
         var area = d3.area()

@@ -1,4 +1,4 @@
-{  "allTags" : ["cat", "dog", "food", "citylife", "yolo", "music", "love"],
+{  "allCategories" : ["nature", "food", "country", "party", "family"],
    "timesteps":
       {
       "2000": {
@@ -6,25 +6,25 @@
                "buckets": [
                   {  
                      "key":"WORLD",
-                     "most_popular_tag" : "cat",
-                     "most_popular_5": {
-                        "cat" : 5000,
-                        "dog" : 4000,
-                        "food": 3000,
-                        "citylife" : 2000,
-                        "yolo": 1000
-                     },
-                     "rest_tags": {
-                        "music": 500,
-                        "love" : 200
-                     },
-                     "categories": {
+                     "most_popular_category" : "nature",
+                     "categories_sum": {
                         "nature" : 5000,
                         "food" : 4000,
                         "country": 3000,
                         "party" : 2000,
                         "family": 1000
                      },
+                     "categories":{
+                        "nature":{
+                           "forest":500,
+                           "animal":400,
+                           "ocean":200
+                        },
+                        "food":{
+                           "diner":300,
+                           "burger": 200
+                        }
+                     }
                      "user_freq": {
                         "total_pics": 2354,
                         "asia": 456,
