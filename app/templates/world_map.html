@@ -289,7 +289,7 @@ body {
             console.log("filtered")
             console.log(filtered_data)
             */
-            var myColor = d3.scaleOrdinal().domain(countries_mock_data.allTags)
+            var myColor = d3.scaleOrdinal().domain(countries_mock_data.allCategories)
                 .range(d3.schemeSet3);
 
             //console.log(countries_mock_data)
@@ -318,8 +318,8 @@ body {
 
                     for(var idx=0; idx < data.country_data.buckets.length; idx++) {
                         var cCode = data.country_data.buckets[idx].key.toUpperCase();
-                        var most_popular_tag = get_most_popular(data.country_data.buckets[idx].most_popular_5);
-                        var most_popular_taglist = data.country_data.buckets[idx].most_popular_5;
+                        var most_popular_tag = data.country_data.buckets[idx].most_popular_category;
+                        var most_popular_taglist = data.country_data.buckets[idx].categories_sum;
                         var user_freq = data.country_data.buckets[idx].user_freq;
                         var device_data = data.country_data.buckets[idx].device_data;
                         for(var wdx=0; wdx < world.objects.subunits.geometries.length; wdx++) {
@@ -529,8 +529,8 @@ body {
             var allTagsEmpyty = {
 
             }
-            for(tagInd in countries_mock_data.allTags){
-                allTagsEmpyty[countries_mock_data.allTags[tagInd]] = 0
+            for(tagInd in countries_mock_data.allCategories){
+                allTagsEmpyty[countries_mock_data.allCategories[tagInd]] = 0
             }
 
             function getStreamData(country_key, timeSteps){
@@ -544,7 +544,7 @@ body {
                     })
                     try{
                         //var tags = Object.assign({}, country_bucket.most_popular_5, country_bucket.rest_tags)
-                        var tags = country_bucket.most_popular_5
+                        var tags = country_bucket.categories_sum
                         tag_list = Object.keys(tags)
 
                         //year_data = {"date":timeStep}
@@ -743,7 +743,7 @@ body {
         console.log("data in drawstream")
         console.log(data)
 
-        var keys = Object.keys(countries_mock_data.timesteps[current_date].country_data.buckets[0].most_popular_5) 
+        var keys = Object.keys(countries_mock_data.allCategories) 
 
         x = getX(validTimeSteps_graph, width_stream_graph)
         y = getY(yRange, height_stream_graph)
@@ -839,7 +839,7 @@ body {
         x = getX(validTimeSteps_graph, width_stream_graph)
         y = getY(yRange, height_stream_graph)
         // List of groups = header of the csv files
-        var keys = Object.keys(countries_mock_data.timesteps[current_date].country_data.buckets[0].most_popular_5) 
+        var keys = Object.keys(countries_mock_data.allCategories) 
         
         svg_stream.append("g")
             .attr("transform", "translate(0," + height_stream_graph*0.8 + ")")

@@ -1,7 +1,7 @@
 {  "allCategories" : ["nature", "food", "country", "party", "family"],
    "timesteps":
       {
-      "2000": {
+      "2007_12": {
          "country_data": {
                "buckets": [
                   {  
@@ -23,54 +23,19 @@
                         "food":{
                            "diner":300,
                            "burger": 200
-                        }
-                     }
-                     "user_freq": {
-                        "total_pics": 2354,
-                        "asia": 456,
-                        "europe": 1235,
-                        "north_america": 1456,
-                        "oceania": 235,
-                        "africa": 456,
-                        "south_america": 190,
-                        "antartica": 0 
-                     },
-                     "device_data": {
-                        "camera": {
-                           "Canon": 23567,
-                           "FujiFilm": 12435,
-                           "Sony": 8956,
-                           "Nikon": 1235,
-                           "Olympus": 456,
-                           "Others": 129,
-                           "total": 46778
                         },
-                        "mobile": {
-                           "OnePlus": 12356,
-                           "Apple": 34643,
-                           "Samsung": 24536,
-                           "Mi": 2353,
-                           "Others": 1345,
-                           "total": 75233
+                        "country":{
+                           "usa":2000,
+                           "canada":1000
                         },
-                        "others": {
-                           "total": 245
+                        "party":{
+                           "yolo":500,
+                           "drinkup":400
+                        },
+                        "family":{
+                           "sis":600,
+                           "bro":500
                         }
-                     }
-                  },
-                  {
-                     "key": "USA",
-                     "most_popular_tag" : "cat",
-                     "most_popular_5": {
-                        "cat" : 3000,
-                        "dog" : 1500,
-                        "food": 1300,
-                        "citylife" : 1000,
-                        "yolo": 900
-                     },
-                     "rest_tags": {
-                        "music": 300,
-                        "love" : 190
                      },
                      "user_freq": {
                         "total_pics": 2354,
@@ -106,19 +71,93 @@
                      }
                   },
                   {
-                     "key": "CAN",
-                     "most_popular_tag" : "dog",
-
-                     "most_popular_5": {
-                        "cat" : 2000,
-                        "dog" : 2500,
-                        "food": 1700,
-                        "citylife" : 1000,
-                        "yolo": 100
+                     "key":"USA",
+                     "most_popular_category" : "nature",
+                     "categories_sum": {
+                        "nature" : 3000,
+                        "food" : 4000,
+                        "country": 3000,
+                        "party" : 4000,
+                        "family": 2000
                      },
-                     "rest_tags": {
-                        "music": 200,
-                        "love" : 10
+                     "categories":{
+                        "nature":{
+                           "forest":500,
+                           "animal":400,
+                           "ocean":200
+                        },
+                        "food":{
+                           "diner":300,
+                           "burger": 200
+                        },
+                        "country":{
+                           "usa":2000,
+                           "canada":1000
+                        },
+                        "party":{
+                           "yolo":500,
+                           "drinkup":400
+                        },
+                        "family":{
+                           "sis":600,
+                           "bro":500
+                        }
+                     },
+                     "device_data": {
+                        "camera": {
+                           "Canon": 23567,
+                           "FujiFilm": 12435,
+                           "Sony": 8956,
+                           "Nikon": 1235,
+                           "Olympus": 456,
+                           "Others": 129,
+                           "total": 46778
+                        },
+                        "mobile": {
+                           "OnePlus": 12356,
+                           "Apple": 34643,
+                           "Samsung": 24536,
+                           "Mi": 2353,
+                           "Others": 1345,
+                           "total": 75233
+                        },
+                        "others": {
+                           "total": 245
+                        }
+                     }
+                  },
+                  {
+                     "key":"CAN",
+                     "most_popular_category" : "nature",
+                     "categories_sum": {
+                        "nature" : 500,
+                        "food" : 400,
+                        "country": 1000,
+                        "party" : 1500,
+                        "family": 1000
+                     },
+                     "categories":{
+                        "nature":{
+                           "forest":500,
+                           "animal":400,
+                           "ocean":200
+                        },
+                        "food":{
+                           "diner":300,
+                           "burger": 200
+                        },
+                        "country":{
+                           "usa":2000,
+                           "canada":1000
+                        },
+                        "party":{
+                           "yolo":500,
+                           "drinkup":400
+                        },
+                        "family":{
+                           "sis":600,
+                           "bro":500
+                        }
                      },
                      "user_freq": {
                         "total_pics": 2354,
@@ -159,174 +198,41 @@
          }
       
    },
-   
-      "2001" :  {
-
-         "country_data": {
-               "buckets": [
-                  {
-                     "key":"WORLD",
-                     "most_popular_5": {
-                        "cat" : 6000,
-                        "dog" : 5000,
-                        "food": 4000,
-                        "citylife" : 3000,
-                        "yolo": 2000
-                     },
-                     "rest_tags": {
-                        "music": 500,
-                        "love" : 200
-                     },
-                     "user_freq": {
-                        "total_pics": 2354,
-                        "asia": 456,
-                        "europe": 1235,
-                        "north_america": 1456,
-                        "oceania": 235,
-                        "africa": 456,
-                        "south_america": 190,
-                        "antartica": 0 
-                     },
-                     "device_data": {
-                        "camera": {
-                           "Canon": 23567,
-                           "FujiFilm": 12435,
-                           "Sony": 8956,
-                           "Nikon": 1235,
-                           "Olympus": 456,
-                           "Others": 129,
-                           "total": 46778
-                        },
-                        "mobile": {
-                           "OnePlus": 12356,
-                           "Apple": 34643,
-                           "Samsung": 24536,
-                           "Mi": 2353,
-                           "Others": 1345,
-                           "total": 75233
-                        },
-                        "others": {
-                           "total": 245
-                        }
-                     }
-                  },
-                  {
-                     "key": "USA",
-                     "most_popular_tag" : "dog",
-                     "most_popular_5": {
-                        "cat" : 1000,
-                        "dog" : 3000,
-                        "food": 1300,
-                        "citylife" : 1500,
-                        "yolo": 900
-                     },
-                     "rest_tags": {
-                        "music": 300,
-                        "love" : 190
-                     },
-                     "user_freq": {
-                        "total_pics": 2354,
-                        "asia": 456,
-                        "europe": 1235,
-                        "north_america": 1456,
-                        "oceania": 235,
-                        "africa": 456,
-                        "south_america": 190,
-                        "antartica": 0 
-                     },
-                     "device_data": {
-                        "camera": {
-                           "Canon": 23567,
-                           "FujiFilm": 12435,
-                           "Sony": 8956,
-                           "Nikon": 1235,
-                           "Olympus": 456,
-                           "Others": 129,
-                           "total": 46778
-                        },
-                        "mobile": {
-                           "OnePlus": 12356,
-                           "Apple": 34643,
-                           "Samsung": 24536,
-                           "Mi": 2353,
-                           "Others": 1345,
-                           "total": 75233
-                        },
-                        "others": {
-                           "total": 245
-                        }
-                     }
-                  },
-                  {
-                     "key": "CAN",
-                     "most_popular_tag" : "cat",
-                     "most_popular_5": {
-                        "cat" : 5000,
-                        "dog" : 2000,
-                        "food": 2700,
-                        "citylife" : 1500,
-                        "yolo": 1100
-                     },
-                     "rest_tags": {
-                        "music": 200,
-                        "love" : 10
-                     },
-                     "user_freq": {
-                        "total_pics": 2354,
-                        "asia": 456,
-                        "europe": 1235,
-                        "north_america": 1456,
-                        "oceania": 235,
-                        "africa": 456,
-                        "south_america": 190,
-                        "antartica": 0 
-                     },
-                     "device_data": {
-                        "camera": {
-                           "Canon": 23567,
-                           "FujiFilm": 12435,
-                           "Sony": 8956,
-                           "Nikon": 1235,
-                           "Olympus": 456,
-                           "Others": 129,
-                           "total": 46778
-                        },
-                        "mobile": {
-                           "OnePlus": 12356,
-                           "Apple": 34643,
-                           "Samsung": 24536,
-                           "Mi": 2353,
-                           "Others": 1345,
-                           "total": 75233
-                        },
-                        "others": {
-                           "total": 245
-                        }
-                     }
-                  }
-               ]
-               
-            
-         }
-      
-   },
-   
-   "2002" :  {
-
+   "2008_01": {
       "country_data": {
             "buckets": [
-               {
+               {  
                   "key":"WORLD",
-                  "most_popular_5": {
-                     "cat" : 20,
-                     "dog" : 400,
-                     "food": 492,
-                     "citylife" : 1000,
-                     "yolo": 2000
+                  "most_popular_category" : "nature",
+                  "categories_sum": {
+                     "nature" : 5000,
+                     "food" : 4000,
+                     "country": 3000,
+                     "party" : 2000,
+                     "family": 1000
                   },
-                  "rest_tags": {
-                     "music": 1500,
-                     "love" : 20
+                  "categories":{
+                     "nature":{
+                        "forest":500,
+                        "animal":400,
+                        "ocean":200
+                     },
+                     "food":{
+                        "diner":300,
+                        "burger": 200
+                     },
+                     "country":{
+                        "usa":2000,
+                        "canada":1000
+                     },
+                     "party":{
+                        "yolo":500,
+                        "drinkup":400
+                     },
+                     "family":{
+                        "sis":600,
+                        "bro":500
+                     }
                   },
                   "user_freq": {
                      "total_pics": 2354,
@@ -362,28 +268,37 @@
                   }
                },
                {
-                  "key": "USA",
-                  "most_popular_tag" : "dog",
-                  "most_popular_5": {
-                     "cat" : 1000,
-                     "dog" : 3000,
-                     "food": 1300,
-                     "citylife" : 1500,
-                     "yolo": 900
+                  "key":"USA",
+                  "most_popular_category" : "nature",
+                  "categories_sum": {
+                     "nature" : 3000,
+                     "food" : 4000,
+                     "country": 3000,
+                     "party" : 4000,
+                     "family": 2000
                   },
-                  "rest_tags": {
-                     "music": 300,
-                     "love" : 190
-                  },
-                  "user_freq": {
-                     "total_pics": 2354,
-                     "asia": 456,
-                     "europe": 1235,
-                     "north_america": 1456,
-                     "oceania": 235,
-                     "africa": 456,
-                     "south_america": 190,
-                     "antartica": 0 
+                  "categories":{
+                     "nature":{
+                        "forest":500,
+                        "animal":400,
+                        "ocean":200
+                     },
+                     "food":{
+                        "diner":300,
+                        "burger": 200
+                     },
+                     "country":{
+                        "usa":2000,
+                        "canada":1000
+                     },
+                     "party":{
+                        "yolo":500,
+                        "drinkup":400
+                     },
+                     "family":{
+                        "sis":600,
+                        "bro":500
+                     }
                   },
                   "device_data": {
                      "camera": {
@@ -409,18 +324,37 @@
                   }
                },
                {
-                  "key": "CAN",
-                  "most_popular_tag" : "cat",
-                  "most_popular_5": {
-                     "cat" : 5000,
-                     "dog" : 2000,
-                     "food": 2700,
-                     "citylife" : 1500,
-                     "yolo": 1100
+                  "key":"CAN",
+                  "most_popular_category" : "nature",
+                  "categories_sum": {
+                     "nature" : 500,
+                     "food" : 400,
+                     "country": 1000,
+                     "party" : 1500,
+                     "family": 1000
                   },
-                  "rest_tags": {
-                     "music": 200,
-                     "love" : 10
+                  "categories":{
+                     "nature":{
+                        "forest":500,
+                        "animal":400,
+                        "ocean":200
+                     },
+                     "food":{
+                        "diner":300,
+                        "burger": 200
+                     },
+                     "country":{
+                        "usa":2000,
+                        "canada":1000
+                     },
+                     "party":{
+                        "yolo":500,
+                        "drinkup":400
+                     },
+                     "family":{
+                        "sis":600,
+                        "bro":500
+                     }
                   },
                   "user_freq": {
                      "total_pics": 2354,
@@ -458,24 +392,43 @@
             ]
             
          
+         }
       },
-   
-      "2003" :  {
-
+      "2008_02": {
          "country_data": {
                "buckets": [
-                  {
+                  {  
                      "key":"WORLD",
-                     "most_popular_5": {
-                        "cat" : 19000,
-                        "dog" : 500,
-                        "food": 98,
-                        "citylife" : 33,
-                        "yolo": 2000
+                     "most_popular_category" : "nature",
+                     "categories_sum": {
+                        "nature" : 5000,
+                        "food" : 4000,
+                        "country": 3000,
+                        "party" : 2000,
+                        "family": 1000
                      },
-                     "rest_tags": {
-                        "music": 500,
-                        "love" : 5000
+                     "categories":{
+                        "nature":{
+                           "forest":500,
+                           "animal":400,
+                           "ocean":200
+                        },
+                        "food":{
+                           "diner":300,
+                           "burger": 200
+                        },
+                        "country":{
+                           "usa":2000,
+                           "canada":1000
+                        },
+                        "party":{
+                           "yolo":500,
+                           "drinkup":400
+                        },
+                        "family":{
+                           "sis":600,
+                           "bro":500
+                        }
                      },
                      "user_freq": {
                         "total_pics": 2354,
@@ -511,28 +464,37 @@
                      }
                   },
                   {
-                     "key": "USA",
-                     "most_popular_tag" : "dog",
-                     "most_popular_5": {
-                        "cat" : 1000,
-                        "dog" : 3000,
-                        "food": 1300,
-                        "citylife" : 1500,
-                        "yolo": 900
+                     "key":"USA",
+                     "most_popular_category" : "nature",
+                     "categories_sum": {
+                        "nature" : 3000,
+                        "food" : 4000,
+                        "country": 3000,
+                        "party" : 4000,
+                        "family": 2000
                      },
-                     "rest_tags": {
-                        "music": 300,
-                        "love" : 190
-                     },
-                     "user_freq": {
-                        "total_pics": 2354,
-                        "asia": 456,
-                        "europe": 1235,
-                        "north_america": 1456,
-                        "oceania": 235,
-                        "africa": 456,
-                        "south_america": 190,
-                        "antartica": 0 
+                     "categories":{
+                        "nature":{
+                           "forest":500,
+                           "animal":400,
+                           "ocean":200
+                        },
+                        "food":{
+                           "diner":300,
+                           "burger": 200
+                        },
+                        "country":{
+                           "usa":2000,
+                           "canada":1000
+                        },
+                        "party":{
+                           "yolo":500,
+                           "drinkup":400
+                        },
+                        "family":{
+                           "sis":600,
+                           "bro":500
+                        }
                      },
                      "device_data": {
                         "camera": {
@@ -558,18 +520,37 @@
                      }
                   },
                   {
-                     "key": "CAN",
-                     "most_popular_tag" : "cat",
-                     "most_popular_5": {
-                        "cat" : 5000,
-                        "dog" : 2000,
-                        "food": 2700,
-                        "citylife" : 1500,
-                        "yolo": 1100
+                     "key":"CAN",
+                     "most_popular_category" : "nature",
+                     "categories_sum": {
+                        "nature" : 500,
+                        "food" : 400,
+                        "country": 1000,
+                        "party" : 1500,
+                        "family": 1000
                      },
-                     "rest_tags": {
-                        "music": 200,
-                        "love" : 10
+                     "categories":{
+                        "nature":{
+                           "forest":500,
+                           "animal":400,
+                           "ocean":200
+                        },
+                        "food":{
+                           "diner":300,
+                           "burger": 200
+                        },
+                        "country":{
+                           "usa":2000,
+                           "canada":1000
+                        },
+                        "party":{
+                           "yolo":500,
+                           "drinkup":400
+                        },
+                        "family":{
+                           "sis":600,
+                           "bro":500
+                        }
                      },
                      "user_freq": {
                         "total_pics": 2354,
@@ -609,8 +590,8 @@
             
          }
       
-   }
    
-}
-}
+   
+      }
+   }
 }
