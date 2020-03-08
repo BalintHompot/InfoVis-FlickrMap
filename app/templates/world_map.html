@@ -215,7 +215,9 @@ body {
             // globals used in graph
             var running = false;
             var timer;
-            var validTimeSteps = ["2007_12", "2008_01", "2008_02", "2008_03", "2008_04", "2008_05", "2008_06", "2008_07", "2008_08", "2008_09", "2008_10", "2008_11", "2008_12"]
+            //var validTimeSteps = ["2007_12", "2008_01", "2008_02", "2008_03", "2008_04", "2008_05", "2008_06", "2008_07", "2008_08", "2008_09", "2008_10", "2008_11", "2008_12"]
+            var validTimeSteps = ["2007_12", "2008_01", "2008_02"]
+
             var mapdata = {};
 
             var width = 800, height = 600;
@@ -527,7 +529,6 @@ body {
         });
         ////////////////////////////////// StreamGraph ///////////////////////////////////////////////////////////////////////////////////////////////////
             var allTagsEmpyty = {
-
             }
             for(tagInd in countries_mock_data.allCategories){
                 allTagsEmpyty[countries_mock_data.allCategories[tagInd]] = 0
@@ -542,7 +543,7 @@ body {
                     var country_bucket = countries_mock_data.timesteps[timeStep].country_data.buckets.find( function (e){
                         return e.key == country_key
                     })
-                    try{
+            
                         //var tags = Object.assign({}, country_bucket.most_popular_5, country_bucket.rest_tags)
                         var tags = country_bucket.categories_sum
                         tag_list = Object.keys(tags)
@@ -551,6 +552,8 @@ body {
 
                         var year_data = {"time_step_graph" : timeStep}
                         Object.assign(year_data, allTagsEmpyty);
+                        console.log("tag list is")
+                        console.log(tag_list)
 
                         for(var tagInd in tag_list){
                             tag = tag_list[tagInd]
@@ -560,16 +563,16 @@ body {
                         }
                      
                         d.push(year_data)
-                    }catch(err){
-                        continue
-                    }
+                        console.log(year_data)
                     if (year_count>maxYear){
                         maxYear = year_count
                     }
           
 
                 }
-                return [d, maxYear/1.8]
+                console.log("returning year data")
+                console.log(d)
+                return [d, maxYear]
             }
 
     var margin = {top: 150, right: 20, bottom: 20, left: 20},
@@ -743,7 +746,7 @@ body {
         console.log("data in drawstream")
         console.log(data)
 
-        var keys = Object.keys(countries_mock_data.allCategories) 
+        var keys = countries_mock_data.allCategories
 
         x = getX(validTimeSteps_graph, width_stream_graph)
         y = getY(yRange, height_stream_graph)
@@ -839,7 +842,7 @@ body {
         x = getX(validTimeSteps_graph, width_stream_graph)
         y = getY(yRange, height_stream_graph)
         // List of groups = header of the csv files
-        var keys = Object.keys(countries_mock_data.allCategories) 
+        var keys = countries_mock_data.allCategories
         
         svg_stream.append("g")
             .attr("transform", "translate(0," + height_stream_graph*0.8 + ")")
