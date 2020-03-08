@@ -216,7 +216,7 @@ body {
             var running = false;
             var timer;
             //var validTimeSteps = ["2007_12", "2008_01", "2008_02", "2008_03", "2008_04", "2008_05", "2008_06", "2008_07", "2008_08", "2008_09", "2008_10", "2008_11", "2008_12"]
-            var validTimeSteps = ["2007_12", "2008_01", "2008_02"]
+            var validTimeSteps = ["2001_1", "2001_2", "2001_3", "2001_4", "2002_1", "2002_2", "2002_3", "2002_4", "2003_1"]
 
             var mapdata = {};
 
@@ -440,8 +440,9 @@ body {
                 refreshPie1(d);
                 console.log("refreshing stream graph for country")
                 country_in_focus_1 = d.id
+                console.log(country_in_focus_1)
                 refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category")
-                refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+                refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "category")
                 
 
             }
@@ -456,7 +457,7 @@ body {
                     .call( zoom.transform, d3.zoomIdentity ); // updated for d3 v4
                 country_in_focus_1 = "USA"
                 refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category")
-                refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+                refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "category")
                 //TODO have to add reset functionality for pie and donut..
 
             }
@@ -545,6 +546,8 @@ body {
                 }
             }
             function getStreamData(country_key, timeSteps, level){
+                console.log("level is")
+                console.log(level)
                 d = []
                 keys = new Set()
                 maxYear = 0
@@ -554,18 +557,15 @@ body {
                     var country_bucket = countries_mock_data.timesteps[timeStep].country_data.buckets.find( function (e){
                         return e.key == country_key
                     })
+                    emptyObj = level == "tag"?allTagsEmpyty:allCategoriesEmpyty
+
+                    var year_data = {"time_step_graph" : timeStep}
+                    Object.assign(year_data, emptyObj);
+                    if(country_bucket){
             
                         //var tags = Object.assign({}, country_bucket.most_popular_5, country_bucket.rest_tags)
                         var tags = country_bucket.categories_sum
                         tag_list = Object.keys(tags)
-
-                        //year_data = {"date":timeStep}
-                        emptyObj = level == "tag"?allTagsEmpyty:allCategoriesEmpyty
-
-                        var year_data = {"time_step_graph" : timeStep}
-                        Object.assign(year_data, emptyObj);
-                        console.log("tag list is")
-                        console.log(tag_list)
 
                         for(var tagInd in tag_list){
                             tag = tag_list[tagInd]
@@ -583,17 +583,18 @@ body {
                             
                 
                         }
-                     
-                        d.push(year_data)
-                        console.log(year_data)
+                    }
+                    d.push(year_data)
                     if (year_count>maxYear){
                         maxYear = year_count
                     }
           
 
                 }
+                keys = Array.from(keys)
                 console.log("returning year data")
-                console.log(d)
+                console.log(keys)
+
                 return [d, maxYear, Array.from(keys)]
             }
 
@@ -692,8 +693,8 @@ body {
     let dragRight = d3.drag()
         .on('drag', draggedRight)
 
-    drawStreamGraph("USA", svg_stream, validTimeSteps, width_stream, height_stream, "category")
-    drawStreamGraph("USA", svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+    drawStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category")
+    drawStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "category")
     updateStreamSlider()
 
     function getFocusedValidSteps(){
@@ -712,10 +713,8 @@ body {
     }
 
     function dragged(d) {
-        console.log(d)
         current_date = invertX(d3.mouse(this)[0]-300)
         current_date_ind = validTimeSteps.findIndex((element) => element == current_date)
-        console.log(current_date)
         updateStreamSlider()
     }
 
@@ -765,8 +764,6 @@ body {
 
         // Parse the Data
         [data, yRange, keys] = getStreamData(country_key, validTimeSteps_graph, level)
-        console.log("data in drawstream")
-        console.log(data)
 
         x = getX(validTimeSteps_graph, width_stream_graph)
         y = getY(yRange, height_stream_graph)
@@ -851,12 +848,12 @@ body {
 
     }
 
-    function refreshStreamGraph(country_key, svg_stream, validTimeSteps_graph, width_stream_graph, height_stream_graph, x, y, level){
+    function refreshStreamGraph(country_key, svg_stream, validTimeSteps_graph, width_stream_graph, height_stream_graph, level){
         svg_stream.selectAll(".tick").remove()
+
         // Parse the Data
         [data, yRange, keys] = getStreamData(country_key, validTimeSteps_graph, level)
-        console.log("refreshing with data")
-        console.log(data)
+
 
 
         x = getX(validTimeSteps_graph, width_stream_graph)
@@ -1039,7 +1036,7 @@ body {
         current_year_data = countries_mock_data.timesteps[current_date]
         draw(world_countries ,current_year_data)
         
-        refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+        refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "category")
             
     }
 
