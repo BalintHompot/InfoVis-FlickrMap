@@ -609,7 +609,7 @@ body {
             .append("rect")
             .attr('id', "rect-focus")
             .style("fill", "black")
-            .attr("fill-opacity","0.01")
+            .attr("fill-opacity","0.1")
             .attr("rx", 3)
             .attr("ry", 3)
             .style("stroke", "black")
@@ -934,12 +934,14 @@ body {
         var focusRectCornerTop = 0-rectAdd
         var focusRectCornerRight = x_main_stream(current_date) + (rectWidthRight)
         var focusRectCornerLeft = x_main_stream(current_date) - (rectWidthLeft)
-        svg_stream.selectAll("#line-comparison").remove()
-        svg_stream.selectAll("#line-focus").remove()
-        svg_stream.selectAll("#rect-grab").remove()
-        svg_stream.selectAll("#focus-grab").remove()
+        d3.select("#sliderG").remove()
 
-        svg_stream
+
+        var sliderG = d3.select("#streamContainer").append("g").attr("id", "sliderG")
+        .attr("transform",
+            "translate(" + 20 + "," + 150 + ")");
+
+        sliderG
             .append("line")
             .attr('id', "line-comparison")
             .attr('stroke', 'black')
@@ -949,7 +951,7 @@ body {
             .attr('x2', x_main_stream(current_date))
             .attr('y2', height_stream - rectAdd)
             .call(drag);
-        svg_stream
+        sliderG
             .append("rect")
             .attr('id', "rect-grab")
             .style("fill", "black")
@@ -962,7 +964,7 @@ body {
             .attr("x", focusRectCornerLeft)
             .attr("y", 0-rectAdd)
             .call(drag);
-        svg_stream
+        sliderG
             .append("line")
             .attr('id', "line-focus")
             .attr('stroke', 'grey')
@@ -973,7 +975,7 @@ body {
             .attr('x2', focusStremTartgetLeft)
             .attr('y2', focusStremTartgetTop)
             .call(drag);
-        svg_stream
+        sliderG
             .append("line")
             .attr('id', "line-focus")
             .attr('stroke', 'grey')
@@ -986,7 +988,7 @@ body {
             .call(drag);
 
         /// add draggable rect to adjust size of focus window
-        svg_stream
+        sliderG
             .append("rect")
             .attr('id', "focus-grab")
             .style("fill", "black")
@@ -998,7 +1000,7 @@ body {
             .attr("x", focusRectCornerLeft-5)
             .attr("y", rectHeight-15)
             .call(dragLeft);
-        svg_stream
+        sliderG
             .append("rect")
             .attr('id', "focus-grab")
             .style("fill", "black")
