@@ -291,6 +291,10 @@ body {
             console.log("filtered")
             console.log(filtered_data)
             */
+
+            var allTags = []
+            for(catInd in Object.keys(countries_mock_data.allCategories))
+
             var myColor = d3.scaleOrdinal().domain(countries_mock_data.allCategories)
                 .range(d3.schemeSet3);
 
@@ -436,8 +440,8 @@ body {
                 refreshPie1(d);
                 console.log("refreshing stream graph for country")
                 country_in_focus_1 = d.id
-                refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream)
-                refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused)
+                refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category")
+                refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
                 
 
             }
@@ -451,8 +455,8 @@ body {
                     // .call( zoom.transform, d3.zoomIdentity.translate(0, 0).scale(1) ); // not in d3 v4
                     .call( zoom.transform, d3.zoomIdentity ); // updated for d3 v4
                 country_in_focus_1 = "USA"
-                refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream)
-                refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused)
+                refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category")
+                refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
                 //TODO have to add reset functionality for pie and donut..
 
             }
@@ -528,14 +532,21 @@ body {
 
         });
         ////////////////////////////////// StreamGraph ///////////////////////////////////////////////////////////////////////////////////////////////////
-            var allTagsEmpyty = {
+            var allCategoriesEmpyty = {
             }
-            for(tagInd in countries_mock_data.allCategories){
-                allTagsEmpyty[countries_mock_data.allCategories[tagInd]] = 0
+            for(catInd in countries_mock_data.allCategories){
+                allCategoriesEmpyty[countries_mock_data.allCategories[catInd]] = 0
             }
-
-            function getStreamData(country_key, timeSteps){
+            var allTagsEmpyty = {}
+            for(catInd in countries_mock_data.allCategories){
+                catTags = Object.keys(countries_mock_data.allCategories[catInd])
+                for(catTagInd in catTags){
+                    allTagsEmpyty[catTags[catTagInd]] = 0
+                }
+            }
+            function getStreamData(country_key, timeSteps, level){
                 d = []
+                keys = new Set()
                 maxYear = 0
                 for(var timeStepInd in timeSteps){
                     year_count = 0
@@ -549,16 +560,27 @@ body {
                         tag_list = Object.keys(tags)
 
                         //year_data = {"date":timeStep}
+                        emptyObj = level == "tag"?allTagsEmpyty:allCategoriesEmpyty
 
                         var year_data = {"time_step_graph" : timeStep}
-                        Object.assign(year_data, allTagsEmpyty);
+                        Object.assign(year_data, emptyObj);
                         console.log("tag list is")
                         console.log(tag_list)
 
                         for(var tagInd in tag_list){
                             tag = tag_list[tagInd]
-                            year_data[tag] = tags[tag]
                             year_count += tags[tag]
+                            if(level == "category"){
+                                year_data[tag] = tags[tag]
+                                keys.add(tag)
+                            }else{
+                                catTagList = Object.keys(country_bucket.categories[tag])
+                                for(catInd in catTagList){
+                                    year_data[catTagList[catInd]] = country_bucket.categories[tag][catTagList[catInd]]
+                                    keys.add(catTagList[catInd])
+                                }
+                            }
+                            
                 
                         }
                      
@@ -572,7 +594,7 @@ body {
                 }
                 console.log("returning year data")
                 console.log(d)
-                return [d, maxYear]
+                return [d, maxYear, Array.from(keys)]
             }
 
     var margin = {top: 150, right: 20, bottom: 20, left: 20},
@@ -670,8 +692,8 @@ body {
     let dragRight = d3.drag()
         .on('drag', draggedRight)
 
-    drawStreamGraph("USA", svg_stream, validTimeSteps, width_stream, height_stream)
-    drawStreamGraph("USA", svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused)
+    drawStreamGraph("USA", svg_stream, validTimeSteps, width_stream, height_stream, "category")
+    drawStreamGraph("USA", svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
     updateStreamSlider()
 
     function getFocusedValidSteps(){
@@ -735,18 +757,16 @@ body {
             return d.values[key];
         }
 
-    function drawStreamGraph(country_key, svg_stream, validTimeSteps_graph, width_stream_graph, height_stream_graph){
+    function drawStreamGraph(country_key, svg_stream, validTimeSteps_graph, width_stream_graph, height_stream_graph, level){
 // append the svg object to the body of the page
 
         //svg_stream.selectAll("path").remove()
 
 
         // Parse the Data
-        [data, yRange] = getStreamData(country_key, validTimeSteps_graph)
+        [data, yRange, keys] = getStreamData(country_key, validTimeSteps_graph, level)
         console.log("data in drawstream")
         console.log(data)
-
-        var keys = countries_mock_data.allCategories
 
         x = getX(validTimeSteps_graph, width_stream_graph)
         y = getY(yRange, height_stream_graph)
@@ -776,8 +796,9 @@ body {
         // create a tooltip
         var Tooltip = svg_stream
             .append("text")
+            .attr("id", "stream-tooltip")
             .attr("x", 0)
-            .attr("y", 0)
+            .attr("y", 20)
             .style("opacity", 0)
             .style("font-size", 17)
 
@@ -788,10 +809,9 @@ body {
             d3.select(this)
             .style("stroke", "black")
             .style("opacity", 1)
-            //console.log(d)
         }
         var mousemove = function(d,i) {
-            grp = keys[i]
+            grp = d.key
             Tooltip.text(grp)
  
         }
@@ -831,10 +851,10 @@ body {
 
     }
 
-    function refreshStreamGraph(country_key, svg_stream, validTimeSteps_graph, width_stream_graph, height_stream_graph, x, y){
+    function refreshStreamGraph(country_key, svg_stream, validTimeSteps_graph, width_stream_graph, height_stream_graph, x, y, level){
         svg_stream.selectAll(".tick").remove()
         // Parse the Data
-        [data, yRange] = getStreamData(country_key, validTimeSteps_graph)
+        [data, yRange, keys] = getStreamData(country_key, validTimeSteps_graph, level)
         console.log("refreshing with data")
         console.log(data)
 
@@ -842,7 +862,6 @@ body {
         x = getX(validTimeSteps_graph, width_stream_graph)
         y = getY(yRange, height_stream_graph)
         // List of groups = header of the csv files
-        var keys = countries_mock_data.allCategories
         
         svg_stream.append("g")
             .attr("transform", "translate(0," + height_stream_graph*0.8 + ")")
@@ -878,7 +897,7 @@ body {
         var Tooltip = svg_stream
             .append("text")
             .attr("x", 0)
-            .attr("y", 0)
+            .attr("y", 20)
             .style("opacity", 0)
             .style("font-size", 17)
         
@@ -888,10 +907,10 @@ body {
             d3.select(this)
             .style("stroke", "black")
             .style("opacity", 1)
-            //console.log(d)
+     
         }
         var mousemove = function(d,i) {
-            grp = keys[i]
+            grp = d.key
             Tooltip.text(grp)
  
         }
@@ -1020,7 +1039,7 @@ body {
         current_year_data = countries_mock_data.timesteps[current_date]
         draw(world_countries ,current_year_data)
         
-        refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused)
+        refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
             
     }
 
