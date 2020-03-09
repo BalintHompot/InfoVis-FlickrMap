@@ -27,6 +27,18 @@ Vignesh: Charts and donut integration with the map.
 
 Martijn: Counting the tags per country and per timestep of 1 month. Converting the data to json format and adding the precalculated top 5 tags per country per timestep.
 
+### Week 6 To-Dos - Before 12-03-2020 ###
+
+Balint: two instances of streamgraph,  allowing selection of 2 countries for the two sets of graphs,  focused stream graph should show tags (can only be done after update on data, tag color should be a version of category color.
+
+Urscha: Categorize the tags, placement of glyphs, font type, colors etc., map missing data to grey, adding filter panels (category) , add colored list of categories.
+
+Neeraj: fix position to country, add top tags (also requires data update), remove transition?
+
+Vignesh:
+
+Martijn: adding top 5 tags per category (needed for tooltip, focused stream graph) 
+
 ## Requirements ##
 
 See the requirements.txt file
