@@ -137,6 +137,61 @@ body {
 }
 
 
+  
+.d3-tip
+{
+	line-height: 1;
+	font-weight: bold;
+    width: fit-content;
+    height: fit-content;
+	padding: 12px;
+	background: rgba(255, 255, 255, 0.616);
+    color: black;
+	border-radius: 2px;
+}
+
+.d3-tip:after
+{
+	box-sizing: border-box;
+    width: fit-content;
+    height: fit-content;
+	font-size: 5px;
+	line-height: 1;
+	color: rgba(255, 255, 255, 0.116);
+	content: "\25BC";
+	position: absolute;
+	text-align: center;
+}
+
+.d3-tip.n:after
+{
+	margin: -1px 0 0 0;
+    width: fit-content;
+    height: fit-content;
+	top: 100%;
+	left: 0;
+}
+
+
+#button {
+  background: #ccc;
+  cursor: pointer;
+  border-top: solid 2px #eaeaea;
+  border-left: solid 2px #eaeaea;
+  border-bottom: solid 2px #777;
+  border-right: solid 2px #777;
+  padding: 5px 5px;
+}
+
+#button.down {
+  background: #bbb;
+  border-top: solid 2px #777;
+  border-left: solid 2px #777;
+  border-bottom: solid 2px #eaeaea;
+  border-right: solid 2px #eaeaea;
+}
+
+
         </style>
     </head>
     <body>
@@ -155,6 +210,7 @@ body {
 
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
 
         
 
@@ -164,6 +220,7 @@ body {
             <span>
 
                 <div id="map-holder"></div>
+                <div id="tooltip-holder"></div>
                 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
                 <!-- Create a div where the graph will take place -->
@@ -175,36 +232,46 @@ body {
             </span>
 
             <hr></hr>
+            <a id="button" title="button">Device Categories</a>
             <div class="container"><h2>Charts:</h2></div>
 
             <div id="exTab2" class="container">	
                 <ul class="nav nav-tabs">
 			        <li class="active">
-                        <a  href="#1" data-toggle="tab">Device trends  </a>
+                        <a  href="#1" data-toggle="tab">Tag trends  </a>
 			        </li>
 			        <li>
-                        <a href="#2" data-toggle="tab">Tag trends  </a>
-			        </li>
-			        <li>
-                        <a href="#3" data-toggle="tab">Others  </a>
+                        <a href="#2" data-toggle="tab">Device trends  </a>
 			        </li>
 		        </ul>
 
 			    <div class="tab-content ">
 			        <div class="tab-pane active" id="1">
                         <figure class="highcharts-figure">
-                            <div id="donut1"></div>
+                            <div id="pie"></div>
                         </figure>
 				    </div>
 				    <div class="tab-pane" id="2">
                         <figure class="highcharts-figure">
-                            <div id="pie1"></div>
+                            <div id="donut"></div>
                         </figure>
 				    </div>
-                    <div class="tab-pane" id="3">
-                        <h3>add clearfix to tab-content (see the css)</h3>
-				    </div>
 			    </div>
+            </div>
+
+            <div id="tooltip" class="tooltip">
+                <div class="tooltip-range" id="range"></div>
+                <div class="tooltip-examples" id="examples"></div>
+                <div class="tooltip-value">
+                    ...of <span id="count"></span> tasks
+                </div>
+                <div class="tooltip-bar-value">
+                    <b><span id="tooltip-bar-value"></span>%</b>
+                    of the work was done by developers
+                </div>
+                <div class="tooltip-bar">
+                    <div class="tooltip-bar-fill" id="tooltip-bar-fill"></div>
+                </div>
             </div>
         </div>
 
@@ -219,8 +286,45 @@ body {
             var validTimeSteps = ["2001_1", "2001_2", "2001_3", "2001_4", "2002_1", "2002_2", "2002_3", "2002_4", "2003_1", "2003_2", "2003_3", "2003_4", "2004_1", "2004_2", "2004_3", "2004_4", "2005_1", "2005_2", "2005_3", "2005_4", "2006_1", "2006_2", "2006_3", "2006_4", "2007_1", "2007_2", "2007_3", "2007_4", "2008_1", "2008_2", "2008_3", "2008_4", "2009_1", "2009_2"]
 
             var mapdata = {};
+            var popular_tags = true;
 
             var width = 800, height = 600;
+            var current_position;
+
+            $(document).ready(function() {
+                $('a#button').click(function() {
+                    $(this).toggleClass("down");
+                    popular_tags = !popular_tags;
+                });
+            });
+
+            // define the tooltip 
+            // var tool_tip = d3.tip()
+            //     .attr("class", "d3-tip")
+            //     // if the mouse position is greater than 650 (~ Kentucky/Missouri), offset tooltip to the left instead of the right
+            //     .offset(function() {if(current_position[0] > 650) {
+  	        //             return [-20,-120] } 
+  	        //         else { return [20,120]}
+            //     })
+            //     // input the title, and include the div
+            //     .html(
+  	        //         "<p>Opioid-involved deaths over time in</p><div id='tipDiv'></div>"
+            //     );
+            var tip = d3.tip()
+			    .attr("class", "d3-tip")
+			    .offset([350, 100])
+    	        .html(function(d)
+			    {
+                    // var x = +d.properties.value;
+                    // x = x.toPrecision(2);
+                    return "Country: " + d.properties.name + "<br>"
+                        + "Most Popular Tag:" + d.properties.most_popular_tag + "<br>"
+                        + "No. of users:" + d.properties.user_freq + "<br><br>"
+                        + "<div id='tipDiv'></div<br>";
+                });
+            
+            
+            
             active = d3.select(null);
             var zoom = d3.zoom()            
             // no longer in d3 v4 - zoom initialises with zoomIdentity, so it's already at origin
@@ -240,6 +344,8 @@ body {
                         .attr("height", height)    // set the height
                         .attr("width", width);    // set the width
             
+            svg.call(tip);
+            
             svg.append("rect")
                 .attr("class", "background")
                 .attr("width", width)
@@ -249,6 +355,7 @@ body {
 
             svg
                 .call(zoom); // delete this line to disable free zooming
+
             var filter = svg.append('defs')
                 .append('filter')
                 .attr("height", 1)    // set the height
@@ -271,6 +378,8 @@ body {
             filter.append('feComposite')
                 .attr('in', 'COMP1')
                 .attr('in2', 'COLOR');
+
+            
 
 
             /// getting json input from flask
@@ -304,6 +413,7 @@ body {
             current_year_data = countries_mock_data.timesteps[current_date]
             country_in_focus_1 = "USA"
             //console.log(current_year_data)
+            
 
             draw(world_countries ,current_year_data)
 
@@ -354,6 +464,7 @@ body {
                         .attr('class', function(d) { return 'subunit ca'+d.id; })
                         .attr('d', path)
                         .on('mouseover',mouseoverLegend).on('mouseout',mouseoutLegend)
+                        .on('mouseenter',mouseenterFunction).on('mouseleave',mouseleaveFunction)
                         .on("click", clicked);
                     
                     countries.append('svg:text')
@@ -379,32 +490,62 @@ body {
                     .style("fill", heatColor)
 
 
-                    var upDatedData = {};
-                        upDatedData.properties = {};
-                        upDatedData.properties.device_data = {};
-                        upDatedData.properties.most_popular_5 = {};
-                        //TODO Have to change this logic, how to find out the key when sliding inside the countries..
-                        // For now only world changes..
-                        upDatedData.properties.device_data = data.country_data.buckets[0].device_data;
-                        upDatedData.properties.most_popular_5 = data.country_data.buckets[0].most_popular_5;
-                        refreshDonut1(upDatedData);
-                        refreshPie1(upDatedData);
-                    
+                    // var upDatedData = {};
+                    //     upDatedData.properties = {};
+                    //     upDatedData.properties.device_data = {};
+                    //     upDatedData.properties.most_popular_5 = {};
+                    //     //TODO Have to change this logic, how to find out the key when sliding inside the countries..
+                    //     // For now only world changes..
+                    //     upDatedData.properties.device_data = data.country_data.buckets[0].device_data;
+                    //     upDatedData.properties.most_popular_5 = data.country_data.buckets[0].most_popular_5;
+                    //     refreshDonutDiv(upDatedData);
+                    //     refreshPieDiv(upDatedData);
+                    // console.log("data->",data)
              
             }
 
+            function mouseenterFunction(datum, index) {
+                tip.show(datum);
+                if (popular_tags)
+                    refreshPie1(datum);
+                else
+                    refreshDonut1(datum);
+            }
+
+            function mouseleaveFunction(datum, index) {
+                tip.hide();
+            }
+            
+
             function mouseoverLegend(datum, index) {
-                graphXAxis = [];
-                graphYAxis = [];
-                var point = d3.mouse(this)
+                var point = d3.mouse(this);
+                current_position = point;
                 d3.selectAll('.subunit-label.la'+datum.id+datum.properties.name.replace(/[ \.#']+/g,''))
                     .style('display', 'inline-block')
               
                 d3.selectAll('.subunit.ca'+datum.id)
                     .style('fill', '#cc6699');
+
+
+                //tooltip.style("opacity", 1);
+                //tooltip.style("transform", `translate(50px,50px)`)
+                // tip.show(datum);
+                // refreshDonut1(datum);
+                // //TODO Need to add null checks..
+                // var tip_country = datum.properties.name;
+                // var tip_most_popular_tag = datum.properties.most_popular_tag;
+                // var tip_user_freq = datum.properties.user_freq;
+
+
+                // var tipSVG = d3.select("#tipDiv")
+      			// 	.append("svg")
+      			// 	.attr("width", 150)
+                //     .attr("height", 20);
+
                 
-
-
+                      
+            
+                
             } 
 
             function mouseoutLegend(datum, index) {
@@ -412,6 +553,9 @@ body {
                     .style('display', 'none');
                 d3.selectAll('.subunit.ca'+datum.id)
                     .style('fill', heatColor(datum));
+
+                //tooltip.style("opacity", 0)
+                //tip.hide();
             }
 
 
@@ -436,8 +580,8 @@ body {
                     // .call(zoom.translate(translate).scale(scale).event); // not in d3 v4
                     .call( zoom.transform, d3.zoomIdentity.translate(translate[0],translate[1]).scale(scale) ); // updated for d3 v4
                 
-                refreshDonut1(d);
-                refreshPie1(d);
+                refreshDonutDiv(d);
+                refreshPieDiv(d);
                 console.log("refreshing stream graph for country")
                 country_in_focus_1 = d.id
                 console.log(country_in_focus_1)
@@ -1102,7 +1246,7 @@ console.log(donut1data);
 
 
 // Create the chart
-Highcharts.chart('donut1', {
+Highcharts.chart('tipDiv', {
     chart: {
         type: 'pie'
     },
@@ -1170,6 +1314,83 @@ Highcharts.chart('donut1', {
 
 }
 
+
+function refreshDonutDiv(dat){
+
+console.log(dat);
+var donut1data = convertToDonut1(dat);
+console.log(donut1data);
+
+
+// Create the chart
+Highcharts.chart('donut', {
+chart: {
+    type: 'pie'
+},
+title: {
+    text: 'Device usage trend'
+},
+subtitle: {
+    text: 'Source: Flickr dataset'
+},
+credits: {
+    enabled: false
+},
+plotOptions: {
+    pie: {
+        shadow: false,
+        center: ['50%', '50%']
+    }
+},
+tooltip: {
+    valueSuffix: '%'
+},
+series: [{
+    name: 'Device',
+    data: donut1data.typeData,
+    size: '60%',
+    dataLabels: {
+        formatter: function () {
+            return this.y > 5 ? this.point.name : null;
+        },
+        color: '#ffffff',
+        distance: -30
+    }
+}, {
+    name: 'Models',
+    data: donut1data.deviceData,
+    size: '80%',
+    innerSize: '60%',
+    dataLabels: {
+        formatter: function () {
+            // display only if larger than 1
+            return this.y > 1 ? '<b>' + this.point.name + ':</b> ' +
+                this.y + '' : null;
+        }
+    },
+    id: 'versions'
+}],
+responsive: {
+    rules: [{
+        condition: {
+            maxWidth: 400
+        },
+        chartOptions: {
+            series: [{
+            }, {
+                id: 'versions',
+                dataLabels: {
+                    enabled: false
+                }
+            }]
+        }
+    }]
+}
+});
+
+
+}
+
 function refreshPie1(dat) {
     var newDat = [];
     var colors = [];
@@ -1179,10 +1400,11 @@ for (var key in chkData) {
   obj.name = key;
   obj.y = chkData[key];
   newDat.push(obj);
+  console.log("color: ",myColor(key));
   colors.push(myColor(key));
 }
 
-Highcharts.chart('pie1', {
+Highcharts.chart('tipDiv', {
     chart: {
         plotBackgroundColor: null,
         plotBorderWidth: null,
@@ -1208,7 +1430,62 @@ Highcharts.chart('pie1', {
             allowPointSelect: true,
             cursor: 'pointer',
             dataLabels: {
-                enabled: false
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+            },
+            showInLegend: true
+        }
+    },
+    series: [{
+        name: 'Flickr Tags',
+        colorByPoint: true,
+        colors: colors,
+        data: newDat
+    }]
+});
+}
+
+function refreshPieDiv(dat) {
+    var newDat = [];
+    var colors = [];
+var chkData = dat.properties.most_popular_5;
+for (var key in chkData) {
+	var obj = {};
+  obj.name = key;
+  obj.y = chkData[key];
+  newDat.push(obj);
+  console.log("color: ",myColor(key));
+  colors.push(myColor(key));
+}
+
+Highcharts.chart('pie', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'Top 5 tag trends'
+    },
+    credits: {
+        enabled: false
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %'
             },
             showInLegend: true
         }
