@@ -16,9 +16,18 @@
                      },
                      "categories":{
                         "nature":{
-                           "forest":500,
-                           "animal":400,
-                           "ocean":200
+                           "top_5":{
+                              "forest":500,
+                              "animal":400,
+                              "ocean":200,
+                              "mountain" : 200,
+                              "dog" : 100
+                           },
+                           "rest_tags":{
+                              "cat" : 50,
+                              "mooray eel": 30
+                           }
+                   
                         },
                         "food":{
                            "diner":300,
