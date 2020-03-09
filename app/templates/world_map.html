@@ -560,7 +560,8 @@ body {
 
 
             function heatColor(d) {
-                return myColor(d.properties.most_popular_tag);
+                d_c = d.properties.most_popular_tag
+                return d_c === null ? 'grey' :myColor(d_c);
             }
             /////////////////////////////////////////////////////// Zooming functions //////////////////////////////////////////////////////
             function clicked(d) {
@@ -586,7 +587,7 @@ body {
                 country_in_focus_1 = d.id
                 console.log(country_in_focus_1)
                 refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category")
-                refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "category")
+                refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
                 
 
             }
@@ -601,7 +602,7 @@ body {
                     .call( zoom.transform, d3.zoomIdentity ); // updated for d3 v4
                 country_in_focus_1 = "USA"
                 refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category")
-                refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "category")
+                refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
                 //TODO have to add reset functionality for pie and donut..
 
             }
@@ -677,24 +678,43 @@ body {
 
         });
         ////////////////////////////////// StreamGraph ///////////////////////////////////////////////////////////////////////////////////////////////////
+            
             var allCategoriesEmpyty = {
             }
             for(catInd in countries_mock_data.allCategories){
                 allCategoriesEmpyty[countries_mock_data.allCategories[catInd]] = 0
             }
             var allTagsEmpyty = {}
-            for(catInd in countries_mock_data.allCategories){
-                catTags = Object.keys(countries_mock_data.allCategories[catInd])
-                for(catTagInd in catTags){
-                    allTagsEmpyty[catTags[catTagInd]] = 0
-                }
-            }
+
+
             function getStreamData(country_key, timeSteps, level){
-                console.log("level is")
-                console.log(level)
+
                 d = []
                 keys = new Set()
                 maxYear = 0
+
+                if(level == "tag"){
+                    var allTagsEmpyty = {}
+                    for(var timeStepInd in timeSteps){
+                        var timeStep = timeSteps[timeStepInd]
+                        var country_bucket = countries_mock_data.timesteps[timeStep].country_data.buckets.find( function (e){
+                            return e.key == country_key
+                        })
+                        var catList = Object.keys(country_bucket.categories)
+                        for(catInd in catList){
+                            var catObj = country_bucket.categories[catList[catInd]]
+                    
+                            if(catObj){
+                                catTags = Object.keys(catObj.top_5)
+                                for(catTagInd in catTags){
+                                allTagsEmpyty[catTags[catTagInd]] = 0
+                            }
+                            }
+
+                    }
+                    }
+                }
+
                 for(var timeStepInd in timeSteps){
                     year_count = 0
                     var timeStep = timeSteps[timeStepInd]
@@ -718,14 +738,28 @@ body {
                                 year_data[tag] = tags[tag]
                                 keys.add(tag)
                             }else{
-                                catTagList = Object.keys(country_bucket.categories[tag])
-                                for(catInd in catTagList){
-                                    year_data[catTagList[catInd]] = country_bucket.categories[tag][catTagList[catInd]]
-                                    keys.add(catTagList[catInd])
-                                }
-                            }
+        
+
+                                try{
+                                    
+                                    var catObj =  country_bucket.categories[tag]
+                                    var catTagList =Object.keys(catObj.top_5)
+                                    
+                        
+                                    for(catInd in catTagList){
                             
-                
+                                        year_data[catTagList[catInd]] = catObj.top_5[catTagList[catInd]]
+                                        keys.add(catTagList[catInd])
+                                        year_count += catObj.top_5[catTagList[catInd]]
+                                    }
+                                }catch (error) {
+                                        if (error.name === 'TypeError')
+                                    {
+                                        continue
+                                    }
+                                }
+             
+                            }
                         }
                     }
                     d.push(year_data)
@@ -737,7 +771,7 @@ body {
                 }
                 keys = Array.from(keys)
                 console.log("returning year data")
-                console.log(keys)
+                console.log(d)
 
                 return [d, maxYear, Array.from(keys)]
             }
@@ -838,7 +872,7 @@ body {
         .on('drag', draggedRight)
 
     drawStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category")
-    drawStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "category")
+    drawStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
     updateStreamSlider()
 
     function getFocusedValidSteps(){
@@ -982,7 +1016,7 @@ body {
 
             .append("path")
             .attr("class", "myArea")
-            .style("fill", function(d) { return myColor(d.key); })
+            .style("fill", function(d) { return d === null ? 'grey' : myColor(d.key); })
             .attr("d", area)
             .on("mouseover", mouseover)
             .on("mousemove", mousemove)
@@ -1081,7 +1115,7 @@ body {
         country_paths
             .transition()
             .duration(750)
-            .style("fill", function(d, i) { return myColor(d.key); })
+            .style("fill", function(d, i) { return d === null ? 'grey' :myColor(d.key); })
             .attr("d", area)
         console.log("done refreshing")
 
@@ -1180,7 +1214,7 @@ body {
         current_year_data = countries_mock_data.timesteps[current_date]
         draw(world_countries ,current_year_data)
         
-        refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "category")
+        refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
             
     }
 

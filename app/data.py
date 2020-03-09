@@ -45,7 +45,7 @@ data_counties = pd.read_csv("app/data/map_files/data.csv")
 
 ## world map data
 world_countries = json.load(open("app/data/map_files/world.json"))
-countries_mock_data = json.load(open("app/data/processed_flickr_data/result7_fullset.json"))
+countries_mock_data = json.load(open("app/data/processed_flickr_data/result9_fullset.json"))
 ##countries_mock_data = json.load(open("app/data/map_files/mockelasticdata.json"))
 csv_data_in_json = pd.read_csv("csv_to_json/image_info_geo_2.csv", error_bad_lines=False).to_json(orient = "records")
 
