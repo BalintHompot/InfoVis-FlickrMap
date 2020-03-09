@@ -685,15 +685,19 @@ body {
                 allCategoriesEmpyty[countries_mock_data.allCategories[catInd]] = 0
             }
             var allTagsEmpyty = {}
+            var reverseTagCatIndex = {}
 
 
             function getStreamData(country_key, timeSteps, level){
+                console.log("time steps for data")
+                console.log(timeSteps)
 
                 d = []
                 keys = new Set()
                 maxYear = 0
 
                 if(level == "tag"){
+                    reverseTagCatIndex = {}
                     var allTagsEmpyty = {}
                     for(var timeStepInd in timeSteps){
                         var timeStep = timeSteps[timeStepInd]
@@ -751,6 +755,7 @@ body {
                                         year_data[catTagList[catInd]] = catObj.top_5[catTagList[catInd]]
                                         keys.add(catTagList[catInd])
                                         year_count += catObj.top_5[catTagList[catInd]]
+                                        reverseTagCatIndex[catTagList[catInd]] = tag
                                     }
                                 }catch (error) {
                                         if (error.name === 'TypeError')
@@ -929,10 +934,16 @@ body {
 
     /// define area and axes for the main stream graph
 
-
-    function valueAccessor(d, key) {
-            return d.values[key];
+    function addHexColor(c1, c2) {
+        var hexStr = (parseInt(c1, 16) + parseInt(c2, 16)).toString(16);
+        while (hexStr.length < 6) { hexStr = '0' + hexStr; } // Zero pad.
+        return hexStr;
         }
+
+    function getRandomGrey(){
+        r = Math.random()/5
+        return d3.interpolateGreys(r)
+    }
 
     function drawStreamGraph(country_key, svg_stream, validTimeSteps_graph, width_stream_graph, height_stream_graph, level){
 // append the svg object to the body of the page
@@ -980,7 +991,7 @@ body {
         // Three function that change the tooltip when user hover / move / leave a cell
         var mouseover = function(d) {
             Tooltip.style("opacity", 1)
-            d3.selectAll(".myArea").style("opacity", .2)
+            d3.selectAll(".myArea-" + level ).style("opacity", .2)
             d3.select(this)
             .style("stroke", "black")
             .style("opacity", 1)
@@ -992,7 +1003,8 @@ body {
         }
         var mouseleave = function(d) {
             Tooltip.style("opacity", 0)
-            d3.selectAll(".myArea").style("opacity", 1).style("stroke", "none")
+            d3.selectAll(".myArea-" + level ).style("opacity", 1)
+            d3.selectAll(".myArea-category" ).style("stroke", "none")
         }
 
         var clickedStream = function(d){
@@ -1015,8 +1027,8 @@ body {
             .enter()
 
             .append("path")
-            .attr("class", "myArea")
-            .style("fill", function(d) { return d === null ? 'grey' : myColor(d.key); })
+            .attr("class", "myArea-" + level )
+            .style("fill", function(d) { return d.key === null ? 'grey' : myColor(d.key); })
             .attr("d", area)
             .on("mouseover", mouseover)
             .on("mousemove", mousemove)
@@ -1027,10 +1039,15 @@ body {
     }
 
     function refreshStreamGraph(country_key, svg_stream, validTimeSteps_graph, width_stream_graph, height_stream_graph, level){
+        console.log(level)
         svg_stream.selectAll(".tick").remove()
 
         // Parse the Data
-        [data, yRange, keys] = getStreamData(country_key, validTimeSteps_graph, level)
+    
+
+        var [data, yRange, keys] = getStreamData(country_key, validTimeSteps_graph, level)
+        console.log("got data")
+        console.log(data)
 
 
 
@@ -1058,16 +1075,16 @@ body {
             .keys(keys)
             (data)
 
-
-
-
+        console.log("stacked data is")
+        console.log(stackedData)
         // Area generator
         var area = d3.area()
             .x(function(d) { return x(d.data.time_step_graph); })
             .y0(function(d) { return y(d[0]); })
             .y1(function(d) { return y(d[1]); })
 
-        console.log(stackedData)
+        
+
         // create a tooltip
         var Tooltip = svg_stream
             .append("text")
@@ -1078,11 +1095,13 @@ body {
         
         var mouseover = function(d) {
             Tooltip.style("opacity", 1)
-            d3.selectAll(".myArea").style("opacity", .2)
+            d3.selectAll(".myArea-" + level ).style("opacity", .2)
             d3.select(this)
-            .style("stroke", "black")
             .style("opacity", 1)
-     
+                d3.selectAll(".myArea-" + level )            
+                .style("stroke", "black")
+
+                 
         }
         var mousemove = function(d,i) {
             grp = d.key
@@ -1091,7 +1110,10 @@ body {
         }
         var mouseleave = function(d) {
             Tooltip.style("opacity", 0)
-            d3.selectAll(".myArea").style("opacity", 1).style("stroke", "none")
+            d3.selectAll(".myArea-" + level ).style("opacity", 1)
+            d3.selectAll(".myArea-category" ).style("stroke", "none")
+            
+            
         }
 
         var clickedStream = function(d){
@@ -1105,7 +1127,6 @@ body {
             .data(stackedData)
 
 
-        console.log(country_paths)
         country_paths
             .on("mouseover", mouseover)
             .on("mousemove", mousemove)
@@ -1115,19 +1136,29 @@ body {
         country_paths
             .transition()
             .duration(750)
-            .style("fill", function(d, i) { return d === null ? 'grey' :myColor(d.key); })
+            .style("fill", function(d, i) { 
+        
+                if(!d){
+                    return 'grey'
+                }else if(level == "tag"){
+                    return myColor(reverseTagCatIndex[d.key]) 
+                }else{
+                    return myColor(d.key)
+                }
+             })
             .attr("d", area)
-        console.log("done refreshing")
+
+        d3.selectAll(".myArea-tag" )            
+                .style("stroke", "black")
+                .attr('stroke-width', .2)
+
+                
 
     }
 
 
 
     function updateStreamSlider(){
-        console.log("current date is")
-        console.log(current_date)
-        console.log("curretn date in range")
-        console.log(x_main_stream(current_date))
         var focusRectCornerTop = 0-rectAdd
         var focusRectCornerRight = x_main_stream(current_date) + (rectWidthRight)
         var focusRectCornerLeft = x_main_stream(current_date) - (rectWidthLeft)
