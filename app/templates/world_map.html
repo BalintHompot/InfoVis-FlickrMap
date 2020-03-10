@@ -697,13 +697,13 @@ body {
                 console.log("time steps for data")
                 console.log(timeSteps)
 
-                d = []
-                keys = new Set()
-                maxYear = 0
+                var d = []
+                var keys = new Set()
+                var maxYear = 0
 
                 if(level == "tag"){
                     reverseTagCatIndex = {}
-                    var allTagsEmpyty = {}
+                    allTagsEmpyty = {}
                     for(var timeStepInd in timeSteps){
                         var timeStep = timeSteps[timeStepInd]
                         var country_bucket = countries_mock_data.timesteps[timeStep].country_data.buckets.find( function (e){
@@ -716,16 +716,22 @@ body {
                             if(catObj){
                                 catTags = Object.keys(catObj.top_5)
                                 for(catTagInd in catTags){
-                                allTagsEmpyty[catTags[catTagInd]] = 0
+                                    allTagsEmpyty[catTags[catTagInd]] = 0
+                                    
+                                    reverseTagCatIndex[catTags[catTagInd]] = catList[catInd]
+                              
                             }
                             }
 
                     }
                     }
                 }
+                console.log("rev ind")
+                console.log(reverseTagCatIndex)
+                
 
                 for(var timeStepInd in timeSteps){
-                    year_count = 0
+                    var year_count = 0
                     var timeStep = timeSteps[timeStepInd]
                     var country_bucket = countries_mock_data.timesteps[timeStep].country_data.buckets.find( function (e){
                         return e.key == country_key
@@ -735,41 +741,50 @@ body {
                     var year_data = {"time_step_graph" : timeStep}
                     Object.assign(year_data, emptyObj);
                     if(country_bucket){
+                        console.log(country_bucket)
             
                         //var tags = Object.assign({}, country_bucket.most_popular_5, country_bucket.rest_tags)
                         var tags = country_bucket.categories_sum
                         tag_list = Object.keys(tags)
 
-                        for(var tagInd in tag_list){
-                            tag = tag_list[tagInd]
-                            year_count += tags[tag]
-                            if(level == "category"){
-                                year_data[tag] = tags[tag]
-                                keys.add(tag)
-                            }else{
-        
-
-                                try{
-                                    
-                                    var catObj =  country_bucket.categories[tag]
-                                    var catTagList =Object.keys(catObj.top_5)
-                                    
-                        
-                                    for(catInd in catTagList){
+                  
                             
-                                        year_data[catTagList[catInd]] = catObj.top_5[catTagList[catInd]]
-                                        keys.add(catTagList[catInd])
-                                        year_count += catObj.top_5[catTagList[catInd]]
-                                        reverseTagCatIndex[catTagList[catInd]] = tag
-                                    }
-                                }catch (error) {
-                                        if (error.name === 'TypeError')
-                                    {
-                                        continue
-                                    }
+                            if(level == "category"){
+                                for(var tagInd in tag_list){
+                                    tag = tag_list[tagInd]
+                                    year_count += tags[tag]
+                                    year_data[tag] = tags[tag]
+                                    keys.add(tag)
                                 }
+                            }else{
+                               
+                            
+                                var allTagsList = {}
+                                for(var tagInd in tag_list){
+                                    cat = tag_list[tagInd]
+                                    cat_obj = country_bucket.categories[cat]
+                                    if(cat_obj){
+                                        all_cat_tag_obj = cat_obj.all_tags
+                                        allTagsList = Object.assign(allTagsList, all_cat_tag_obj)
+                                    }
+                               
+                                }
+                                var catTagList =Object.keys(emptyObj)
+                    
+                                for(var catInd in catTagList){
+                        
+                                    var catCount =  allTagsList[catTagList[catInd]]
+                                    if(typeof catCount == "undefined"){
+                                        catCount = 0
+                                    }
+                        
+                                    year_data[catTagList[catInd]] = catCount
+                                    keys.add(catTagList[catInd])
+                                    year_count += catCount
+                                }
+                        
              
-                            }
+                            
                         }
                     }
                     d.push(year_data)
@@ -782,8 +797,9 @@ body {
                 keys = Array.from(keys)
                 console.log("returning year data")
                 console.log(d)
+                console.log(keys)
 
-                return [d, maxYear, Array.from(keys)]
+                return [d, maxYear, keys]
             }
 
     var margin = {top: 150, right: 20, bottom: 20, left: 20},
@@ -859,10 +875,12 @@ body {
     var x_main_stream = getX(validTimeSteps, width_stream)
 
     function getY(maxRange, height_stream_y){
+        console.log("getting y scale with domain")
+        console.log(maxRange)
         var y = d3.scaleLinear()
         y
-            .domain([-maxRange, maxRange])
-            .range([ height_stream_y, 0 ]);
+            .domain([0, maxRange])
+            .range([ height_stream_y-30, 20 ]);
         return y
 
     }
@@ -957,10 +975,10 @@ body {
 
 
         // Parse the Data
-        [data, yRange, keys] = getStreamData(country_key, validTimeSteps_graph, level)
+        var [data, yRange, keys] = getStreamData(country_key, validTimeSteps_graph, level)
 
-        x = getX(validTimeSteps_graph, width_stream_graph)
-        y = getY(yRange, height_stream_graph)
+        var x = getX(validTimeSteps_graph, width_stream_graph)
+        var y = getY(yRange, height_stream_graph)
 
         svg_stream.append("g")
             .attr("transform", "translate(0," + height_stream_graph*0.8 + ")")
@@ -987,7 +1005,7 @@ body {
 
         //stack the data?
         var stackedData = d3.stack()
-            .offset(d3.stackOffsetSilhouette)
+            //.offset(d3.stackOffsetSilhouette)
             .keys(keys)
             (data)
 
@@ -1027,8 +1045,8 @@ body {
         var logged = false
         // Area generator
         var area = d3.area()
-            .x(function(d) { if(!logged){console.log("data point date is");console.log(d); logged = true}return x(d.data.time_step_graph); })
-            .y0(function(d) { return y(d[0]); })
+            .x(function(d) {return x(d.data.time_step_graph); })
+            .y0(function(d) {return y(d[0]); })
             .y1(function(d) { return y(d[1]); })
         
 
@@ -1039,9 +1057,11 @@ body {
             .enter()
 
             .append("path")
+            
             .attr("class", "myArea-" + level )
             .style("fill", function(d) { return d.key === null ? 'grey' : myColor(d.key); })
             .attr("d", area)
+            
             .on("mouseover", mouseover)
             .on("mousemove", mousemove)
             .on("mouseleave", mouseleave)
@@ -1055,16 +1075,12 @@ body {
         svg_stream.selectAll(".tick").remove()
 
         // Parse the Data
-    
 
         var [data, yRange, keys] = getStreamData(country_key, validTimeSteps_graph, level)
-        console.log("got data")
-        console.log(data)
+        var x = getX(validTimeSteps_graph, width_stream_graph)
+        var y = getY(yRange, height_stream_graph)
 
 
-
-        x = getX(validTimeSteps_graph, width_stream_graph)
-        y = getY(yRange, height_stream_graph)
         // List of groups = header of the csv files
         
         svg_stream.append("g")
@@ -1085,10 +1101,11 @@ body {
         // Customization	
         svg_stream.selectAll(".tick line").attr("stroke", "#b8b8b8")
 
-
+        console.log("get new keys")
+        console.log(keys)
         //stack the data?
         var stackedData = d3.stack()
-            .offset(d3.stackOffsetSilhouette)
+            //.offset(d3.stackOffsetSilhouette)
             .keys(keys)
             (data)
 
@@ -1099,8 +1116,6 @@ body {
             .x(function(d) { return x(d.data.time_step_graph); })
             .y0(function(d) { return y(d[0]); })
             .y1(function(d) { return y(d[1]); })
-
-        
 
         // create a tooltip
         var Tooltip = svg_stream
@@ -1144,6 +1159,7 @@ body {
             .data(stackedData)
 
 
+
         country_paths
             .on("mouseover", mouseover)
             .on("mousemove", mousemove)
@@ -1164,12 +1180,12 @@ body {
                 }
              })
             .attr("d", area)
-
+   
         d3.selectAll(".myArea-tag" )            
                 .style("stroke", "black")
                 .attr('stroke-width', .2)
 
-                
+        svg_stream.exit().remove()
 
     }
 
