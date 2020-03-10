@@ -2,6 +2,7 @@
 {% block title %}Bokeh Visualization{% endblock %}
 {% block body %}
     <head>
+		
         <meta charset="utf-8">
         <style>
             /* CSS goes here. */
@@ -288,7 +289,7 @@ body {
             var mapdata = {};
             var popular_tags = true;
 
-            var width = 800, height = 600;
+            var width = 800, height =400;
             var current_position;
 
             $(document).ready(function() {
@@ -350,6 +351,7 @@ body {
                 .attr("class", "background")
                 .attr("width", width)
                 .attr("height", height)
+
                 .on("click", reset);
             var g = svg.append("g");
 
@@ -405,8 +407,9 @@ body {
             for(catInd in Object.keys(countries_mock_data.allCategories))
 
             var myColor = d3.scaleOrdinal().domain(countries_mock_data.allCategories)
-                .range(d3.schemeSet3);
-
+                .range(['#ffff99', '#beaed4' , '#7fc97f', '#fdc086', '#386cb0', '#D3D3D3']);
+			// animal, citylife, nature, people, sports, unknown
+			
             //console.log(countries_mock_data)
             current_date_ind = 0
             current_date = validTimeSteps[current_date_ind]
@@ -524,7 +527,9 @@ body {
                     .style('display', 'inline-block')
               
                 d3.selectAll('.subunit.ca'+datum.id)
-                    .style('fill', '#cc6699');
+                    .style("fill", function() {
+					return d3.rgb(d3.select(this).style("fill")).darker(0.5);
+					});
 
 
                 //tooltip.style("opacity", 1);
