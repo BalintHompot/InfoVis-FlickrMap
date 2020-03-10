@@ -139,16 +139,41 @@
   padding : 5px 15px;
 }
 
+path:hover
+{
+	fill-opacity: .5;
+}
+  
+.axis path {
+  fill: none;
+}
+  
+.axis line {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.5);
+}
+  
+.background
+{
+	fill: transparent;
+	pointer-events: all;
+}
 
+.legend
+{
+	position:absolute;
+	left:20px;
+	top:30px;
+}
   
 .d3-tip
 {
 	line-height: 1;
-	font-weight: bold;
-    width: fit-content;
+    width: 800px;
     height: fit-content;
 	padding: 12px;
-	background: rgba(255, 255, 255, 0.616);
+	/*background: rgba(204, 188, 188, 0.836)*/
+    background-color: lavender;
     color: black;
 	border-radius: 2px;
 }
@@ -156,11 +181,12 @@
 .d3-tip:after
 {
 	box-sizing: border-box;
-    width: fit-content;
+    width: 800px;
     height: fit-content;
 	font-size: 5px;
 	line-height: 1;
-	color: rgba(255, 255, 255, 0.116);
+	/*color: rgba(204, 188, 188, 0.836);*/
+    background-color: lavender;
 	content: "\25BC";
 	position: absolute;
 	text-align: center;
@@ -169,12 +195,21 @@
 .d3-tip.n:after
 {
 	margin: -1px 0 0 0;
-    width: fit-content;
+    width: 800px;
     height: fit-content;
 	top: 100%;
 	left: 0;
 }
+  
+#tipDiv
+{
+    width: 400px;
+}
 
+#tipDiv2
+{
+    width: 380px;
+}
 
 #button {
   background: #ccc;
@@ -210,6 +245,7 @@
         <script src="https://code.highcharts.com/modules/exporting.js"></script>   
         <script src="https://code.highcharts.com/modules/export-data.js"></script>
         <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+        <script src="https://code.highcharts.com/modules/no-data-to-display.js"></script>
 
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
@@ -314,16 +350,17 @@
   	        //         "<p>Opioid-involved deaths over time in</p><div id='tipDiv'></div>"
             //     );
             var tip = d3.tip()
-			    .attr("class", "d3-tip")
-			    .offset([350, 100])
+                .attr("class", "d3-tip")
+                .style("width", "780 px")
+			    .offset([250, 0])
     	        .html(function(d)
 			    {
                     // var x = +d.properties.value;
                     // x = x.toPrecision(2);
-                    return "Country: " + d.properties.name + "<br>"
-                        + "Most Popular Tag:" + d.properties.most_popular_tag + "<br>"
-                        + "No. of users:" + d.properties.user_freq + "<br><br>"
-                        + "<div id='tipDiv'></div<br>";
+                    return "<strong>Country: &nbsp;</strong><span>" + d.properties.name + "<br></span>"
+                        + "<strong>Most Popular Tag: &nbsp;</strong><span>" + d.properties.most_popular_tag + "<br></span>"
+                        + "<strong>No. of users: &nbsp;</strong><span>" + d.properties.user_freq + "<br><br></span>"
+                        + "<div style='display: inline-flex;'><div id='tipDiv'></div><div id='tipDiv2'></div></div>";
                 });
             
             
@@ -409,7 +446,7 @@
             for(catInd in Object.keys(countries_mock_data.allCategories))
 
             var myColor = d3.scaleOrdinal().domain(countries_mock_data.allCategories)
-                .range(['#ffff99', '#beaed4' , '#7fc97f', '#fdc086', '#386cb0', '#D3D3D3']);
+                .range(['#ffff99', '#beaed4' , '#7fc97f', '#fdc086', '#f0027f', '#386cb0', '#D3D3D3']);
 			// animal, citylife, nature, people, sports, unknown
 			
             //console.log(countries_mock_data)
@@ -443,6 +480,7 @@
                         var most_popular_taglist = data.country_data.buckets[idx].categories_sum;
                         var user_freq = data.country_data.buckets[idx].user_freq;
                         var device_data = data.country_data.buckets[idx].device_data;
+                        var catTrend = data.country_data.buckets[idx].categories;
                         for(var wdx=0; wdx < world.objects.subunits.geometries.length; wdx++) {
                             var cName = world.objects.subunits.geometries[wdx].id.toUpperCase();
                             if (cCode === cName) {
@@ -452,6 +490,7 @@
                                 world.objects.subunits.geometries[wdx].properties.most_popular_5 = most_popular_taglist;
                                 world.objects.subunits.geometries[wdx].properties.user_freq = user_freq;
                                 world.objects.subunits.geometries[wdx].properties.device_data = device_data;
+                                world.objects.subunits.geometries[wdx].properties.category_trend = catTrend;
                             }
                         }
                     }
@@ -510,9 +549,14 @@
             }
 
             function mouseenterFunction(datum, index) {
+                // tip.style("left", d3.select(this).attr("cx") + "px")     
+                //     .style("top", d3.select(this).attr("cy") + "px");
                 tip.show(datum);
-                if (popular_tags)
+                console.log("data: ",datum);
+                if (popular_tags) {
                     refreshPie1(datum);
+                    getTagPerCategories(datum);
+                }
                 else
                     refreshDonut1(datum);
             }
@@ -1095,9 +1139,11 @@
     }
 
     function refreshStreamGraph(country_key, svg_stream, validTimeSteps_graph, width_stream_graph, height_stream_graph, level){
+        console.log(level)
         svg_stream.selectAll(".tick").remove()
 
         // Parse the Data
+    
 
         var [data, yRange, keys] = getStreamData(country_key, validTimeSteps_graph, level)
         var x = getX(validTimeSteps_graph, width_stream_graph)
@@ -1176,9 +1222,6 @@
 
         var country_paths = svg_stream.selectAll("#path" + level)
             .data(stackedData)
-            
-        country_paths.enter().append('path-' + level)
-
 
         country_paths
             .on("mouseover", mouseover)
@@ -1202,7 +1245,7 @@
             
             .attr("d", area)
 
-        country_paths.exit().remove()
+
 
    
         d3.selectAll(".myArea-tag" )            
@@ -1533,7 +1576,65 @@ Highcharts.chart('tipDiv', {
         type: 'pie'
     },
     title: {
-        text: 'Top 5 tag trends'
+        text: 'Top 5 category trends'
+    },
+    credits: {
+        enabled: false
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+            },
+            showInLegend: true,
+            animation: false
+        }
+    },
+    series: [{
+        name: 'Flickr Tags',
+        colorByPoint: true,
+        colors: colors,
+        data: newDat
+    }],
+    exporting: {
+        enabled: false
+    }
+});
+}
+
+function refreshPieDiv(dat) {
+    var newDat = [];
+    var colors = [];
+var chkData = dat.properties.most_popular_5;
+for (var key in chkData) {
+	var obj = {};
+  obj.name = key;
+  obj.y = chkData[key];
+  newDat.push(obj);
+  console.log("color: ",myColor(key));
+  colors.push(myColor(key));
+}
+
+Highcharts.chart('pie', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'Top 5 category trends'
     },
     credits: {
         enabled: false
@@ -1566,57 +1667,106 @@ Highcharts.chart('tipDiv', {
 });
 }
 
-function refreshPieDiv(dat) {
-    var newDat = [];
-    var colors = [];
-var chkData = dat.properties.most_popular_5;
-for (var key in chkData) {
-	var obj = {};
-  obj.name = key;
-  obj.y = chkData[key];
-  newDat.push(obj);
-  console.log("color: ",myColor(key));
-  colors.push(myColor(key));
-}
 
-Highcharts.chart('pie', {
+function getTagPerCategories(dat) {
+
+    catArray = [];
+    var tempData = dat.properties.most_popular_5;
+    var map = [];
+    var i=0;
+    for (var key in tempData) {
+        if (key != 'unknown' && tempData[key] != 0) {
+            catArray.push(key);
+            map[key] = i++;
+        }
+    }
+    var seriesData = [];
+    var categoryData = dat.properties.category_trend;
+    var tagMap = [];
+    for (var cat in catArray) {
+        var catTags = categoryData[catArray[cat]].top_5;
+        for (var tags in catTags) {
+            if (tagMap[tags] == null) {
+                //First Time..
+                tagMap[tags] = Array(catArray.length).fill(0);
+                tagMap[tags][map[catArray[cat]]] = catTags[tags];
+            } 
+            else {
+                tagMap[tags][map[catArray[cat]]] = catTags[tags];
+            }
+        }
+    }
+
+
+    console.log("tags: ",tagMap);
+
+    for (var key in tagMap){
+        var obj = {};
+        obj.name = key;
+        obj.data = tagMap[key];
+        seriesData.push(obj);
+    }
+
+    console.log("seriesData: ",seriesData);
+    
+    Highcharts.chart('tipDiv2', {
     chart: {
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
-        plotShadow: false,
-        type: 'pie'
+        type: 'column'
     },
     title: {
-        text: 'Top 5 tag trends'
+        text: 'Tag Per Category Trends'
+    },
+    xAxis: {
+        categories: catArray
+    },
+    yAxis: {
+        min: 0,
+        // title: {
+        //     text: 'Total fruit consumpti'
+        // },
+        stackLabels: {
+            enabled: true,
+            style: {
+                fontWeight: 'bold',
+                color: ( // theme
+                    Highcharts.defaultOptions.title.style &&
+                    Highcharts.defaultOptions.title.style.color
+                ) || 'gray'
+            }
+        }
     },
     credits: {
         enabled: false
     },
-    tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    legend: {
+        align: 'right',
+        x: -30,
+        verticalAlign: 'top',
+        y: 25,
+        floating: true,
+        backgroundColor:
+            Highcharts.defaultOptions.legend.backgroundColor || 'white',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false
     },
-    accessibility: {
-        point: {
-            valueSuffix: '%'
-        }
+    tooltip: {
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
     },
     plotOptions: {
-        pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
+        column: {
+            stacking: 'normal',
             dataLabels: {
-                enabled: true,
-                format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                enabled: true
             },
-            showInLegend: true
+            animation: false
         }
     },
-    series: [{
-        name: 'Flickr Tags',
-        colorByPoint: true,
-        colors: colors,
-        data: newDat
-    }]
+    series: seriesData,
+    exporting: {
+        enabled: false
+    }
 });
 }
 
