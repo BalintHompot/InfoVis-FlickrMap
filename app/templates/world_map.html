@@ -1222,6 +1222,9 @@ path:hover
 
         var country_paths = svg_stream.selectAll("#path" + level)
             .data(stackedData)
+        country_paths
+            .enter()
+            .append("path")
 
         country_paths
             .on("mouseover", mouseover)
@@ -1245,7 +1248,7 @@ path:hover
             
             .attr("d", area)
 
-
+        country_paths.exit().remove()
 
    
         d3.selectAll(".myArea-tag" )            
