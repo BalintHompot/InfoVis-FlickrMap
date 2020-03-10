@@ -265,7 +265,11 @@ path:hover
                 <!-- Create a div where the graph will take place -->
                 <div id = "playaxis" style="display: flex; flex-direction: row;">
                     <button name="play" id="play" style="height: 30px;">Play</button>
-                    <div id="my_dataviz"></div>
+                    <div style="display: flex;flex-direction: column;">
+                        <div id="my_dataviz"></div>
+                        <div id="my_dataviz_2"></div>
+                    </div>
+               
                 </div>
         
             </span>
@@ -871,7 +875,7 @@ path:hover
 
     var margin = {top: 150, right: 20, bottom: 20, left: 20},
     width_stream = 800
-    height_stream = 100
+    height_stream = 70
 
     
 
@@ -884,6 +888,16 @@ path:hover
     .append("g")
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
+    
+    height_stream_2 = 50
+    var svg_stream_2 = d3.select("#my_dataviz_2")
+    .append("svg")
+        .attr("width", width_stream + margin.left + margin.right)
+        .attr("height", height_stream_2 + margin.top + margin.bottom)
+        .attr("id", "streamContainer_2")
+    .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + 0 + ")");
 
 
 
@@ -947,7 +961,7 @@ path:hover
         var y = d3.scaleLinear()
         y
             .domain([0, maxRange])
-            .range([ height_stream_y-30, 20 ]);
+            .range([ height_stream_y * 0.8, 20 ]);
         return y
 
     }
@@ -967,6 +981,8 @@ path:hover
         .on('drag', draggedRight)
 
     drawStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category")
+    drawStreamGraph(country_in_focus_1, svg_stream_2, validTimeSteps, width_stream, height_stream, "category")
+
     drawStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
     updateStreamSlider()
 
@@ -1058,7 +1074,7 @@ path:hover
 			)
             .select(".domain").remove()
         // Customization
-        svg_stream.selectAll(".tick line").attr("stroke", "#b8b8b8")
+        svg_stream.selectAll(".tick line").attr("stroke", "white")
 
         // Add X axis label:
         svg_stream.append("text")
@@ -1168,7 +1184,7 @@ path:hover
 			
             .select(".domain").remove()
         // Customization	
-        svg_stream.selectAll(".tick line").attr("stroke", "#b8b8b8")
+        svg_stream.selectAll(".tick line").attr("stroke", "white")
 
         //stack the data?
         var stackedData = d3.stack()
