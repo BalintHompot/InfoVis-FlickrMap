@@ -534,8 +534,8 @@
             current_date_ind = 0
             current_date = validTimeSteps[current_date_ind]
             current_year_data = countries_mock_data.timesteps[current_date]
-            country_in_focus_1 = "USA"
-            country_in_focus_2 = "USA"
+            country_in_focus_1 = "WORLD"
+            country_in_focus_2 = "WORLD"
             //console.log(current_year_data)
             
 
@@ -733,8 +733,8 @@
                     // .call( zoom.transform, d3.zoomIdentity.translate(0, 0).scale(1) ); // not in d3 v4
                     .call( zoom.transform, d3.zoomIdentity ); // updated for d3 v4
                 
-                refreshStreamGraph("USA", current_selection_svg, validTimeSteps, width_stream, height_stream, "category", current_selection_ticks_enabled)
-                refreshStreamGraph("USA", svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+                refreshStreamGraph("WORLD", current_selection_svg, validTimeSteps, width_stream, height_stream, "category", current_selection_ticks_enabled)
+                refreshStreamGraph("WORLD", svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
                 //TODO have to add reset functionality for pie and donut..
 
             }
@@ -878,9 +878,9 @@
                         console.log(country_bucket)
             
                         //var tags = Object.assign({}, country_bucket.most_popular_5, country_bucket.rest_tags)
-                        tags = JSON.parse(JSON.stringify(country_bucket.categories_sum))
+                        tags = JSON.parse(JSON.stringify(country_bucket.categories_tags_sum))
                         console.log("original cat data")
-                        console.log(country_bucket.categories_sum)
+                        console.log(country_bucket.categories_tags_sum)
                         tag_list = Object.keys(tags)
 
                   
@@ -1443,6 +1443,16 @@ d3.select("#main_container")
             .attr('x2', x_main_stream(current_date))
             .attr('y2', rectGrabTop)
             .call(drag);
+
+        sliderG
+            .append("line")
+            .attr('id', "line-split")
+            .attr('stroke', 'black')
+            .attr('stroke-width', 0.5)
+            .attr('x1', focusRectCornerLeft)
+            .attr('y1', height - height_stream + 5)
+            .attr('x2', focusRectCornerRight)
+            .attr('y2', height - height_stream + 5 )
         sliderG
             .append("rect")
             .attr('id', "rect-grab")
