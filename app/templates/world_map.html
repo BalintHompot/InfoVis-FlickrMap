@@ -430,9 +430,9 @@
             var popular_tags = true;
 
 
-            var width_main = window.innerWidth -16
+            var width_main = window.innerWidth -17
 			
-			var height_main = window.innerHeight -56 -3
+			var height_main = window.innerHeight -56
 
             var width = 0.6*width_main, height = 0.75*height_main;
 			
@@ -1270,10 +1270,10 @@ d3.select("#main_container")
         }
 
         // Add X axis label:
-        svg_stream.append("text")
+        svg_stream_2.append("text")
             .attr("text-anchor", "end")
-            .attr("x", width_stream_graph-25)
-            .attr("y", height_stream_graph-30 )
+            .attr("x", width_stream_graph-15)
+            .attr("y", height_stream_graph +15 )
 			.attr('font-size', 12)
             .text("Year");
         }
