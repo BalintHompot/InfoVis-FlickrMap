@@ -1299,13 +1299,15 @@ d3.select("#main_container")
         
 
         // Show the areas
+
+
         svg_stream
             .selectAll("mylayers")
             .data(stackedData)
             .enter()
 
             .append("path")
-            .attr("id", "path" + level)
+            .attr("id", function(d){return "path-" + d.key})
             
             .attr("class", "myArea-" + level )
             .style("fill", function(d) { return d.key === null ? 'grey' : myColor(d.key); })
@@ -1367,8 +1369,8 @@ d3.select("#main_container")
 
         // Area generator
         var area = d3.area()
-            .x(function(d) { return x(d.data.time_step_graph); })
-            .y0(function(d) { console.log(d);return y(d[0]); })
+            .x(function(d) {console.log("retrieving area for "); console.log(d) ;return x(d.data.time_step_graph); })
+            .y0(function(d) { return y(d[0]); })
             .y1(function(d) { return y(d[1]); })
 
         // create a tooltip
@@ -1408,40 +1410,39 @@ d3.select("#main_container")
             updateStreamSlider()
         }
 
+                var p = svg_stream.selectAll(".myArea-" + level)
+                p
+                    .data(stackedData)
+                p.exit().remove()
 
-        var country_paths = svg_stream.selectAll("#path" + level)
-            .data(stackedData)
-        country_paths
-            .enter()
-            .append("path")
-   
-            .style("fill", function(d, i) { 
-        
-                if(!d){
-                    return 'grey'
-                }else if(level == "tag"){
-                    return myColor(reverseTagCatIndex[d.key]) 
-                }else{
-                    return myColor(d.key)
-                }
-            })
-            
-            .attr("d", area)
-            .on("mouseover", mouseover)
-            .on("mousemove", mousemove)
-            .on("mouseleave", mouseleave)
-            .on("click", clickedStream);
+                p
+                    .transition()
+                    .duration(750)
+                    .attr("d", area)
+                
 
+                p.enter()            
 
-
-        country_paths.exit().remove()
+       
+                .append("path")
+                .attr("id", function(d){return "path-" + d.key})
+                
+                .attr("class", "myArea-" + level )
+                .style("fill", function(d) { return d.key === null ? 'grey' : myColor(d.key); })
+                .attr("d", area)
+                
+                .on("mouseover", mouseover)
+                .on("mousemove", mousemove)
+                .on("mouseleave", mouseleave)
+                .on("click", clickedStream);
+    
 
    
         d3.selectAll(".myArea-tag" )            
                 .style("stroke", "black")
                 .attr('stroke-width', .2)
 
-
+        
     }
 
 
