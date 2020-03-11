@@ -1,6 +1,4 @@
-{% extends "base.html" %}
-{% block title %}Bokeh Visualization{% endblock %}
-{% block body %}
+
     <head>
 		
         <meta charset="utf-8">
@@ -365,8 +363,9 @@ path:hover
             var mapdata = {};
             var popular_tags = true;
 
-            var width = 800, height =400;
-            var width_main = 1100, height_main = 800;
+            var width = 800, height =600;
+            var width_main = 1500, height_main = 800;
+            var width_side_panel = 300
             var current_position;
 
             $(document).ready(function() {
@@ -423,10 +422,24 @@ path:hover
             var main_container = d3.select("#my_dataviz").append("svg").attr("id", "main_container")
                         .attr("height", height_main)    // set the height
                         .attr("width", width_main); 
-
+            var left_panel =  main_container.append("g")
+                        .attr("height", height_main)    // set the height
+                        .attr("width", width_side_panel)
+                        .attr("id", "left_panel");
             var svg = main_container.append("g")
                         .attr("height", height)    // set the height
-                        .attr("width", width);  
+                        .attr("width", width)
+                        .attr("id", "map-container")
+                        .attr("transform",
+                            "translate(" + width_side_panel + "," + 0 + ")");
+
+            var rightPanelOffset = width_side_panel + width
+            var right_panel =  main_container.append("g")
+                        .attr("height", height_main)    // set the height
+                        .attr("width", width_side_panel)
+                        .attr("id", "right_panel")
+                        .attr("transform",
+                            "translate(" + rightPanelOffset + "," + 0 + ")");
             
             svg.call(tip);
             
@@ -926,6 +939,8 @@ path:hover
         .attr("width", width_stream + margin.left + margin.right)
         .attr("height", height_stream * 2.5 + margin.top + margin.bottom)
         .attr("id", "streamContainer")
+        .attr("transform",
+            "translate(" + width_side_panel + "," + 0 + ")")
     .append("g")
         .attr("transform",
             "translate(" + margin.left + "," + height + ")")
@@ -954,12 +969,14 @@ path:hover
 
 
             /// adding variables and rect for the focused stream graph
-    var focusStremTartgetBottom = -150
-    var focusStremTartgetLeft = 0
-    var focusStremTartgetRight = width_stream  - 500
-    var focusStremTartgetTop =  -30
+
+    var focusMargin = 20
+    var focusStremTartgetBottom = 0
+    var focusStremTartgetLeft = focusMargin
+    var focusStremTartgetRight = width_side_panel
+    var focusStremTartgetTop =  200
     
-    d3.select("#streamContainer")
+    d3.select("#left_panel")
         .append("g")
         .attr('id', "g-focus")
         .attr("transform",
@@ -967,9 +984,9 @@ path:hover
 
     var svg_focused_stream = d3.selectAll("#g-focus")
     
-    svg_stream
+    left_panel
             .append("rect")
-            .attr('id', "rect-focus")
+            .attr('id', "rect-focus-left")
             .style("fill", "black")
             .attr("fill-opacity","0.1")
             .attr("rx", 3)
@@ -978,6 +995,19 @@ path:hover
             .attr("width", focusStremTartgetRight - focusStremTartgetLeft)
             .attr("height", focusStremTartgetTop - focusStremTartgetBottom)
             .attr("x", focusStremTartgetLeft)
+            .attr("y", focusStremTartgetBottom)
+
+    right_panel
+            .append("rect")
+            .attr('id', "rect-focus-right")
+            .style("fill", "black")
+            .attr("fill-opacity","0.1")
+            .attr("rx", 3)
+            .attr("ry", 3)
+            .style("stroke", "black")
+            .attr("width", focusStremTartgetRight - focusStremTartgetLeft)
+            .attr("height", focusStremTartgetTop - focusStremTartgetBottom)
+            .attr("x", 0)
             .attr("y", focusStremTartgetBottom)
     
 
@@ -1346,10 +1376,11 @@ path:hover
     function updateStreamSlider(){
         var rectGrabBottom = height 
         var rectGrabTop = height - height_stream_2 - height_stream
-        var focusRectCornerTop = height_main -rectAdd
+        var focusRectCornerTop = height + height_stream + 15
         var focusRectCornerRight = x_main_stream(current_date) + (rectWidthRight)
         var focusRectCornerLeft = x_main_stream(current_date) - (rectWidthLeft)
         d3.select("#sliderG").remove()
+        d3.selectAll("#line-focus").remove()
 
 
         var sliderG = d3.select("#streamContainer").append("g").attr("id", "sliderG")
@@ -1362,7 +1393,7 @@ path:hover
             .attr('stroke', 'black')
             .attr('stroke-width', 2)
             .attr('x1', x_main_stream(current_date))
-            .attr('y1', rectGrabBottom)
+            .attr('y1', rectGrabBottom + rectAdd)
             .attr('x2', x_main_stream(current_date))
             .attr('y2', rectGrabTop)
             .call(drag);
@@ -1379,24 +1410,24 @@ path:hover
             .attr("x", focusRectCornerLeft)
             .attr("y", rectGrabTop)
             .call(drag);
-        sliderG
+        main_container
             .append("line")
             .attr('id', "line-focus")
             .attr('stroke', 'grey')
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
-            .attr('x1', focusRectCornerLeft)
+            .attr('x1', focusRectCornerLeft + width_side_panel)
             .attr('y1', focusRectCornerTop)
             .attr('x2', focusStremTartgetLeft)
             .attr('y2', focusStremTartgetTop)
             .call(drag);
-        sliderG
+        main_container
             .append("line")
             .attr('id', "line-focus")
             .attr('stroke', 'grey')
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
-            .attr('x1', focusRectCornerRight)
+            .attr('x1', focusRectCornerRight + width_side_panel)
             .attr('y1', focusRectCornerTop)
             .attr('x2', focusStremTartgetRight)
             .attr('y2', focusStremTartgetTop)
@@ -1413,7 +1444,7 @@ path:hover
             .attr("width",10)
             .attr("height", 10)
             .attr("x", focusRectCornerLeft-5)
-            .attr("y", rectGrabBottom  + 15)
+            .attr("y", rectGrabBottom )
             .call(dragLeft);
         sliderG
             .append("rect")
@@ -1425,7 +1456,7 @@ path:hover
             .attr("width", 10)
             .attr("height", 10)
             .attr("x", focusRectCornerRight-5)
-            .attr("y", rectGrabBottom  +15)
+            .attr("y", rectGrabBottom )
             .call(dragRight);
 
         //calling update on map
@@ -2091,4 +2122,3 @@ var sampleData = [{
 
         
     </body>
-{% endblock %}
