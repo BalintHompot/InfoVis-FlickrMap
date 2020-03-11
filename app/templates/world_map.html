@@ -422,17 +422,17 @@ path:hover
             var main_container = d3.select("#my_dataviz").append("svg").attr("id", "main_container")
                         .attr("height", height_main)    // set the height
                         .attr("width", width_main); 
-            var left_panel =  main_container.append("g")
-                        .attr("height", height_main)    // set the height
-                        .attr("width", width_side_panel)
-                        .attr("id", "left_panel");
+
             var svg = main_container.append("g")
                         .attr("height", height)    // set the height
                         .attr("width", width)
                         .attr("id", "map-container")
                         .attr("transform",
                             "translate(" + width_side_panel + "," + 0 + ")");
-
+            var left_panel =  main_container.append("g")
+                        .attr("height", height_main)    // set the height
+                        .attr("width", width_side_panel)
+                        .attr("id", "left_panel");
             var rightPanelOffset = width_side_panel + width
             var right_panel =  main_container.append("g")
                         .attr("height", height_main)    // set the height
@@ -441,6 +441,19 @@ path:hover
                         .attr("transform",
                             "translate(" + rightPanelOffset + "," + 0 + ")");
             
+            left_panel
+                .append("rect")
+                .attr("id", "background-left")
+                .style("fill", "gray")
+                .attr("width", width_side_panel)
+                .attr("height", height_main)
+            right_panel
+                .append("rect")
+                .attr("id", "background-right")
+                .style("fill", "gray")
+                .attr("width", width_side_panel)
+                .attr("height", height_main)
+
             svg.call(tip);
             
             svg.append("rect")
@@ -933,14 +946,25 @@ path:hover
     
 
 
-    var svg_stream = d3.select("#main_container")
+d3.select("#main_container")
     .append("g")
         .attr("width", width_stream + margin.left + margin.right)
         .attr("height", height_stream * 2.5 + margin.top + margin.bottom)
         .attr("id", "streamContainer")
         .attr("transform",
             "translate(" + width_side_panel + "," + 0 + ")")
-    .append("g")
+    
+    d3.select("#streamContainer")
+        .append("rect")
+        .attr("id", "background-stream")
+        .style("fill", "red")
+        .attr("width", width_stream + margin.left + margin.right)
+        .attr("height", height_stream * 2.5 + margin.top + margin.bottom)
+        .attr("transform",
+            "translate(" + margin.left + "," + height + ")")
+
+    svg_stream = d3.selectAll("#streamContainer")
+        .append("g")
         .attr("transform",
             "translate(" + margin.left + "," + height + ")")
         .attr("id", "stream_1");
