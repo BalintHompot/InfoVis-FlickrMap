@@ -445,7 +445,7 @@
             // projection definitions
             var projection = d3.geoMercator()
                 .scale((width + 1) / 2 / Math.PI)
-                .translate([width/2, height/2])
+                .translate([width/2, (height/2)+height_main*0.2])
                 .precision(.1);
             var path = d3.geoPath().projection(projection);
             // SVG related definitions
