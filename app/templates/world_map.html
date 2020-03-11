@@ -917,11 +917,9 @@
 
                         
                     }
+             
                 }
-                console.log("all tags")
-                console.log(allTagsEmpyty)
-                console.log("rev ind")
-                console.log(reverseTagCatIndex)
+
                 var tags
                 var year_count = 0
                 for(var timeStepInd in timeSteps){
@@ -935,12 +933,10 @@
                     var year_data = {"time_step_graph" : timeStep}
                     Object.assign(year_data, emptyObj);
                     if(country_bucket){
-                        console.log(country_bucket)
             
                         //var tags = Object.assign({}, country_bucket.most_popular_5, country_bucket.rest_tags)
                         tags = JSON.parse(JSON.stringify(country_bucket.categories_tags_sum))
-                        console.log("original cat data")
-                        console.log(country_bucket.categories_tags_sum)
+                
                         tag_list = Object.keys(tags)
 
                   
@@ -1004,10 +1000,6 @@
 
                 }
                 keys = Array.from(keys)
-                console.log("returning year data")
-                console.log(d)
-                console.log(keys)
-
 
                 return [d, maxYear, keys]
             }
@@ -1239,6 +1231,8 @@ d3.select("#main_container")
         return d3.interpolateGreys(r)
     }
 
+
+
     function drawStreamGraph(country_key, svg_stream, validTimeSteps_graph, width_stream_graph, height_stream_graph, level, ticksEnabled = true){
 // append the svg object to the body of the page
 
@@ -1341,7 +1335,15 @@ d3.select("#main_container")
             .attr("id", function(d){return "path-" + d.key})
             
             .attr("class", "myArea-" + level )
-            .style("fill", function(d) { return d.key === null ? 'grey' : myColor(d.key); })
+            .style("fill", function(d) {                     
+           
+                    if(!d){
+                    return 'grey'
+                    }else if(level == "tag"){
+                        return myColor(reverseTagCatIndex[d.key]) 
+                    }else{
+                        return myColor(d.key)
+                    } })
             .attr("d", area)
             
             .on("mouseover", mouseover)
@@ -1447,6 +1449,8 @@ d3.select("#main_container")
                         return d.key;
                     })
 
+                p.exit().remove()
+
                 p
                     .transition()
                     .duration(750)
@@ -1460,7 +1464,16 @@ d3.select("#main_container")
                 .attr("id", function(d){return "path-" + d.key})
                 
                 .attr("class", "myArea-" + level )
-                .style("fill", function(d) { return d.key === null ? 'grey' : myColor(d.key); })
+                .style("fill", function(d) { 
+       
+                    if(!d){
+                    return 'grey'
+                    }else if(level == "tag"){
+                        return myColor(reverseTagCatIndex[d.key]) 
+                    }else{
+                        return myColor(d.key)
+                    }
+                })
                 .attr("d", area)
                 
                 .on("mouseover", mouseover)
@@ -1468,7 +1481,6 @@ d3.select("#main_container")
                 .on("mouseleave", mouseleave)
                 .on("click", clickedStream);
     
-                p.exit().remove()
 
    
         d3.selectAll(".myArea-tag" )            
