@@ -282,6 +282,15 @@
 			fill-opacity: 0.7;
 			stroke: lightgray;
 		}
+		
+		#background-stream		{
+			fill: rgb(245, 245, 245);
+			fill-opacity: 0.7;
+			stroke: lightgray;
+		}
+		
+		
+		
 		.shadow {
 			-webkit-filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .7));
 			filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .7));
@@ -972,8 +981,8 @@
                 return [d, maxYear, keys]
             }
 
-    var margin = {top: 100, right: 20, bottom: 20, left: 20},
-    width_stream = 800
+    var margin = {top: 70, right: 20, bottom: 20, left: 20},
+    width_stream = width_main *0.55
     height_stream = 70
 
     
@@ -990,19 +999,18 @@ d3.select("#main_container")
     d3.select("#streamContainer")
         .append("rect")
         .attr("id", "background-stream")
-        .style("fill", "red")
         .attr("width", width_stream + margin.left + margin.right)
         .attr("height", height_stream * 2.5 + margin.top + margin.bottom)
         .attr("transform",
             "translate(" + margin.left + "," + height + ")")
-
+	
     svg_stream = d3.selectAll("#streamContainer")
         .append("g")
         .attr("transform",
             "translate(" + margin.left + "," + height + ")")
         .attr("id", "stream_1");
     
-    height_stream_2 = 70
+    height_stream_2 = height_stream
     var offset_top_stream_2 = (height+margin.top)
     var svg_stream_2 = d3.selectAll("#streamContainer")
             .append("g")
