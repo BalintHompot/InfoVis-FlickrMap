@@ -363,7 +363,7 @@
                 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
                 <!-- Create a div where the graph will take place -->
-     
+                <button name="play" id="play" style="height: 30px;">Play</button>
                 <div id="my_dataviz"></div>
               
         
@@ -1026,7 +1026,7 @@ d3.select("#main_container")
         .attr("height", height_stream * 2.5 + margin.top + margin.bottom)
         .attr("transform",
             "translate(" + margin.left + "," + height + ")")
-	
+    
     svg_stream = d3.selectAll("#streamContainer")
         .append("g")
         .attr("transform",
