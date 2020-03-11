@@ -654,7 +654,6 @@
                 // tip.style("left", d3.select(this).attr("cx") + "px")     
                 //     .style("top", d3.select(this).attr("cy") + "px");
                 tip.show(datum);
-                console.log("data: ",datum);
                 if (popular_tags) {
                     refreshPie1(datum);
                     getTagPerCategories(datum);
@@ -745,6 +744,7 @@
             }
 
             function reset() {
+                console.log("resetting")
                 active.classed("active", false);
                 active = d3.select(null);
 
@@ -753,6 +753,7 @@
                     // .call( zoom.transform, d3.zoomIdentity.translate(0, 0).scale(1) ); // not in d3 v4
                     .call( zoom.transform, d3.zoomIdentity ); // updated for d3 v4
                 
+                changeCurrentSelections("WORLD")
                 refreshStreamGraph("WORLD", current_selection_svg, validTimeSteps, width_stream, height_stream, "category", current_selection_ticks_enabled)
                 refreshStreamGraph("WORLD", svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
                 //TODO have to add reset functionality for pie and donut..
@@ -811,8 +812,7 @@
                             current_date_ind++;
                             current_date = validTimeSteps[current_date_ind]
                             current_year_data = countries_mock_data.timesteps[current_date]
-                            console.log("updated date")
-                            console.log(current_date)
+              
                             draw(world_countries,current_year_data);
                             updateStreamSlider()
                         }else{
@@ -841,8 +841,7 @@
 
 
             function getStreamData(country_key, timeSteps, level){
-                console.log("time steps for data")
-                console.log(timeSteps)
+
 
                 var d = []
                 var keys = new Set()
@@ -878,10 +877,7 @@
                         
                     }
                 }
-                console.log("all tags")
-                console.log(allTagsEmpyty)
-                console.log("rev ind")
-                console.log(reverseTagCatIndex)
+    
                 var tags
                 var year_count = 0
                 for(var timeStepInd in timeSteps){
@@ -895,12 +891,10 @@
                     var year_data = {"time_step_graph" : timeStep}
                     Object.assign(year_data, emptyObj);
                     if(country_bucket){
-                        console.log(country_bucket)
             
                         //var tags = Object.assign({}, country_bucket.most_popular_5, country_bucket.rest_tags)
                         tags = JSON.parse(JSON.stringify(country_bucket.categories_tags_sum))
-                        console.log("original cat data")
-                        console.log(country_bucket.categories_tags_sum)
+              
                         tag_list = Object.keys(tags)
 
                   
@@ -913,6 +907,8 @@
                                     keys.add(tag)
                                 }
                             }else{
+                                console.log("original cat data")
+                                console.log(country_bucket.categories_tags_sum)
                             
                                 var allTagsList = {}
                                 for(var tagInd in tag_list){
@@ -943,11 +939,13 @@
                         
                             console.log("untagged cat data")
                             console.log(tags)
+                
                             // pushing untagged data into focused
                             for(var c in Object.keys(tags)){
                                 var cat_untagged = Object.keys(tags)[c]
                                 var other_tag = "other " + cat_untagged + " tags"
                                 year_data[other_tag] = tags[cat_untagged]
+                                year_count += tags[cat_untagged]
                                 keys.add(other_tag)
 
                             }
@@ -963,9 +961,6 @@
 
                 }
                 keys = Array.from(keys)
-                console.log("returning year data")
-                console.log(d)
-                console.log(keys)
 
                 return [d, maxYear, keys]
             }
@@ -1101,8 +1096,6 @@ d3.select("#main_container")
     var x_main_stream = getX(validTimeSteps, width_stream)
 
     function getY(maxRange, height_stream_y){
-        console.log("getting y scale with domain")
-        console.log(maxRange)
         var y = d3.scaleLinear()
         y
             .domain([0, maxRange])
@@ -1310,7 +1303,6 @@ d3.select("#main_container")
     }
 
     function refreshStreamGraph(country_key, svg_stream, validTimeSteps_graph, width_stream_graph, height_stream_graph, level, ticksEnabled = true){
-        console.log(level)
         svg_stream.selectAll(".tick").remove()
 
         // Parse the Data
@@ -1358,7 +1350,7 @@ d3.select("#main_container")
         // Area generator
         var area = d3.area()
             .x(function(d) { return x(d.data.time_step_graph); })
-            .y0(function(d) { console.log(d);return y(d[0]); })
+            .y0(function(d) { return y(d[0]); })
             .y1(function(d) { return y(d[1]); })
 
         // create a tooltip
@@ -1626,9 +1618,7 @@ return retData;
 
 function refreshDonut1(dat){
 
-    console.log(dat);
 var donut1data = convertToDonut1(dat);
-console.log(donut1data);
 
 
 // Create the chart
@@ -1703,9 +1693,7 @@ Highcharts.chart('tipDiv', {
 
 function refreshDonutDiv(dat){
 
-console.log(dat);
 var donut1data = convertToDonut1(dat);
-console.log(donut1data);
 
 
 // Create the chart
@@ -1786,7 +1774,6 @@ for (var key in chkData) {
   obj.name = key;
   obj.y = chkData[key];
   newDat.push(obj);
-  console.log("color: ",myColor(key));
   colors.push(myColor(key));
 }
 
@@ -1844,7 +1831,6 @@ for (var key in chkData) {
   obj.name = key;
   obj.y = chkData[key];
   newDat.push(obj);
-  console.log("color: ",myColor(key));
   colors.push(myColor(key));
 }
 
@@ -1920,7 +1906,6 @@ function getTagPerCategories(dat) {
     }
 
 
-    console.log("tags: ",tagMap);
 
     for (var key in tagMap){
         var obj = {};
@@ -1929,7 +1914,6 @@ function getTagPerCategories(dat) {
         seriesData.push(obj);
     }
 
-    console.log("seriesData: ",seriesData);
     
     Highcharts.chart('tipDiv2', {
     chart: {
