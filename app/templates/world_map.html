@@ -35,7 +35,7 @@
                 stroke-width: 1px;
             }
             text.subunit-label {
-                font-family: font-family: -apple-system, BlinkMacSystemFontsystem-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; 
+                font-family: -apple-system, BlinkMacSystemFontsystem-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; 
                 font-size: 14px;
                 font-weight: 300;
                 text-anchor: middle;
@@ -296,6 +296,37 @@
 			filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .7));
 			/* Similar syntax to box-shadow */
 		}
+		
+		
+		#focus-grab {
+			fill: rgba(255,255,255,0.7);
+			border-radius:2px;
+			rx: 2;
+			ry: 2;
+			 -webkit-box-shadow:1px 1px 8px rgba(0,0,0,0.3);
+			-moz-box-shadow:   1px 1px 8px rgba(0,0,0,0.3);
+			box-shadow:        1px 1px 8px rgba(0,0,0,0.3);
+			cursor: pointer;
+		}
+
+    
+			
+		}
+		
+		#focus-grab-text {
+			font-family: 'Anonymous Pro', sans-serif;
+			color: rgb(192,192,192);
+			text-shadow:1px 1px 2px rgba(255,255,255,1);
+			font-size: 1.2rem;
+			line-height: 20px;
+			color: rgba(0,0,0,0.5);
+			text-decoration: none;
+			letter-spacing: 3px;
+			  text-shadow:1px 1px 2px rgba(255,255,255,1);
+  -webkit-box-shadow:1px 1px 8px rgba(0,0,0,0.3);
+  -moz-box-shadow:   1px 1px 8px rgba(0,0,0,0.3);
+  box-shadow:        1px 1px 8px rgba(0,0,0,0.3);
+		}
 
 
         </style>
@@ -401,7 +432,7 @@
 
             var width_main = window.innerWidth -16
 			
-			var height_main = window.innerHeight -56 -2
+			var height_main = window.innerHeight -56 -3
 
             var width = 0.6*width_main, height = 0.75*height_main;
 			
@@ -1025,7 +1056,7 @@ d3.select("#main_container")
         if(current_selection_svg == svg_stream){
             current_selection_svg = svg_stream_2
             svg_focused_stream = right_focus_g
-            current_selection_ticks_enabled = true
+            current_selection_ticks_enabled = false
             country_in_focus_1 = countryID
         }else{
             current_selection_svg = svg_stream
@@ -1120,7 +1151,7 @@ d3.select("#main_container")
         return y
 
     }
-    var rectAdd = 10
+    var rectAdd = 7
     var rectWidthRightSteps = 2
     var rectWidthLeftSteps = 2
     var rectWidthRight =(width_stream / validTimeSteps.length) * rectWidthRightSteps
@@ -1460,13 +1491,15 @@ d3.select("#main_container")
         .attr("transform",
             "translate(" + 20 + "," + 150 + ")");
 
+		var lineCol0or = '#5e5e5e'
+		
         sliderG
             .append("line")
             .attr('id', "line-comparison")
-            .attr('stroke', 'black')
-            .attr('stroke-width', 2)
+            .attr('stroke', lineCol0or)
+            .attr('stroke-width', 1)
             .attr('x1', x_main_stream(current_date))
-            .attr('y1', rectGrabBottom + rectAdd)
+            .attr('y1', rectGrabBottom )
             .attr('x2', x_main_stream(current_date))
             .attr('y2', rectGrabTop)
             .call(drag);
@@ -1474,7 +1507,7 @@ d3.select("#main_container")
         sliderG
             .append("line")
             .attr('id', "line-split")
-            .attr('stroke', 'black')
+            .attr('stroke', lineCol0or)
             .attr('stroke-width', 0.5)
             .attr('x1', focusRectCornerLeft)
             .attr('y1', height - height_stream + 5)
@@ -1487,13 +1520,15 @@ d3.select("#main_container")
             .attr("fill-opacity","0.05")
             .attr("rx", 3)
             .attr("ry", 3)
-            .style("stroke", "black")
+            .style("stroke", lineCol0or)
+			.style("stroke-opacity", 1)
             .attr("width", focusRectCornerRight - focusRectCornerLeft)
-            .attr("height",  rectGrabBottom - rectGrabTop + rectAdd)
+            .attr("height",  rectGrabBottom - rectGrabTop )
             .attr("x", focusRectCornerLeft)
             .attr("y", rectGrabTop)
             .call(drag);
-
+		
+		
         /// magnifying lines to left
         main_container
             .append("line")
@@ -1526,7 +1561,7 @@ d3.select("#main_container")
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
             .attr('x1', focusRectCornerLeft + width_side_panel + margin.left)
-            .attr('y1', focusRectCornerTop + height_stream)
+            .attr('y1', focusRectCornerTop + height_stream - rectAdd)
             .attr('x2', focusStremTartgetLeft + width + width_side_panel - focusMargin)
             .attr('y2', focusStremTartgetTop)
             .call(drag);
@@ -1537,36 +1572,46 @@ d3.select("#main_container")
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
             .attr('x1', focusRectCornerRight + width_side_panel + margin.left)
-            .attr('y1', focusRectCornerTop+ height_stream)
+            .attr('y1', focusRectCornerTop+ height_stream - rectAdd)
             .attr('x2', focusStremTartgetRight  + width + width_side_panel- focusMargin)
             .attr('y2', focusStremTartgetTop)
             .call(drag);
-
+		
+		
+		var grabberHeight = 20
+		var grabberWidth = 25
         /// add draggable rect to adjust size of focus window
         sliderG
             .append("rect")
             .attr('id', "focus-grab")
-            .style("fill", "black")
-            .attr("rx", 3)
-            .attr("ry", 3)
-            .style("stroke", "black")
-            .attr("width",10)
-            .attr("height", 10)
-            .attr("x", focusRectCornerLeft-5)
-            .attr("y", rectGrabBottom )
+            .attr("width",grabberWidth)
+            .attr("height", grabberHeight)
+            .attr("x", focusRectCornerLeft - 15)
+            .attr("y", height - height_stream -4)
             .call(dragLeft);
+			
         sliderG
             .append("rect")
             .attr('id', "focus-grab")
-            .style("fill", "black")
-            .attr("rx", 3)
-            .attr("ry", 3)
-            .style("stroke", "black")
-            .attr("width", 10)
-            .attr("height", 10)
-            .attr("x", focusRectCornerRight-5)
-            .attr("y", rectGrabBottom )
+            .attr("width", grabberWidth)
+            .attr("height", grabberHeight)
+            .attr("x", focusRectCornerRight-10)
+            .attr("y", height - height_stream -4 )
             .call(dragRight);
+			
+		sliderG
+			.append("text").text( "<>")
+			.attr('id', "focus-grab-text")
+			.attr("x", focusRectCornerRight-6)
+            .attr("y", height - height_stream +10 );
+			
+		sliderG
+			.append("text").text( "<>")
+			.attr('id', "focus-grab-text")
+            .attr("x", focusRectCornerLeft - 12)
+            .attr("y", height - height_stream +10)
+			
+		
 
         //calling update on map
         current_year_data = countries_mock_data.timesteps[current_date]
