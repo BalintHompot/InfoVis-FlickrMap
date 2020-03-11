@@ -1400,7 +1400,7 @@ d3.select("#main_container")
 
         // Area generator
         var area = d3.area()
-            .x(function(d) {console.log("retrieving area for "); console.log(d) ;return x(d.data.time_step_graph); })
+            .x(function(d) {return x(d.data.time_step_graph); })
             .y0(function(d) { return y(d[0]); })
             .y1(function(d) { return y(d[1]); })
 
@@ -1443,8 +1443,9 @@ d3.select("#main_container")
 
                 var p = svg_stream.selectAll(".myArea-" + level)
                 p
-                    .data(stackedData)
-                p.exit().remove()
+                    .data(stackedData, function(d) {
+                        return d.key;
+                    })
 
                 p
                     .transition()
@@ -1467,6 +1468,7 @@ d3.select("#main_container")
                 .on("mouseleave", mouseleave)
                 .on("click", clickedStream);
     
+                p.exit().remove()
 
    
         d3.selectAll(".myArea-tag" )            
