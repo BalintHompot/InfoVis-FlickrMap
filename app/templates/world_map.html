@@ -511,6 +511,7 @@ path:hover
             current_date = validTimeSteps[current_date_ind]
             current_year_data = countries_mock_data.timesteps[current_date]
             country_in_focus_1 = "USA"
+            country_in_focus_2 = "USA"
             //console.log(current_year_data)
             
 
@@ -691,12 +692,10 @@ path:hover
                 
                 refreshDonutDiv(d);
                 refreshPieDiv(d);
-                console.log("refreshing stream graph for country")
-                country_in_focus_1 = d.id
-                console.log(country_in_focus_1)
-                refreshStreamGraph(country_in_focus_1, current_selection_svg, validTimeSteps, width_stream, height_stream, "category", current_selection_ticks_enabled)
-                refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
-                changeCurrentSelections()
+
+                refreshStreamGraph(d.id, current_selection_svg, validTimeSteps, width_stream, height_stream, "category", current_selection_ticks_enabled)
+                refreshStreamGraph(d.id, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+                changeCurrentSelections(d.id)
                 
 
             }
@@ -709,9 +708,9 @@ path:hover
                     .duration(750)
                     // .call( zoom.transform, d3.zoomIdentity.translate(0, 0).scale(1) ); // not in d3 v4
                     .call( zoom.transform, d3.zoomIdentity ); // updated for d3 v4
-                country_in_focus_1 = "USA"
-                refreshStreamGraph(country_in_focus_1, current_selection_svg, validTimeSteps, width_stream, height_stream, "category", current_selection_ticks_enabled)
-                refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+                
+                refreshStreamGraph("USA", current_selection_svg, validTimeSteps, width_stream, height_stream, "category", current_selection_ticks_enabled)
+                refreshStreamGraph("USA", svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
                 //TODO have to add reset functionality for pie and donut..
 
             }
@@ -957,13 +956,17 @@ path:hover
     current_selection_svg = svg_stream
     current_selection_ticks_enabled = false
     
-    function changeCurrentSelections(){
+    function changeCurrentSelections(countryID){
         if(current_selection_svg == svg_stream){
             current_selection_svg = svg_stream_2
+            svg_focused_stream = right_focus_g
             current_selection_ticks_enabled = true
+            country_in_focus_1 = countryID
         }else{
             current_selection_svg = svg_stream
+            svg_focused_stream = left_focus_g
             current_selection_ticks_enabled = false
+            country_in_focus_2 = countryID
         }
     }
 
@@ -976,13 +979,7 @@ path:hover
     var focusStremTartgetRight = width_side_panel
     var focusStremTartgetTop =  200
     
-    d3.select("#left_panel")
-        .append("g")
-        .attr('id', "g-focus")
-        .attr("transform",
-            "translate(" + 38 + "," + 0 + ")");
 
-    var svg_focused_stream = d3.selectAll("#g-focus")
     
     left_panel
             .append("rect")
@@ -1010,10 +1007,22 @@ path:hover
             .attr("x", 0)
             .attr("y", focusStremTartgetBottom)
     
+    var left_focus_g = d3.select("#left_panel")
+        .append("g")
+        .attr('id', "g-focus-left")
+        .attr("transform",
+            "translate(" + 38 + "," + 0 + ")");
 
+    var right_focus_g = d3.select("#right_panel")
+        .append("g")
+        .attr('id', "g-focus-right")
+        .attr("transform",
+            "translate(" + 38 + "," + 0 + ")");
+
+    var svg_focused_stream = left_focus_g
     var margin_focused = {top: 0, right: 0, bottom: 0, left: 0},
         width_stream_focused = 300
-        height_stream_focused = 130
+        height_stream_focused = 200
 
 
 
@@ -1064,7 +1073,9 @@ path:hover
     drawStreamGraph(country_in_focus_1, current_selection_svg, validTimeSteps, width_stream, height_stream, "category", ticksEnabled = current_selection_ticks_enabled)
     drawStreamGraph(country_in_focus_1, svg_stream_2, validTimeSteps, width_stream, height_stream, "category")
 
-    drawStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+    drawStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+    drawStreamGraph(country_in_focus_1, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+
     updateStreamSlider()
 
     function getFocusedValidSteps(){
@@ -1489,8 +1500,9 @@ path:hover
         current_year_data = countries_mock_data.timesteps[current_date]
         draw(world_countries ,current_year_data)
         
-        refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
-            
+        refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+        refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+          
     }
 
 
