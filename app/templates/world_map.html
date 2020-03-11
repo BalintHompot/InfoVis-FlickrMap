@@ -892,9 +892,7 @@
                                     keys.add(tag)
                                 }
                             }else{
-                                console.log("original cat data")
-                                console.log(country_bucket.categories_tags_sum)
-                            
+                
                                 var allTagsList = {}
                                 for(var tagInd in tag_list){
                                     cat = tag_list[tagInd]
@@ -922,8 +920,7 @@
                                 }
                                  
                         
-                            console.log("untagged cat data")
-                            console.log(tags)
+        
                 
                             // pushing untagged data into focused
                             for(var c in Object.keys(tags)){
@@ -946,6 +943,7 @@
 
                 }
                 keys = Array.from(keys)
+
 
                 return [d, maxYear, keys]
             }
@@ -1381,16 +1379,7 @@ d3.select("#main_container")
         country_paths
             .enter()
             .append("path")
-
-        country_paths
-            .on("mouseover", mouseover)
-            .on("mousemove", mousemove)
-            .on("mouseleave", mouseleave)
-            .on("click", clickedStream);
-
-        country_paths
-            .transition()
-            .duration(750)
+   
             .style("fill", function(d, i) { 
         
                 if(!d){
@@ -1400,9 +1389,15 @@ d3.select("#main_container")
                 }else{
                     return myColor(d.key)
                 }
-             })
+            })
             
             .attr("d", area)
+            .on("mouseover", mouseover)
+            .on("mousemove", mousemove)
+            .on("mouseleave", mouseleave)
+            .on("click", clickedStream);
+
+
 
         country_paths.exit().remove()
 

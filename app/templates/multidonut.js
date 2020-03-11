@@ -181,7 +181,7 @@ multidonut.Pie.prototype.draw = function(svg, totalRadius, dataset, originalData
     // console.log("outerRadius = " + outerRadius);
     // console.log("startAngle = " + startAngle);
     // console.log("endAngle = " + endAngle);
-    console.log("inside draw");
+    //console.log("inside draw");
     multidonut.Pie.prototype.textText = function(d) {
         return _this.config.label(d);
     };
@@ -192,7 +192,7 @@ multidonut.Pie.prototype.draw = function(svg, totalRadius, dataset, originalData
         //console.log("d.value = " + d.value);
         return d[_this.config.value];
     });
-    console.log("1");
+    //console.log("1");
     pie.startAngle(startAngle)
         .endAngle(endAngle);
 
@@ -201,7 +201,7 @@ multidonut.Pie.prototype.draw = function(svg, totalRadius, dataset, originalData
         values.push(dataset[i][_this.config.value]);
     }
     //console.log(values);
-    console.log("2");
+    //console.log("2");
     var mouseclick = function(d) {
         _this.reDrawPie(d, originalDataset);
     };
@@ -209,7 +209,7 @@ multidonut.Pie.prototype.draw = function(svg, totalRadius, dataset, originalData
     var arc = d3.arc().innerRadius(innerRadius)
         .outerRadius(outerRadius);
     //Set up groups
-    console.log("3");
+    //console.log("3");
     _this.arcIndex = _this.arcIndex + 1;
 
     var clazz = "arc" + _this.arcIndex;
@@ -221,7 +221,7 @@ multidonut.Pie.prototype.draw = function(svg, totalRadius, dataset, originalData
         d.length = dataset.length;
     };
 
-    console.log("4");
+    //console.log("4");
 
     var arcs = svg.selectAll("g." + clazz)
         .data(pie(dataset))
@@ -231,7 +231,7 @@ multidonut.Pie.prototype.draw = function(svg, totalRadius, dataset, originalData
         .attr("transform",
             "translate(" + (totalRadius) + "," + (totalRadius) + ")")
         .on("click", mouseclick);
-    console.log("5");
+    //console.log("5");
 
     var gradient = svg.append("svg:defs")
         .append("svg:linearGradient")
@@ -242,7 +242,7 @@ multidonut.Pie.prototype.draw = function(svg, totalRadius, dataset, originalData
         .attr("y2", "100%")
         .attr("spreadMethod", "pad");
 
-    console.log("6");
+    //console.log("6");
 
     var startColor, endColor;
     if (_this.config.gradient) {
@@ -255,7 +255,7 @@ multidonut.Pie.prototype.draw = function(svg, totalRadius, dataset, originalData
         startColor = endColor = _this.config.colors(this.arcIndex);
     }
 
-    console.log("7");
+    //console.log("7");
     //console.log("color = " + startColor + ", " + endColor);
     gradient.append("svg:stop")
         .attr("offset", "0%")
@@ -274,7 +274,7 @@ multidonut.Pie.prototype.draw = function(svg, totalRadius, dataset, originalData
         .style("stroke", _this.config.stroke)
         .style("stroke-width", _this.config.strokeWidth);
 
-    console.log("8");
+    //console.log("8");
 
     paths.on("mouseover", _this.mouseover);
 
@@ -282,7 +282,7 @@ multidonut.Pie.prototype.draw = function(svg, totalRadius, dataset, originalData
 
     paths.each(storeMetadataWithArc);
 
-    console.log("9");
+    //console.log("9");
 
     //TODO
      paths.transition()
@@ -292,9 +292,9 @@ multidonut.Pie.prototype.draw = function(svg, totalRadius, dataset, originalData
          .attrTween("d", _this.customArcTween);
 
 
-        console.log("10");
+        //console.log("10");
     //paths.each(storeMetadataWithArc);
-    console.log(_this);
+    //console.log(_this);
     //Labels
     var texts = arcs.append("text")
         .attr("x", function() {
