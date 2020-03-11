@@ -295,19 +295,13 @@ path:hover
       
             <span>
 
-                <div id="map-holder"></div>
                 <div id="tooltip-holder"></div>
                 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
                 <!-- Create a div where the graph will take place -->
-                <div id = "playaxis" style="display: flex; flex-direction: row;">
-                    <button name="play" id="play" style="height: 30px;">Play</button>
-                    <div style="display: flex;flex-direction: column;">
-                        <div id="my_dataviz"></div>
-                        <div id="my_dataviz_2"></div>
-                    </div>
-               
-                </div>
+     
+                <div id="my_dataviz"></div>
+              
         
             </span>
 
@@ -372,6 +366,7 @@ path:hover
             var popular_tags = true;
 
             var width = 800, height =400;
+            var width_main = 1100, height_main = 800;
             var current_position;
 
             $(document).ready(function() {
@@ -424,9 +419,14 @@ path:hover
                 .precision(.1);
             var path = d3.geoPath().projection(projection);
             // SVG related definitions
-            var svg = d3.select("#map-holder").append("svg")
+
+            var main_container = d3.select("#my_dataviz").append("svg").attr("id", "main_container")
+                        .attr("height", height_main)    // set the height
+                        .attr("width", width_main); 
+
+            var svg = main_container.append("g")
                         .attr("height", height)    // set the height
-                        .attr("width", width);    // set the width
+                        .attr("width", width);  
             
             svg.call(tip);
             
@@ -681,13 +681,9 @@ path:hover
                 console.log("refreshing stream graph for country")
                 country_in_focus_1 = d.id
                 console.log(country_in_focus_1)
-                refreshStreamGraph(country_in_focus_1, current_selection_svg, validTimeSteps, width_stream, height_stream, "category")
+                refreshStreamGraph(country_in_focus_1, current_selection_svg, validTimeSteps, width_stream, height_stream, "category", current_selection_ticks_enabled)
                 refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
-                if(current_selection_svg == svg_stream){
-                    current_selection_svg = svg_stream_2
-                }else{
-                    current_selection_svg = svg_stream
-                }
+                changeCurrentSelections()
                 
 
             }
@@ -701,7 +697,7 @@ path:hover
                     // .call( zoom.transform, d3.zoomIdentity.translate(0, 0).scale(1) ); // not in d3 v4
                     .call( zoom.transform, d3.zoomIdentity ); // updated for d3 v4
                 country_in_focus_1 = "USA"
-                refreshStreamGraph(country_in_focus_1, current_selection_svg, validTimeSteps, width_stream, height_stream, "category")
+                refreshStreamGraph(country_in_focus_1, current_selection_svg, validTimeSteps, width_stream, height_stream, "category", current_selection_ticks_enabled)
                 refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
                 //TODO have to add reset functionality for pie and donut..
 
@@ -918,34 +914,43 @@ path:hover
                 return [d, maxYear, keys]
             }
 
-    var margin = {top: 150, right: 20, bottom: 20, left: 20},
+    var margin = {top: 100, right: 20, bottom: 20, left: 20},
     width_stream = 800
     height_stream = 70
 
     
 
 
-    var svg_stream = d3.select("#my_dataviz")
-    .append("svg")
+    var svg_stream = d3.select("#main_container")
+    .append("g")
         .attr("width", width_stream + margin.left + margin.right)
-        .attr("height", height_stream + margin.top + margin.bottom)
+        .attr("height", height_stream * 2.5 + margin.top + margin.bottom)
         .attr("id", "streamContainer")
     .append("g")
         .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
+            "translate(" + margin.left + "," + height + ")")
+        .attr("id", "stream_1");
     
-    height_stream_2 = 50
-    var svg_stream_2 = d3.select("#my_dataviz_2")
-    .append("svg")
-        .attr("width", width_stream + margin.left + margin.right)
-        .attr("height", height_stream_2 + margin.top + margin.bottom)
-        .attr("id", "streamContainer_2")
-    .append("g")
-        .attr("transform",
-            "translate(" + margin.left + "," + 0 + ")");
+    height_stream_2 = 70
+    var offset_top_stream_2 = (height+margin.top)
+    var svg_stream_2 = d3.selectAll("#streamContainer")
+            .append("g")
+            .attr("transform",
+                    "translate(" + margin.left + "," + offset_top_stream_2 + ")")
+            .attr("id", "stream_2");
 
     current_selection_svg = svg_stream
-
+    current_selection_ticks_enabled = false
+    
+    function changeCurrentSelections(){
+        if(current_selection_svg == svg_stream){
+            current_selection_svg = svg_stream_2
+            current_selection_ticks_enabled = true
+        }else{
+            current_selection_svg = svg_stream
+            current_selection_ticks_enabled = false
+        }
+    }
 
 
             /// adding variables and rect for the focused stream graph
@@ -1026,7 +1031,7 @@ path:hover
     let dragRight = d3.drag()
         .on('drag', draggedRight)
 
-    drawStreamGraph(country_in_focus_1, current_selection_svg, validTimeSteps, width_stream, height_stream, "category")
+    drawStreamGraph(country_in_focus_1, current_selection_svg, validTimeSteps, width_stream, height_stream, "category", ticksEnabled = current_selection_ticks_enabled)
     drawStreamGraph(country_in_focus_1, svg_stream_2, validTimeSteps, width_stream, height_stream, "category")
 
     drawStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
@@ -1097,7 +1102,7 @@ path:hover
         return d3.interpolateGreys(r)
     }
 
-    function drawStreamGraph(country_key, svg_stream, validTimeSteps_graph, width_stream_graph, height_stream_graph, level){
+    function drawStreamGraph(country_key, svg_stream, validTimeSteps_graph, width_stream_graph, height_stream_graph, level, ticksEnabled = true){
 // append the svg object to the body of the page
 
         //svg_stream.selectAll("path").remove()
@@ -1108,8 +1113,8 @@ path:hover
 
         var x = getX(validTimeSteps_graph, width_stream_graph)
         var y = getY(yRange, height_stream_graph)
-
-        svg_stream.append("g")
+        if(ticksEnabled){
+            svg_stream.append("g")
             .attr("transform", "translate(0," + height_stream_graph*0.8 + ")")
             .call(d3.axisBottom(x).tickSize(-height_stream_graph*.7)
 			.tickValues(validTimeSteps_graph)
@@ -1134,6 +1139,9 @@ path:hover
             .attr("y", height_stream_graph-30 )
 			.attr('font-size', 12)
             .text("Year");
+        }
+
+
 
         // Add Y axis
 
@@ -1205,7 +1213,7 @@ path:hover
 
     }
 
-    function refreshStreamGraph(country_key, svg_stream, validTimeSteps_graph, width_stream_graph, height_stream_graph, level){
+    function refreshStreamGraph(country_key, svg_stream, validTimeSteps_graph, width_stream_graph, height_stream_graph, level, ticksEnabled = true){
         console.log(level)
         svg_stream.selectAll(".tick").remove()
 
@@ -1218,8 +1226,8 @@ path:hover
 
 
         // List of groups = header of the csv files
-        
-        svg_stream.append("g")
+        if(ticksEnabled){
+            svg_stream.append("g")
             .attr("transform", "translate(0," + height_stream_graph*0.8 + ")")
             .call(d3.axisBottom(x)
 			.tickSize(-height_stream_graph*.7)
@@ -1241,6 +1249,8 @@ path:hover
             svg_stream.selectAll(".tick line")
             .attr("stroke-opacity", 0);
         }
+        }
+
 
 
         //stack the data?
@@ -1334,7 +1344,9 @@ path:hover
 
 
     function updateStreamSlider(){
-        var focusRectCornerTop = 0-rectAdd
+        var rectGrabBottom = height 
+        var rectGrabTop = height - height_stream_2 - height_stream
+        var focusRectCornerTop = height_main -rectAdd
         var focusRectCornerRight = x_main_stream(current_date) + (rectWidthRight)
         var focusRectCornerLeft = x_main_stream(current_date) - (rectWidthLeft)
         d3.select("#sliderG").remove()
@@ -1350,9 +1362,9 @@ path:hover
             .attr('stroke', 'black')
             .attr('stroke-width', 2)
             .attr('x1', x_main_stream(current_date))
-            .attr('y1', 0-rectAdd)
+            .attr('y1', rectGrabBottom)
             .attr('x2', x_main_stream(current_date))
-            .attr('y2', height_stream - rectAdd)
+            .attr('y2', rectGrabTop)
             .call(drag);
         sliderG
             .append("rect")
@@ -1363,9 +1375,9 @@ path:hover
             .attr("ry", 3)
             .style("stroke", "black")
             .attr("width", focusRectCornerRight - focusRectCornerLeft)
-            .attr("height", rectHeight)
+            .attr("height",  rectGrabBottom - rectGrabTop + rectAdd)
             .attr("x", focusRectCornerLeft)
-            .attr("y", 0-rectAdd)
+            .attr("y", rectGrabTop)
             .call(drag);
         sliderG
             .append("line")
@@ -1401,7 +1413,7 @@ path:hover
             .attr("width",10)
             .attr("height", 10)
             .attr("x", focusRectCornerLeft-5)
-            .attr("y", rectHeight-15)
+            .attr("y", rectGrabBottom  + 15)
             .call(dragLeft);
         sliderG
             .append("rect")
@@ -1413,7 +1425,7 @@ path:hover
             .attr("width", 10)
             .attr("height", 10)
             .attr("x", focusRectCornerRight-5)
-            .attr("y", rectHeight-15)
+            .attr("y", rectGrabBottom  +15)
             .call(dragRight);
 
         //calling update on map
