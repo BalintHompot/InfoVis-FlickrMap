@@ -29,7 +29,7 @@
 				padding: 0;
 			}
 			
-            .subunit {
+            .subunit {	
                 fill: none;
                 stroke: #FFF;
                 stroke-width: 1px;
@@ -374,9 +374,14 @@
             var mapdata = {};
             var popular_tags = true;
 
-            var width = 800, height =600;
-            var width_main = 1500, height_main = 800;
-            var width_side_panel = 300
+
+            var width_main = window.innerWidth -16
+			
+			var height_main = window.innerHeight -56
+
+            var width = 0.6*width_main, height = 0.75*height_main;
+			
+            var width_side_panel = 0.2*width_main
             var current_position;
 
             $(document).ready(function() {
@@ -444,7 +449,7 @@
                         .attr("height", height_main)    // set the height
                         .attr("width", width_side_panel)
                         .attr("id", "left_panel");
-            var rightPanelOffset = width_side_panel + width
+            var rightPanelOffset = width_main - width_side_panel
             var right_panel =  main_container.append("g")
                         .attr("height", height_main)    // set the height
                         .attr("width", width_side_panel)
