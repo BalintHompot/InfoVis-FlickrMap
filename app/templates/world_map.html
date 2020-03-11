@@ -1410,13 +1410,15 @@ path:hover
             .attr("x", focusRectCornerLeft)
             .attr("y", rectGrabTop)
             .call(drag);
+
+        /// magnifying lines to left
         main_container
             .append("line")
             .attr('id', "line-focus")
-            .attr('stroke', 'grey')
+            .attr('stroke', '#E3E3E3')
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
-            .attr('x1', focusRectCornerLeft + width_side_panel)
+            .attr('x1', focusRectCornerLeft + width_side_panel + margin.left)
             .attr('y1', focusRectCornerTop)
             .attr('x2', focusStremTartgetLeft)
             .attr('y2', focusStremTartgetTop)
@@ -1424,12 +1426,36 @@ path:hover
         main_container
             .append("line")
             .attr('id', "line-focus")
-            .attr('stroke', 'grey')
+            .attr('stroke', '#E3E3E3')
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
-            .attr('x1', focusRectCornerRight + width_side_panel)
+            .attr('x1', focusRectCornerRight + width_side_panel + margin.left)
             .attr('y1', focusRectCornerTop)
             .attr('x2', focusStremTartgetRight)
+            .attr('y2', focusStremTartgetTop)
+            .call(drag);
+
+        /// magnifying lines to right
+        main_container
+            .append("line")
+            .attr('id', "line-focus")
+            .attr('stroke', '#E3E3E3')
+            .attr('stroke-width', 2)
+            .style("stroke-dasharray", ("3, 3"))
+            .attr('x1', focusRectCornerLeft + width_side_panel + margin.left)
+            .attr('y1', focusRectCornerTop + height_stream)
+            .attr('x2', focusStremTartgetLeft + width + width_side_panel - focusMargin)
+            .attr('y2', focusStremTartgetTop)
+            .call(drag);
+        main_container
+            .append("line")
+            .attr('id', "line-focus")
+            .attr('stroke', '#E3E3E3')
+            .attr('stroke-width', 2)
+            .style("stroke-dasharray", ("3, 3"))
+            .attr('x1', focusRectCornerRight + width_side_panel + margin.left)
+            .attr('y1', focusRectCornerTop+ height_stream)
+            .attr('x2', focusStremTartgetRight  + width + width_side_panel- focusMargin)
             .attr('y2', focusStremTartgetTop)
             .call(drag);
 
