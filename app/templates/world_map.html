@@ -681,8 +681,13 @@ path:hover
                 console.log("refreshing stream graph for country")
                 country_in_focus_1 = d.id
                 console.log(country_in_focus_1)
-                refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category")
+                refreshStreamGraph(country_in_focus_1, current_selection_svg, validTimeSteps, width_stream, height_stream, "category")
                 refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+                if(current_selection_svg == svg_stream){
+                    current_selection_svg = svg_stream_2
+                }else{
+                    current_selection_svg = svg_stream
+                }
                 
 
             }
@@ -696,7 +701,7 @@ path:hover
                     // .call( zoom.transform, d3.zoomIdentity.translate(0, 0).scale(1) ); // not in d3 v4
                     .call( zoom.transform, d3.zoomIdentity ); // updated for d3 v4
                 country_in_focus_1 = "USA"
-                refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category")
+                refreshStreamGraph(country_in_focus_1, current_selection_svg, validTimeSteps, width_stream, height_stream, "category")
                 refreshStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
                 //TODO have to add reset functionality for pie and donut..
 
@@ -939,6 +944,7 @@ path:hover
         .attr("transform",
             "translate(" + margin.left + "," + 0 + ")");
 
+    current_selection_svg = svg_stream
 
 
 
@@ -1020,7 +1026,7 @@ path:hover
     let dragRight = d3.drag()
         .on('drag', draggedRight)
 
-    drawStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category")
+    drawStreamGraph(country_in_focus_1, current_selection_svg, validTimeSteps, width_stream, height_stream, "category")
     drawStreamGraph(country_in_focus_1, svg_stream_2, validTimeSteps, width_stream, height_stream, "category")
 
     drawStreamGraph(country_in_focus_1, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
@@ -1114,7 +1120,12 @@ path:hover
 			)
             .select(".domain").remove()
         // Customization
-        svg_stream.selectAll(".tick line").attr("stroke", "white")
+        svg_stream.selectAll(".tick line")
+        .attr("stroke", "grey")
+        if(level == "category"){
+            svg_stream.selectAll(".tick line")
+            .attr("stroke-opacity", 0);
+        }
 
         // Add X axis label:
         svg_stream.append("text")
@@ -1223,8 +1234,14 @@ path:hover
 			)
 			
             .select(".domain").remove()
-        // Customization	
-        svg_stream.selectAll(".tick line").attr("stroke", "white")
+        // Customization
+        svg_stream.selectAll(".tick line")
+        .attr("stroke", "grey")
+        if(level == "category"){
+            svg_stream.selectAll(".tick line")
+            .attr("stroke-opacity", 0);
+        }
+
 
         //stack the data?
         var stackedData = d3.stack()
