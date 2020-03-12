@@ -808,7 +808,7 @@
                 }
                 active.classed("active", false);
                 tooltipDisabled = true;
-                //active = d3.select(this).classed("active", true);
+                active = d3.select(this).classed("active", true);
                 d3.select("#d3-tip").attr("disabled", true);
 
                 var bounds = path.bounds(d),
@@ -831,6 +831,7 @@
                 //refreshCategoryDonut(d.id, dataset)
                 changeCurrentSelections(d.id)
                 console.log("clicked!!");
+                console.log(active)
 
             }
 
@@ -1032,7 +1033,7 @@
                                  
                         
         
-                
+                            /*
                             // pushing untagged data into focused
                             for(var c in Object.keys(tags)){
                                 var cat_untagged = Object.keys(tags)[c]
@@ -1042,6 +1043,7 @@
                                 year_count += tags[cat_untagged]
 
                             }
+                            */
                             
                         }
                     }
@@ -1218,11 +1220,9 @@ d3.select("#main_container")
     var x_main_stream = getX(validTimeSteps, width_stream)
 
     function getY(maxRange, height_stream_y){
-        console.log("getting y scale with domain")
-        console.log(maxRange)
         var y = d3.scaleLinear()
         y
-            .domain([0, maxRange])
+            .domain([0, maxRange ])
             .range([ height_stream_y * 0.8, 20 ]);
         return y
 
@@ -1366,6 +1366,8 @@ d3.select("#main_container")
             .keys(keys)
             (data)
 
+        var stackedData = [stackedData[0]]
+
         // create a tooltip
         var Tooltip = svg_stream
             .append("text")
@@ -1408,8 +1410,6 @@ d3.select("#main_container")
         
 
         // Show the areas
-
-
         svg_stream
             .selectAll("mylayers")
             .data(stackedData)
@@ -1443,12 +1443,12 @@ d3.select("#main_container")
         svg_stream.selectAll(".tick").remove()
 
         // Parse the Data
-    
+
 
         var [data, yRange, keys] = getStreamData(country_key, validTimeSteps_graph, level)
+
         var x = getX(validTimeSteps_graph, width_stream_graph)
         var y = getY(yRange, height_stream_graph)
-
 
         // List of groups = header of the csv files
         if(ticksEnabled){
@@ -1479,16 +1479,18 @@ d3.select("#main_container")
 
 
         //stack the data?
-        var stackedData = d3.stack()
-            //.offset(d3.stackOffsetSilhouette)
-            .keys(keys)
-            (data)
+        if(level == "tag"){
+            var stackedData = d3.stack().offset(d3.stackOffsetNone).keys(keys)(data)
+        }else{
+            var stackedData = d3.stack().keys(keys)(data)
+
+        }
 
         // Area generator
         var area = d3.area()
             .x(function(d) {return x(d.data.time_step_graph); })
             .y0(function(d) { return y(d[0]); })
-            .y1(function(d) { return y(d[1]); })
+            .y1(function(d) {return y(d[1]); })
 
         // create a tooltip
         var Tooltip = svg_stream
@@ -1521,6 +1523,12 @@ d3.select("#main_container")
             
         }
 
+        function logLenSelection(d){
+            console.log("calc len selection")
+            console.log(d)
+            console.log(d._groups.length)
+        }
+
         var clickedStream = function(d){
             current_date = invertX(d3.mouse(this)[0])
             current_date_ind = validTimeSteps_graph.findIndex((element) => element == current_date)
@@ -1528,27 +1536,36 @@ d3.select("#main_container")
         }
 
                 var p = svg_stream.selectAll(".myArea-" + level)
-                p
+              
                     .data(stackedData, function(d) {
+   
                         return d.key;
                     })
 
-                p.exit().remove()
+                console.log("post selection data")
+                console.log(p.data())
 
-                p
-                    .transition()
-                    .duration(750)
-                    .attr("d", area)
-                
-
-                p.enter()            
-
-       
+                console.log("logging data enter")
+                p.enter()   
+                .call(logLenSelection)         
                 .append("path")
                 .attr("id", function(d){return "path-" + d.key})
                 
                 .attr("class", "myArea-" + level )
-                .style("fill", function(d) { 
+
+                
+                .on("mouseover", mouseover)
+                .on("mousemove", mousemove)
+                .on("mouseleave", mouseleave)
+                .on("click", clickedStream)
+
+
+                    .merge(p)
+                    .transition()
+                    .duration(750)
+                    .attr("d", area)
+                    .style("fill", function(d) { 
+                    console.log("coloring new area")
        
                     if(!d){
                     return 'grey'
@@ -1558,13 +1575,11 @@ d3.select("#main_container")
                         return myColor(d.key)
                     }
                 })
-                .attr("d", area)
+                console.log("exiting")
+                p.exit()
+                .call(logLenSelection)
+                .remove()
                 
-                .on("mouseover", mouseover)
-                .on("mousemove", mousemove)
-                .on("mouseleave", mouseleave)
-                .on("click", clickedStream);
-    
 
    
         d3.selectAll(".myArea-tag" )            
