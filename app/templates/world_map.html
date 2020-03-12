@@ -406,7 +406,13 @@
                 
 				<div  id="button-wrapper" >
 				<button name="play" id="play" style="height: 30px;">Play</button>
-				</div>
+                </div>
+                <div>
+
+                    <input type="text" id="filterInput" name="filterInput" >
+                    <button name="filterButton" id="filterButton" style="height: 30px;">Filter</button>
+                </div>
+            
 				<div>
                     <svg id="legend" height=50 width=300></svg>
                 </div>
@@ -467,6 +473,7 @@
 			
             var width_side_panel = 0.2*width_main
             var current_position;
+            var filterString = null
 
             $(document).ready(function() {
                 $('a#button').click(function() {
@@ -871,7 +878,19 @@
                 .attr("fill", "grey")
                 .attr("fill-opacity","0.2")
             */
+            $("#filterButton").on("click", function() {
+		
+            filterString = document.getElementById("filterInput").value
+            refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+            refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+
+            refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category", false)
+            refreshStreamGraph(country_in_focus_2, svg_stream_2, validTimeSteps, width_stream, height_stream, "category", true)
+
             
+            
+                
+            } )
             
             $("#play").on("click", function() {
 		
@@ -1007,6 +1026,9 @@
                                
                                 }
                                 var catTagList =Object.keys(emptyObj)
+                                if(filterString!=null){
+                                    catTagList = [filterString]
+                                }
                     
                                 for(var catInd in catTagList){
                         
@@ -1357,7 +1379,6 @@ d3.select("#main_container")
             .keys(keys)
             (data)
 
-        var stackedData = [stackedData[0]]
 
         // create a tooltip
         var Tooltip = svg_stream
@@ -1438,6 +1459,7 @@ d3.select("#main_container")
 
         var [data, yRange, keys] = getStreamData(country_key, validTimeSteps_graph, level)
 
+
         var x = getX(validTimeSteps_graph, width_stream_graph)
         var y = getY(yRange, height_stream_graph)
 
@@ -1470,12 +1492,9 @@ d3.select("#main_container")
 
 
         //stack the data?
-        if(level == "tag"){
-            var stackedData = d3.stack().offset(d3.stackOffsetNone).keys(keys)(data)
-        }else{
-            var stackedData = d3.stack().keys(keys)(data)
+     
+        var stackedData = d3.stack().keys(keys)(data)
 
-        }
 
         // Area generator
         var area = d3.area()
@@ -1525,18 +1544,13 @@ d3.select("#main_container")
             current_date_ind = validTimeSteps_graph.findIndex((element) => element == current_date)
             updateStreamSlider()
         }
-
+        
                 var p = svg_stream.selectAll(".myArea-" + level)
-              
                     .data(stackedData, function(d) {
-   
                         return d.key;
                     })
 
-                console.log("post selection data")
-                console.log(p.data())
 
-                console.log("logging data enter")
                 p.enter()   
                 .call(logLenSelection)         
                 .append("path")
@@ -1544,7 +1558,8 @@ d3.select("#main_container")
                 
                 .attr("class", "myArea-" + level )
 
-                
+                .attr("d", area)
+
                 .on("mouseover", mouseover)
                 .on("mousemove", mousemove)
                 .on("mouseleave", mouseleave)
@@ -1556,7 +1571,6 @@ d3.select("#main_container")
                     .duration(750)
                     .attr("d", area)
                     .style("fill", function(d) { 
-                    console.log("coloring new area")
        
                     if(!d){
                     return 'grey'
@@ -1566,7 +1580,6 @@ d3.select("#main_container")
                         return myColor(d.key)
                     }
                 })
-                console.log("exiting")
                 p.exit()
                 .call(logLenSelection)
                 .remove()
