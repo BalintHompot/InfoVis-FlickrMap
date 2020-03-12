@@ -35,7 +35,7 @@ Urscha: Categorize the tags, placement of glyphs, font type, colors etc., map mi
 
 Neeraj: fix position to country, add top tags (also requires data update), remove transition?
 
-Vignesh:
+Vignesh: Tooltip alterations and donut chart of device category distribution
 
 Martijn: adding top 5 tags per category (needed for tooltip, focused stream graph) 
 
