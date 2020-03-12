@@ -332,7 +332,7 @@
 		#button-wrapper {
 		position: absolute;
 		margin-left: 335px;
-		top: 510px;
+		top: 480px;
 		}
 		
 		#play {
@@ -351,6 +351,23 @@
 			box-shadow:        1px 1px 8px rgba(0,0,0,0.3);
 		
 		}
+		
+		
+	#side-panel-country {
+		fill:black;  
+		text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+	
+	}
+	
+	svg#legend {
+	position: absolute;
+	left: 75%;
+	bottom: 61%;
+	-webkit-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	transform: translateX(-50%);
+	display:inline-block;
+	}
 
 
         </style>
@@ -390,10 +407,11 @@
 				<div  id="button-wrapper" >
 				<button name="play" id="play" style="height: 30px;">Play</button>
 				</div>
-                <div id="my_dataviz"></div>
-                <div>
-                    <svg id="legend" height=300 width=450></svg>
+				<div>
+                    <svg id="legend" height=50 width=300></svg>
                 </div>
+                <div id="my_dataviz"></div>
+
               
         
             </span>
@@ -401,33 +419,6 @@
             <!-- <div id="chartContainer" class="well"></div> -->
             <div id="chart"></div>
 
-            <hr></hr>
-            <a id="button" title="button">Device Categories</a>
-            <div class="container"><h2>Charts:</h2></div>
-
-            <div id="exTab2" class="container">	
-                <ul class="nav nav-tabs">
-			        <li class="active">
-                        <a  href="#1" data-toggle="tab">Tag trends  </a>
-			        </li>
-			        <li>
-                        <a href="#2" data-toggle="tab">Device trends  </a>
-			        </li>
-		        </ul>
-
-			    <div class="tab-content ">
-			        <div class="tab-pane active" id="1">
-                        <figure class="highcharts-figure">
-                            <div id="pie"></div>
-                        </figure>
-				    </div>
-				    <div class="tab-pane" id="2">
-                        <figure class="highcharts-figure">
-                            <div id="donut"></div>
-                        </figure>
-				    </div>
-			    </div>
-            </div>
 
             <div id="tooltip" class="tooltip">
                 <div class="tooltip-range" id="range"></div>
@@ -1060,7 +1051,7 @@
                 return [d, maxYear, keys]
             }
 
-    var margin = {top: 70, right: 20, bottom: 20, left: 20},
+    var margin = {top: 60, right: 20, bottom: 5, left: 20},
     width_stream = width_main *0.55
     height_stream = 70
 
@@ -1079,14 +1070,14 @@ d3.select("#main_container")
         .append("rect")
         .attr("id", "background-stream")
         .attr("width", width_stream + margin.left + margin.right)
-        .attr("height", height_stream * 2.5 + margin.top + margin.bottom)
+        .attr("height", height_stream * 2.5 + margin.top + margin.bottom+60)
         .attr("transform",
-            "translate(" + margin.left + "," + height + ")")
+            "translate(" + margin.left + "," + (height-30) + ")")
     
     svg_stream = d3.selectAll("#streamContainer")
         .append("g")
         .attr("transform",
-            "translate(" + margin.left + "," + height + ")")
+            "translate(" + margin.left + "," + (height+10 ) + ")")
         .attr("id", "stream_1");
     
 	
@@ -1095,7 +1086,7 @@ d3.select("#main_container")
     var svg_stream_2 = d3.selectAll("#streamContainer")
             .append("g")
             .attr("transform",
-                    "translate(" + margin.left + "," + offset_top_stream_2 + ")")
+                    "translate(" + margin.left + "," + (offset_top_stream_2 +15)+ ")")
             .attr("id", "stream_2");
 
     current_selection_svg = svg_stream
@@ -1116,8 +1107,9 @@ d3.select("#main_container")
     }
 	
 	left_panel
-		.append("Text")
+		.append("text")
 		.attr("id", "side-panel-country")
+		.attr("fill", "black")
 		.text(function(d) {
 			if (country_in_focus_1) {
 				return country_in_focus_1;
@@ -1127,7 +1119,8 @@ d3.select("#main_container")
 		});
 
 	right_panel
-		.append("Text")
+		.append("text")
+		.attr("fill", "black")
 		.attr("id", "side-panel-country")
 		.text(function(d) {
 			if (country_in_focus_2) {
@@ -1197,8 +1190,6 @@ d3.select("#main_container")
     var margin_focused = {top: 0, right: 0, bottom: 0, left: 0},
         width_stream_focused = focusStremTartgetRight -8
         height_stream_focused = focusStremTartgetTop - focusStremTartgetBottom +5
-
-
 
     function getX(validTimeSteps_x, width_stream_x){
         var x = d3.scaleOrdinal()
@@ -1350,8 +1341,8 @@ d3.select("#main_container")
         // Add X axis label:
         svg_stream_2.append("text")
             .attr("text-anchor", "end")
-            .attr("x", width_stream_graph-15)
-            .attr("y", height_stream_graph +15 )
+            .attr("x", width_stream_graph)
+            .attr("y", height_stream_graph -3 )
 			.attr('font-size', 12)
             .text("Year");
         }
@@ -1593,7 +1584,7 @@ d3.select("#main_container")
 
     function updateStreamSlider(){
         var rectGrabBottom = height 
-        var rectGrabTop = height - height_stream_2 - height_stream
+        var rectGrabTop = height - height_stream_2 - height_stream +2
         var focusRectCornerTop = height + height_stream + 15
         var focusRectCornerRight = x_main_stream(current_date) + (rectWidthRight)
         var focusRectCornerLeft = x_main_stream(current_date) - (rectWidthLeft)
@@ -2267,8 +2258,8 @@ function isEmpty(obj) {
 
         console.log("dat len",Object.keys(dataset).length);
 
-        var width2 = 2000;
-        var height2 = 4000;
+        var width2 = width_main;
+        var height2 = height_main;
         var donutWidth = 15;
         var radius1 = Math.min(width2, height2) / 32;
         var radius2 = radius1 + donutWidth + 5;
@@ -2528,15 +2519,15 @@ function isEmpty(obj) {
 //         var samplePie = new multidonut.Pie(config);
 
 
-var svgLegend = d3.select("#legend")
+var svgLegend = d3.select("#legend");
 
 // Add one dot in the legend for each name.
 svgLegend.selectAll("mydots")
   .data(countries_mock_data.allCategories)
   .enter()
   .append("circle")
-    .attr("cy", 100)
-    .attr("cx", function(d,i){ return 100 + i*50}) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("cy", 12)
+    .attr("cx", function(d,i){ return 15 + i*50}) // 100 is where the first dot appears. 25 is the distance between dots
     .attr("r", 7)
     .style("fill", function(d){ return myColor(d)})
 
@@ -2545,8 +2536,8 @@ svgLegend.selectAll("mylabels")
   .data(countries_mock_data.allCategories)
   .enter()
   .append("text")
-    .attr("y", 120)
-    .attr("x", function(d,i){ return 100 + i*50-10}) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("y", 30)
+    .attr("x", function(d,i){ return 10+ i*50-10}) // 100 is where the first dot appears. 25 is the distance between dots
     //.style("fill", function(d){ return color(d)})
     .text(function(d){ return d})
     .attr("text-anchor", "left")
