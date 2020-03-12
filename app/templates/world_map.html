@@ -563,7 +563,7 @@
 				.attr("class", "shadow" )
                 .attr("width", width_side_panel)
                 .attr("height", height_main)
-
+			
             svg.call(tip);
             
             svg.append("rect")
@@ -1112,15 +1112,38 @@ d3.select("#main_container")
             country_in_focus_2 = countryID
         }
     }
+	
+	left_panel
+		.append("Text")
+		.attr("id", "side-panel-country")
+		.text(function(d) {
+			if (country_in_focus_1) {
+				return country_in_focus_1;
+			} else {
+				return "World";
+			}
+		});
+
+	right_panel
+		.append("Text")
+		.attr("id", "side-panel-country")
+		.text(function(d) {
+			if (country_in_focus_2) {
+				return country_in_focus_2;
+			} else {
+				return "World";
+			}
+		});
+
 
 
             /// adding variables and rect for the focused stream graph
 
     var focusMargin = 20
-    var focusStremTartgetBottom = 10
+    var focusStremTartgetBottom = height_main*0.4
     var focusStremTartgetLeft = focusMargin
     var focusStremTartgetRight = width_side_panel - focusMargin
-    var focusStremTartgetTop =  200
+    var focusStremTartgetTop =  height_main *0.6
     
     d3.select("#streamContainer")
         .append("g")
@@ -1160,18 +1183,18 @@ d3.select("#main_container")
         .append("g")
         .attr('id', "g-focus-left")
         .attr("transform",
-            "translate(" + 38 + "," + 0 + ")");
+            "translate(" + 40+ "," + focusStremTartgetBottom + ")");
 
     var right_focus_g = d3.select("#right_panel")
         .append("g")
         .attr('id', "g-focus-right")
         .attr("transform",
-            "translate(" + 38 + "," + 0 + ")");
+            "translate(" + 40+ "," + focusStremTartgetBottom + ")");
 
     var svg_focused_stream = left_focus_g
     var margin_focused = {top: 0, right: 0, bottom: 0, left: 0},
-        width_stream_focused = 300
-        height_stream_focused = 200
+        width_stream_focused = focusStremTartgetRight -8
+        height_stream_focused = focusStremTartgetTop - focusStremTartgetBottom +5
 
 
 
@@ -1304,7 +1327,7 @@ d3.select("#main_container")
         var [data, yRange, keys] = getStreamData(country_key, validTimeSteps_graph, level)
 
         var x = getX(validTimeSteps_graph, width_stream_graph)
-        var y = getY(yRange, height_stream_graph)
+        var y = getY(yRange, height_stream_graph-5)
         if(ticksEnabled){
             svg_stream.append("g")
             .attr("transform", "translate(0," + height_stream_graph*0.8 + ")")
