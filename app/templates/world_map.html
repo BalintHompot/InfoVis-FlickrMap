@@ -411,6 +411,8 @@
 
                     <input type="text" id="filterInput" name="filterInput" >
                     <button name="filterButton" id="filterButton" style="height: 30px;">Filter</button>
+                    <button name="filterResetButton" id="filterResetButton" style="height: 30px;">Reset</button>
+
                 </div>
             
 				<div>
@@ -881,6 +883,21 @@
             $("#filterButton").on("click", function() {
 		
             filterString = document.getElementById("filterInput").value
+            refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+            refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+
+            refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category", false)
+            refreshStreamGraph(country_in_focus_2, svg_stream_2, validTimeSteps, width_stream, height_stream, "category", true)
+
+            
+            
+                
+            } )
+
+            $("#filterResetButton").on("click", function() {
+		
+            document.getElementById("filterInput").value = ""
+            filterString = null
             refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
             refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
 
