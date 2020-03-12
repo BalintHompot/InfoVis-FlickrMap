@@ -476,6 +476,7 @@
             var width_side_panel = 0.2*width_main
             var current_position;
             var filterString = null
+            var filterCategory = "animal"
 
             $(document).ready(function() {
                 $('a#button').click(function() {
@@ -823,8 +824,8 @@
                     // .call(zoom.translate(translate).scale(scale).event); // not in d3 v4
                     .call( zoom.transform, d3.zoomIdentity.translate(translate[0],translate[1]).scale(scale) ); // updated for d3 v4
                 
-                refreshDonutDiv(d);
-                refreshPieDiv(d);
+                //refreshDonutDiv(d);
+                //refreshPieDiv(d);
 
                 refreshStreamGraph(d.id, current_selection_svg, validTimeSteps, width_stream, height_stream, "category", current_selection_ticks_enabled)
                 refreshStreamGraph(d.id, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
@@ -880,9 +881,39 @@
                 .attr("fill", "grey")
                 .attr("fill-opacity","0.2")
             */
+            function getFilterCategory(){
+                if(reverseTagCatIndex[filterString]){
+                    return reverseTagCatIndex[filterString]
+                }
+                Object.keys(countries_mock_data.timesteps).forEach((ts, ts_ind) => {
+                    ts_obj = countries_mock_data.timesteps[ts]
+
+                    ts_obj.country_data.buckets.forEach((countrydata, countryInd) => {
+
+                        Object.keys(countrydata.categories).forEach((cat, catind) => {
+                            catObj = countrydata.categories[cat]
+                            Object.keys(catObj.all_tags).forEach((key, keyInd) => {
+                                
+                                if(key == filterString){
+                                    console.log("category is")
+                                    console.log(cat)
+                                    filterCategory =  cat
+                                    return
+                                }
+                            })
+                        })
+                    })
+                })
+
+
+            }
+
             $("#filterButton").on("click", function() {
 		
             filterString = document.getElementById("filterInput").value
+            getFilterCategory()
+            console.log("retrieved filter category")
+            console.log(filterCategory)
             refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
             refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
 
@@ -1023,7 +1054,7 @@
 
                   
                             
-                            if(level == "category"){
+                            if(level == "category" && filterString == null){
                                 for(var tagInd in tag_list){
                                     tag = tag_list[tagInd]
                                     year_count += tags[tag]
@@ -1588,17 +1619,22 @@ d3.select("#main_container")
                     .duration(750)
                     .attr("d", area)
                     .style("fill", function(d) { 
-       
-                    if(!d){
+                    
+                    if(filterString != null){
+                        console.log("getting color for filter")
+                        console.log(filterCategory)
+                        return myColor(filterCategory)
+                    }
+                    else if(!d){
                     return 'grey'
-                    }else if(level == "tag"){
+                    }
+                    else if(level == "tag"){
                         return myColor(reverseTagCatIndex[d.key]) 
                     }else{
                         return myColor(d.key)
                     }
                 })
                 p.exit()
-                .call(logLenSelection)
                 .remove()
                 
 
