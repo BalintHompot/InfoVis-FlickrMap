@@ -327,6 +327,30 @@
   -moz-box-shadow:   1px 1px 8px rgba(0,0,0,0.3);
   box-shadow:        1px 1px 8px rgba(0,0,0,0.3);
 		}
+		
+		
+		#button-wrapper {
+		position: absolute;
+		margin-left: 335px;
+		top: 510px;
+		}
+		
+		#play {
+			font-family: 'Anonymous Pro', sans-serif;
+			width: 50px;
+			text-align: center;
+			color: rgb(192,192,192);
+			text-shadow:1px 1px 2px rgba(255,255,255,1);
+			font-size: 0.8rem;
+			line-height: 10px;
+			color: rgba(0,0,0,0.5);
+			text-decoration: none;
+			text-shadow:1px 1px 2px rgba(255,255,255,1);
+			-webkit-box-shadow:1px 1px 8px rgba(0,0,0,0.3);
+			-moz-box-shadow:   1px 1px 8px rgba(0,0,0,0.3);
+			box-shadow:        1px 1px 8px rgba(0,0,0,0.3);
+		
+		}
 
 
         </style>
@@ -362,7 +386,10 @@
                 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
                 <!-- Create a div where the graph will take place -->
-                <button name="play" id="play" style="height: 30px;">Play</button>
+                
+				<div  id="button-wrapper" >
+				<button name="play" id="play" style="height: 30px;">Play</button>
+				</div>
                 <div id="my_dataviz"></div>
                 <div>
                     <svg id="legend" height=300 width=450></svg>
@@ -1060,6 +1087,7 @@ d3.select("#main_container")
             "translate(" + margin.left + "," + height + ")")
         .attr("id", "stream_1");
     
+	
     height_stream_2 = height_stream
     var offset_top_stream_2 = (height+margin.top)
     var svg_stream_2 = d3.selectAll("#streamContainer")
