@@ -332,7 +332,7 @@
 		#button-wrapper {
 		position: absolute;
 		margin-left: 335px;
-		top: 510px;
+		top: 480px;
 		}
 		
 		#play {
@@ -354,7 +354,8 @@
 		
 		
 	#side-panel-country {
-	position: absolute;
+		fill:black;  
+		text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
 	
 	}
 	
@@ -1104,8 +1105,9 @@ d3.select("#main_container")
     }
 	
 	left_panel
-		.append("Text")
+		.append("text")
 		.attr("id", "side-panel-country")
+		.attr("fill", "black")
 		.text(function(d) {
 			if (country_in_focus_1) {
 				return country_in_focus_1;
@@ -1115,7 +1117,8 @@ d3.select("#main_container")
 		});
 
 	right_panel
-		.append("Text")
+		.append("text")
+		.attr("fill", "black")
 		.attr("id", "side-panel-country")
 		.text(function(d) {
 			if (country_in_focus_2) {
