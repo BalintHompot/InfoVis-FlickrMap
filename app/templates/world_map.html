@@ -909,6 +909,8 @@
             }
 
             function filterTagsByString(){
+                console.log("filtering tags")
+                console.log(filterString)
                 getFilterCategory()
     
                 refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
@@ -1464,8 +1466,7 @@ d3.select("#main_container")
 
 
         var clickedStreamFocused = function(d){
-            console.log("input d")
-            console.log(d)
+
             filterString = d.key
             filterTagsByString()
         }
@@ -1606,8 +1607,7 @@ d3.select("#main_container")
         }
 
         var clickedStreamFocused = function(d){
-            console.log(d)
-            filterString = d
+            filterString = d.key
             filterTagsByString()
         }
 
