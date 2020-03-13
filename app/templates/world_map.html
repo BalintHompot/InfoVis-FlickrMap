@@ -908,20 +908,20 @@
 
             }
 
+            function filterTagsByString(){
+                getFilterCategory()
+    
+                refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+                refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+
+                refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category", false)
+                refreshStreamGraph(country_in_focus_2, svg_stream_2, validTimeSteps, width_stream, height_stream, "category", true)
+            
+            }
+
             $("#filterButton").on("click", function() {
-		
-            filterString = document.getElementById("filterInput").value
-            getFilterCategory()
-            console.log("retrieved filter category")
-            console.log(filterCategory)
-            refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
-            refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
-
-            refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category", false)
-            refreshStreamGraph(country_in_focus_2, svg_stream_2, validTimeSteps, width_stream, height_stream, "category", true)
-
-            
-            
+                filterString = document.getElementById("filterInput").value
+                filterTagsByString()
                 
             } )
 
@@ -1461,6 +1461,18 @@ d3.select("#main_container")
             current_date_ind = validTimeSteps_graph.findIndex((element) => element == current_date)
             updateStreamSlider()
         }
+
+
+        var clickedStreamFocused = function(d){
+            console.log("input d")
+            console.log(d)
+            filterString = d.key
+            filterTagsByString()
+        }
+
+        var clickFunction = level == "category"?clickedStream:clickedStreamFocused
+
+
         var logged = false
         // Area generator
         var area = d3.area()
@@ -1493,7 +1505,7 @@ d3.select("#main_container")
             .on("mouseover", mouseover)
             .on("mousemove", mousemove)
             .on("mouseleave", mouseleave)
-            .on("click", clickedStream);
+            .on("click", clickFunction);
 
 
     }
@@ -1592,6 +1604,14 @@ d3.select("#main_container")
             current_date_ind = validTimeSteps_graph.findIndex((element) => element == current_date)
             updateStreamSlider()
         }
+
+        var clickedStreamFocused = function(d){
+            console.log(d)
+            filterString = d
+            filterTagsByString()
+        }
+
+        var clickFunction = level == "category"?clickedStream:clickedStreamFocused
         
                 var p = svg_stream.selectAll(".myArea-" + level)
                     .data(stackedData, function(d) {
@@ -1611,7 +1631,7 @@ d3.select("#main_container")
                 .on("mouseover", mouseover)
                 .on("mousemove", mousemove)
                 .on("mouseleave", mouseleave)
-                .on("click", clickedStream)
+                .on("click", clickFunction)
 
 
                     .merge(p)
