@@ -389,6 +389,10 @@
 	fill:gray;  
 	text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
 	}
+	
+	.graph_title_panel {
+		font-family: -apple-system, BlinkMacSystemFontsystem-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; 
+	}
 
         </style>
     </head>
@@ -1228,7 +1232,7 @@ d3.select("#main_container")
             .attr("height", focusStremTartgetTop - focusStremTartgetBottom)
             .attr("x", focusStremTartgetLeft)
             .attr("y", focusStremTartgetBottom);
-			
+		
     right_panel
             .append("rect")
             .attr('id', "rect-focus-right")
@@ -1247,13 +1251,31 @@ d3.select("#main_container")
         .append("g")
         .attr('id', "g-focus-left")
         .attr("transform",
-            "translate(" + 40+ "," + focusStremTartgetBottom + ")");
+            "translate(" + 40+ "," + focusStremTartgetBottom + ")")
+	
+	left_focus_g
+		.append("text")
+		.attr("class", "graph_title_panel")
+		.attr("x", -14)             
+        .attr("y", -8)
+        .attr("text-anchor", "left")  
+        .style("font-size", "12px")   
+        .text("Most popular tags");
 
     var right_focus_g = d3.select("#right_panel")
         .append("g")
         .attr('id', "g-focus-right")
         .attr("transform",
-            "translate(" + 40+ "," + focusStremTartgetBottom + ")");
+            "translate(" + 40+ "," + focusStremTartgetBottom + ")")
+			
+	right_focus_g
+		.append("text")
+		.attr("class", "graph_title_panel")
+		.attr("x", -14)             
+        .attr("y", -8)
+        .attr("text-anchor", "left")  
+        .style("font-size", "12px")   
+        .text("Most popular tags");
 
     var svg_focused_stream = left_focus_g
     var margin_focused = {top: 0, right: 0, bottom: 0, left: 0},
