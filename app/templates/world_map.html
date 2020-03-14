@@ -335,9 +335,12 @@
 		top: 480px;
 		}
 		
-		#play {
-			font-family: 'Anonymous Pro', sans-serif;
+		button {
 			width: 50px;
+		}
+		
+		.play {
+			font-family: 'Anonymous Pro', sans-serif;
 			text-align: center;
 			color: rgb(192,192,192);
 			text-shadow:1px 1px 2px rgba(255,255,255,1);
@@ -352,12 +355,6 @@
 		
 		}
 		
-		
-	#side-panel-country {
-		fill:black;  
-		text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
-	
-	}
 	
 	svg#legend {
 	position: absolute;
@@ -369,6 +366,29 @@
 	display:inline-block;
 	}
 
+	#filter-options {
+	position:absolute;
+	left: 60%;
+	top: 1%
+	}
+	
+	#d3-tip {
+			background: rgb(245, 245, 245);
+			background-opacity: 0.7;
+			opacity: 0.8;
+			font-size: 12px;
+			border-radius: 5px;
+			border: 1.2px solid #b0b0b0;
+	}
+	
+	#side-panel-country{
+	padding-top: 50px;
+	margin-top: 60px;
+	margin-left: 10px;
+	font-size: 20px;
+	fill:gray;  
+	text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+	}
 
         </style>
     </head>
@@ -405,13 +425,13 @@
                 <!-- Create a div where the graph will take place -->
                 
 				<div  id="button-wrapper" >
-				<button name="play" id="play" style="height: 30px;">Play</button>
+				<button name="play" id="play" class="play" style="height: 30px;">Play</button>
                 </div>
-                <div>
+                <div id="filter-options">
 
-                    <input type="text" id="filterInput" name="filterInput" >
-                    <button name="filterButton" id="filterButton" style="height: 30px;">Filter</button>
-                    <button name="filterResetButton" id="filterResetButton" style="height: 30px;">Reset</button>
+                    <input type="text" id="filterInput" name="filterInput" class="play" style="height: 30px;">
+                    <button name="filterButton" id="filterButton" class="play" style="height: 30px;">Filter</button>
+                    <button name="filterResetButton" id="filterResetButton" class="play" style="height: 30px;">Reset</button>
 
                 </div>
             
@@ -459,9 +479,9 @@
 
             var div = d3.select("body").append("div").attr("class", "toolTip");
             var catColor = [];
-            catColor["camera"] = "#fcba03";
-            catColor["unknown"] = "#6b6b6b";
-            catColor["phone"] = "#74db58";
+            catColor["camera"] = "#a6cee3";
+            catColor["unknown"] = "#d9d9d9";
+            catColor["phone"] = "#fb9a99";
 
             var mapdata = {};
             var popular_tags = true;
@@ -500,15 +520,15 @@
             var tip = d3.tip()
                 .attr("class", "d3-tip")
                 .attr("id", "d3-tip")
-                .style("width", "780 px")
-			    .offset([250, 0])
+                .style("width", "350 px")
+			    .offset([150, 0])
     	        .html(function(d)
 			    {
                     // var x = +d.properties.value;
                     // x = x.toPrecision(2);
                     return "<strong>Country: &nbsp;</strong><span>" + d.properties.name + "<br></span>"
-                        + "<strong>Most Popular Tag: &nbsp;</strong><span>" + d.properties.most_popular_tag + "<br></span>"
-                        + "<strong>No. of users: &nbsp;</strong><span>" + d.properties.user_freq + "<br><br></span>"
+                        + "<strong>Most popular category: &nbsp;</strong><span>" + d.properties.most_popular_tag + "<br></span>"
+                        + "<strong>No. of images: &nbsp;</strong><span>" + d.properties.user_freq + "<br><br></span>"
                         + "<div style='display: inline-flex;'><div id='tipDiv'></div><div id='tipDiv2'></div></div>";
                 });
             
@@ -1177,30 +1197,6 @@ d3.select("#main_container")
             country_in_focus_2 = countryID
         }
     }
-	
-	left_panel
-		.append("text")
-		.attr("id", "side-panel-country")
-		.attr("fill", "black")
-		.text(function(d) {
-			if (country_in_focus_1) {
-				return country_in_focus_1;
-			} else {
-				return "World";
-			}
-		});
-
-	right_panel
-		.append("text")
-		.attr("fill", "black")
-		.attr("id", "side-panel-country")
-		.text(function(d) {
-			if (country_in_focus_2) {
-				return country_in_focus_2;
-			} else {
-				return "World";
-			}
-		});
 
 
 
@@ -1231,8 +1227,8 @@ d3.select("#main_container")
             .attr("width", focusStremTartgetRight - focusStremTartgetLeft)
             .attr("height", focusStremTartgetTop - focusStremTartgetBottom)
             .attr("x", focusStremTartgetLeft)
-            .attr("y", focusStremTartgetBottom)
-
+            .attr("y", focusStremTartgetBottom);
+			
     right_panel
             .append("rect")
             .attr('id', "rect-focus-right")
@@ -1244,7 +1240,8 @@ d3.select("#main_container")
             .attr("width", focusStremTartgetRight - focusStremTartgetLeft)
             .attr("height", focusStremTartgetTop - focusStremTartgetBottom)
             .attr("x", focusMargin)
-            .attr("y", focusStremTartgetBottom)
+            .attr("y", focusStremTartgetBottom);
+		
     
     var left_focus_g = d3.select("#left_panel")
         .append("g")
@@ -1407,7 +1404,7 @@ d3.select("#main_container")
         .attr("stroke", "grey")
         if(level == "category"){
             svg_stream.selectAll(".tick line")
-            .attr("stroke-opacity", 0);
+            .attr("stroke-opacity", 0.8);
         }
 
         // Add X axis label:
@@ -1417,7 +1414,16 @@ d3.select("#main_container")
             .attr("y", height_stream_graph -3 )
 			.attr('font-size', 12)
             .text("Year");
+			
+		svg_stream_2.selectAll(".tick line")
+        .attr("stroke", "grey")
+        if(level == "category"){
+            svg_stream.selectAll(".tick line")
+            .attr("stroke-opacity", 0.8);
         }
+		
+		
+		}
 
 
 
@@ -1662,8 +1668,37 @@ d3.select("#main_container")
         d3.selectAll(".myArea-tag" )            
                 .style("stroke", "black")
                 .attr('stroke-width', .2)
-
-        
+		
+		d3.selectAll("#side-panel-country")
+		  .remove()
+		
+        left_panel
+		.append("text")
+		.attr("id", "side-panel-country")
+		.attr("fill", "black")
+		.attr("transform","translate(20,30)")
+		.text(function(d) {
+			if (country_in_focus_1 == "WORLD") {
+				return "The World";
+			} else {
+				return  country_in_focus_1;
+			}
+		})
+				
+		right_panel
+		.append("text")
+		.attr("fill", "black")
+		.attr("id", "side-panel-country")
+		.attr("transform","translate(20,30)")
+		.text(function(d) {
+			if (country_in_focus_2 == "WORLD") {
+				return "The World";
+			} else {
+				return country_in_focus_2;
+			}
+		})
+		
+		
     }
 
 
