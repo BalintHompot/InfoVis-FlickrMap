@@ -2439,17 +2439,11 @@ function isEmpty(obj) {
     
         dataset = {};
         for(var key_st in countries_mock_data.timesteps) {
-<<<<<<< HEAD
-        if (key_st != null && key_st != undefined) {
-            var timeArray = [];
-            var tp = countries_mock_data.timesteps[key_st].country_data.buckets;
-=======
         //console.log("sa",key_st);
         if (key_st != null && key_st != undefined) {
             var timeArray = [];
             var tp = countries_mock_data.timesteps[key_st].country_data.buckets;
             //console.log("sas");
->>>>>>> f2d43e6c78124e2c9f442a3c400368c1ee98fddf
         //Select the country..
         // for( var idx=0; idx<=countries_mock_data.timesteps[key_st].country_data.buckets.length; ++idx) {
             var country_bucket = countries_mock_data.timesteps[key_st].country_data.buckets.find( function (e){
