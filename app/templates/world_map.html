@@ -1115,15 +1115,23 @@
                                 }
                     
                                 for(var catInd in catTagList){
+
                         
                                     var catCount =  allTagsList[catTagList[catInd]]
+                                 
                                     if(typeof catCount == "undefined"){
                                         catCount = 0
                                     }
-                        
-                                    year_data[catTagList[catInd]] = catCount
-                                    keys.add(catTagList[catInd])
-                                    tags[reverseTagCatIndex[catTagList[catInd]]] -= catCount
+                                    
+                                    if(level == "tag"){
+                                        year_data[catTagList[catInd]] = catCount
+                                        keys.add(catTagList[catInd])
+                                    }else{
+                         
+                                        year_data[filterCategory] = catCount
+                                        keys.add(filterCategory)
+                                    }
+                                    
                                     year_count += catCount
                                 
                                 }
@@ -1153,6 +1161,8 @@
 
                 }
                 keys = Array.from(keys)
+                console.log("for level " + level + " returning")
+                console.log(d)
 
                 return [d, maxYear, keys]
             }
