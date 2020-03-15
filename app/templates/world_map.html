@@ -447,7 +447,7 @@
             </span>
 
             <!-- <div id="chartContainer" class="well"></div> -->
-            <div id="chart"></div>
+            <span class="chart-parent"><div id="chart"></div></span>
 
 
             <div id="tooltip" class="tooltip">
@@ -862,7 +862,13 @@
                 //refreshCategoryDonut(d.id, dataset)
                 console.log("in clicked, changing selection")
                 changeCurrentSelections(d.id)
+<<<<<<< HEAD
 
+=======
+                updatedMultiDonut(d.id);
+                console.log("clicked!!");
+                console.log(active)
+>>>>>>> f2d43e6c78124e2c9f442a3c400368c1ee98fddf
 
             }
 
@@ -2439,13 +2445,21 @@ function isEmpty(obj) {
     
         dataset = {};
         for(var key_st in countries_mock_data.timesteps) {
+<<<<<<< HEAD
         if (key_st != null && key_st != undefined) {
             var timeArray = [];
             var tp = countries_mock_data.timesteps[key_st].country_data.buckets;
+=======
+        //console.log("sa",key_st);
+        if (key_st != null && key_st != undefined) {
+            var timeArray = [];
+            var tp = countries_mock_data.timesteps[key_st].country_data.buckets;
+            //console.log("sas");
+>>>>>>> f2d43e6c78124e2c9f442a3c400368c1ee98fddf
         //Select the country..
         // for( var idx=0; idx<=countries_mock_data.timesteps[key_st].country_data.buckets.length; ++idx) {
             var country_bucket = countries_mock_data.timesteps[key_st].country_data.buckets.find( function (e){
-                            return e.key.toUpperCase == "USA".toUpperCase
+                            return e.key.toUpperCase == "WORLD".toUpperCase
                         })
             if (country_bucket) {
                 var deviceData = country_bucket.device_data;
@@ -2458,8 +2472,9 @@ function isEmpty(obj) {
                             obj2.category = deviceCategory;
                             obj2.device = devices;
                             obj2.timestep = key_st;
+                            timeArray.push(obj2);
                         }
-                        timeArray.push(obj2);
+                        
                     }
                 }
                 dataset[key_st] = timeArray;
@@ -2470,6 +2485,7 @@ function isEmpty(obj) {
         
         
     }
+
 
         // var dataset = {"2001":[
         //   { count: 5, category: "unknown", device: "instax", timestep: "2001" }, 
@@ -2484,6 +2500,7 @@ function isEmpty(obj) {
         //   { count: 40, category: "camera", device: "Nikon", timestep: "2002" }
         // ]};
 
+        //console.log("dat len",Object.keys(dataset).length);
 
         var width2 = width_main;
         var height2 = height_main;
@@ -2553,83 +2570,7 @@ function isEmpty(obj) {
 
         }
 
-        // function change(data){
-        //     path.data(pie(data));
-        //     path.transition().duration(750).attrTween("d", arcTween); // redraw the arcs
-
-        // }
-
-    
-
-    //dataset={};
-    //refreshCategoryDonut("WORLD",dataset);
-    
-        // var svg1 = svg.append('g')
-        //   .attr('transform', 'translate(' + (width2 / 2) + 
-        //     ',' + (height2 / 2) + ')');
-        // var svg2 = svg.append('g')
-        //   .attr('transform', 'translate(' + (width2 / 2) + 
-        //     ',' + (height2 / 2) + ')');
-
-        // var arc1 = d3.arc()
-        //   .innerRadius(radius1 - donutWidth)  
-        //   .outerRadius(radius1);
-        // var arc2 = d3.arc()
-        //   .innerRadius(radius2 - donutWidth)  
-        //   .outerRadius(radius2);
-          
-        // var pie = d3.pie()
-        //   .value(function(d) { return d.count; })
-        //   .sort(null)
-	    //   .startAngle(1.1*Math.PI)
-        //   .endAngle(3.1*Math.PI);
-
-        // var path1 = svg1.selectAll('path')
-        //   .data(pie(dataset1))
-        //   .enter()
-        //   .append('path')
-        //   .attr('d', arc1)
-        //   .attr("class", "donut-path")
-        //   .style("stroke", "#eee")
-        //   .style("stroke-width", 3)
-        //   .attr('fill', function(d, i) { 
-        //     return catColor[d.data.category];
-        //   })
-        //   .transition().delay(function(d,i) {
-        //       return i*500;
-        //   })
-        //   .duration(500)
-        //   .attrTween('d', function(d) {
-        //     var i = d3.interpolate(d.startAngle+0.1, d.endAngle);
-        //     return function(t) {
-        //         d.endAngle = i(t);
-        //         return arc1(d)
-        //     }
-        //   });
-
-        // var path2 = svg2.selectAll('path')
-        //   .data(pie(dataset2))
-        //   .enter()
-        //   .append('path')
-        //   .attr('d', arc2)
-        //   .attr("class", "donut-path")
-        //   .style("stroke", "#eee")
-        //   .style("stroke-width", 3)
-        //   .attr('fill', function(d, i) { 
-        //     return catColor[d.data.category];
-        //   })
-        //   .transition().delay(function(d,i) {
-        //       return i*500;
-        //   })
-        //   .duration(500)
-        //   .attrTween('d', function(d) {
-        //     var i = d3.interpolate(d.startAngle+0.1, d.endAngle);
-        //     return function(t) {
-        //         d.endAngle = i(t);
-        //         return arc2(d)
-        //     }
-        //   });
-
+        //console.log(JSON.stringify(dataset));
         
 
     
@@ -2643,6 +2584,124 @@ function isEmpty(obj) {
     d3.selectAll(".donut-pathh").on("mouseout", function(d){
     div.style("display", "none");
 });
+
+
+
+
+
+function reDrawMultiDonut(newData) {
+
+    //console.log(JSON.stringify(newData));
+    d3.selectAll("#chart").selectAll("svg").remove();
+    d3.selectAll('#chart-parent')
+        .append("div")
+        .attr("class", "chart");
+    for (var i=0; i<k; ++i) {
+        svg2[i].exit().remove();
+    }
+
+    var svgDonut = d3.select('#chart')
+          .append('svg')
+          .attr('width', width2)
+          .attr('height', height2);
+
+
+          var pie = d3.pie()
+          .value(function(d) { return d.count; })
+          .sort(null)
+	      .startAngle(1.1*Math.PI)
+          .endAngle(3.1*Math.PI);
+
+    //Removing all path donut elements..
+    //d3.select(".donut-path").selectAll("*").remove();
+    svg2 = [];
+    k=0;
+    radius1 = Math.min(width2, height2) / 32;
+    radius2 = radius1 + donutWidth + 5;
+            //Draw for the first time..
+            for (var timestepKey in newData) {
+            svg2[k] = svgDonut.append('g')
+            .attr('transform', 'translate(' + (width2 / 2) + 
+            ',' + (height2 / 2) + ')');
+
+            var arc2 = d3.arc()
+                .innerRadius(radius1 - donutWidth)  
+                .outerRadius(radius1);
+
+            
+
+            
+
+          var path2 = svg2[k].selectAll('path')
+          .data(pie(newData[timestepKey]))
+          .enter()
+          .append('path')
+          .attr('d', arc2)
+          .attr("class", "donut-path")
+          .style("stroke", "#eee")
+          .style("stroke-width", 3)
+          .attr('fill', function(d, i) { 
+            return catColor[d.data.category];
+          });
+        //   .transition().delay(function(d,i) {
+        //       return i*500;
+        //   })
+        //   .duration(500)
+        //   .attrTween('d', function(d) {
+        //     var i = d3.interpolate(d.startAngle+0.1, d.endAngle);
+        //     return function(t) {
+        //         d.endAngle = i(t);
+        //         return arc2(d)
+        //     }
+        //   });
+
+          radius1 = radius1 + donutWidth + 5;
+
+          k++;
+
+        }
+}
+
+function updatedMultiDonut(country_code) {
+    var newData = {};
+    console.log("ccode: ",country_code)
+        for(var key_st in countries_mock_data.timesteps) {
+        if (key_st != null && key_st != undefined) {
+            var timeArray = [];
+            var tp = countries_mock_data.timesteps[key_st].country_data.buckets;
+        //Select the country..
+        // for( var idx=0; idx<=countries_mock_data.timesteps[key_st].country_data.buckets.length; ++idx) {
+            var country_bucket = tp.find( function (e){
+                            return e.key.toUpperCase() == country_code.toUpperCase()
+                        })
+            if (country_bucket) {
+                var deviceData = country_bucket.device_data;
+
+                for (var deviceCategory in deviceData) {
+                    if(!isEmpty(deviceData[deviceCategory])) {
+                        for (var devices in deviceData[deviceCategory]) {
+                            var obj2 = {};
+                            obj2.count = deviceData[deviceCategory][devices];
+                            obj2.category = deviceCategory;
+                            obj2.device = devices;
+                            obj2.timestep = key_st;
+                            timeArray.push(JSON.parse(JSON.stringify(obj2)));
+                        }
+                        
+                    }
+                }
+                newData[key_st] = JSON.parse(JSON.stringify(timeArray));
+            }
+                
+        //}
+        }
+        
+        
+    }
+
+    //newData = {};
+    reDrawMultiDonut(newData);
+}
 
 
 
