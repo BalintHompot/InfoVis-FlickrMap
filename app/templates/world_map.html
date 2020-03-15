@@ -478,8 +478,8 @@
             var tooltipDisabled = false;
             var timer;
             //var validTimeSteps = ["2007_12", "2008_01", "2008_02", "2008_03", "2008_04", "2008_05", "2008_06", "2008_07", "2008_08", "2008_09", "2008_10", "2008_11", "2008_12"]
-            var validTimeSteps = ["2001_1", "2001_2", "2001_3", "2001_4", "2002_1", "2002_2", "2002_3", "2002_4", "2003_1", "2003_2", "2003_3", "2003_4", "2004_1", "2004_2", "2004_3", "2004_4", "2005_1", "2005_2", "2005_3", "2005_4", "2006_1", "2006_2", "2006_3", "2006_4", "2007_1", "2007_2", "2007_3", "2007_4", "2008_1", "2008_2", "2008_3", "2008_4", "2009_1", "2009_2"]
-            var validYears = ["2001","2002","2003","2004","2005","2006","2007","2008","2009"];
+            var validTimeSteps = ["2004_1", "2004_2", "2004_3", "2004_4", "2005_1", "2005_2", "2005_3", "2005_4", "2006_1", "2006_2", "2006_3", "2006_4", "2007_1", "2007_2", "2007_3", "2007_4", "2008_1", "2008_2", "2008_3", "2008_4", "2009_1", "2009_2"]
+            var validYears = ["2004","2005","2006","2007","2008","2009"];
 
             var div = d3.select("body").append("div").attr("class", "toolTip");
             var catColor = [];
@@ -501,6 +501,9 @@
             var current_position;
             var filterString = null
             var filterCategory = "animal"
+
+            var sliderGPosX = -width_side_panel
+
 
             $(document).ready(function() {
                 $('a#button').click(function() {
@@ -1348,14 +1351,21 @@ d3.select("#main_container")
     }
 
     function dragged(d) {
-        current_date = invertX(d3.mouse(this)[0]-400)
+        console.log("d is")
+        console.log(d)
+        console.log("d x is")
+        console.log(d.x)
+
+        sliderGPosX = d3.event.x - width_side_panel
+
+        current_date = invertX(d3.event.x ) 
         current_date_ind = validTimeSteps.findIndex((element) => element == current_date)
         updateStreamSlider()
     }
 
     function draggedLeft(d) {
         current_time_pos = x_main_stream(current_date)
-        current_mouse_pos = d3.mouse(this)[0] - 400
+        current_mouse_pos = d3.event.x - rectWidthLeft
         time_step_size = (width_stream / validTimeSteps.length)
         if(current_time_pos - current_mouse_pos > time_step_size * (rectWidthLeftSteps+1)){
             rectWidthLeftSteps = Math.min(rectWidthLeftSteps+1, current_date_ind )
@@ -1371,7 +1381,7 @@ d3.select("#main_container")
 
     function draggedRight(d) {
         current_time_pos = x_main_stream(current_date)
-        current_mouse_pos = d3.mouse(this)[0] - 400
+        current_mouse_pos = d3.event.x + rectWidthRight
         time_step_size = (width_stream / validTimeSteps.length)
         if(current_mouse_pos - current_time_pos > time_step_size * (rectWidthRightSteps+1)){
             rectWidthRightSteps = Math.min(rectWidthRightSteps+1, validTimeSteps.length - current_date_ind - 1)
@@ -1487,6 +1497,8 @@ d3.select("#main_container")
         }
 
         var clickedStream = function(d){
+            console.log("clicked pos")
+            console.log(d3.mouse(this)[0])
             current_date = invertX(d3.mouse(this)[0])
             current_date_ind = validTimeSteps_graph.findIndex((element) => element == current_date)
             updateStreamSlider()
@@ -1497,6 +1509,8 @@ d3.select("#main_container")
 
             filterString = d.key
             filterTagsByString()
+            console.log("setting element to " + d.key)
+            document.getElementById("filterInput").value = d.key
         }
 
         var clickFunction = level == "category"?clickedStream:clickedStreamFocused
@@ -1731,13 +1745,16 @@ d3.select("#main_container")
         var focusRectCornerTop = height + height_stream + 15
         var focusRectCornerRight = x_main_stream(current_date) + (rectWidthRight)
         var focusRectCornerLeft = x_main_stream(current_date) - (rectWidthLeft)
+        console.log("rect left")
+        console.log(focusRectCornerLeft)
         d3.select("#sliderG").remove()
         d3.selectAll("#line-focus").remove()
 
 
         var sliderG = d3.select("#streamContainer").append("g").attr("id", "sliderG")
         .attr("transform",
-            "translate(" + 20 + "," + 150 + ")");
+            "translate(" + 20 + "," + 150 + ")")
+        .data([{x: sliderGPosX, y: 0}]);
 
 		var lineCol0or = '#5e5e5e'
 		
