@@ -488,8 +488,8 @@
             var mapdata = {};
             var popular_tags = true;
 
-            var selectedColor = "white"
-            var selectionColor = "lightgrey"
+            var selectedColor = "lightgrey"
+            var selectionColor = "white"
 
 
             var width_main = window.innerWidth -17
@@ -856,11 +856,12 @@
                 
                 //refreshDonutDiv(d);
                 //refreshPieDiv(d);
-
+                
                 refreshStreamGraph(d.id, current_selection_svg, validTimeSteps, width_stream, height_stream, "category", current_selection_ticks_enabled)
                 refreshStreamGraph(d.id, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
                 //refreshCategoryDonut(d.id, dataset)
                 changeCurrentSelections(d.id)
+                updatePanelCountry()
                 updatedMultiDonut(d.id);
 
 
@@ -876,9 +877,16 @@
                     .duration(750)
                     // .call( zoom.transform, d3.zoomIdentity.translate(0, 0).scale(1) ); // not in d3 v4
                     .call( zoom.transform, d3.zoomIdentity ); // updated for d3 v4
+
                 
-                refreshStreamGraph("WORLD", current_selection_svg, validTimeSteps, width_stream, height_stream, "category", current_selection_ticks_enabled)
-                refreshStreamGraph("WORLD", svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+                refreshStreamGraph("WORLD", prev_selection_svg, validTimeSteps, width_stream, height_stream, "category", current_selection_ticks_enabled)
+                refreshStreamGraph("WORLD", prev_svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+                if(current_selection_svg == svg_stream){
+                    country_in_focus_2 = "WORLD"
+                }else{
+                    country_in_focus_1 = "WORLD"
+                }
+                updatePanelCountry()
                 dataset = {};
                 //refreshCategoryDonut("WORLD",dataset);
                 //TODO have to add reset functionality for pie and donut..
@@ -938,7 +946,7 @@
             }
 
             function filterTagsByString(){
-
+                filterString = document.getElementById("filterInput").value
                 getFilterCategory()
     
                 refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
@@ -950,7 +958,7 @@
             }
 
             $("#filterButton").on("click", function() {
-                filterString = document.getElementById("filterInput").value
+                
                 filterTagsByString()
                 
             } )
@@ -1228,13 +1236,16 @@ d3.select("#main_container")
             .attr("id", "stream_2");
 
     current_selection_svg = svg_stream
+    prev_selection_svg = svg_stream_2
     current_selection_ticks_enabled = false
     
     function changeCurrentSelections(countryID){
         if(current_selection_svg == svg_stream){
             console.log("prev is 1")
             current_selection_svg = svg_stream_2
+            prev_selection_svg = svg_stream
             svg_focused_stream = right_focus_g
+            prev_svg_focused_stream = left_focus_g
             current_selection_ticks_enabled = true
             country_in_focus_1 = countryID
             selected_ind_height = height  + height_stream/2
@@ -1245,6 +1256,8 @@ d3.select("#main_container")
             console.log("prev is 2")
             current_selection_svg = svg_stream
             svg_focused_stream = left_focus_g
+            prev_selection_svg = svg_stream_2
+            prev_svg_focused_stream = right_focus_g
             current_selection_ticks_enabled = false
             country_in_focus_2 = countryID
             selected_ind_height = height + height_stream +  height_stream/2
@@ -1260,6 +1273,37 @@ d3.select("#main_container")
 
         d3.selectAll("#background-left").transition().duration(750).attr("fill", leftColor)
         d3.selectAll("#background-right").transition().duration(750).attr("fill", rightColor)
+    }
+
+    function updatePanelCountry(){
+        d3.selectAll("#side-panel-country")
+		  .remove()
+		
+        left_panel
+		.append("text")
+		.attr("id", "side-panel-country")
+		.attr("fill", "black")
+		.attr("transform","translate(20,30)")
+		.text(function(d) {
+			if (country_in_focus_1 == "WORLD") {
+				return "The World";
+			} else {
+				return  country_in_focus_1;
+			}
+		})
+				
+		right_panel
+		.append("text")
+		.attr("fill", "black")
+		.attr("id", "side-panel-country")
+		.attr("transform","translate(20,30)")
+		.text(function(d) {
+			if (country_in_focus_2 == "WORLD") {
+				return "The World";
+			} else {
+				return country_in_focus_2;
+			}
+		})
     }
 
 
@@ -1338,6 +1382,7 @@ d3.select("#main_container")
         .text("Most popular tags");
 
     var svg_focused_stream = left_focus_g
+    var prev_svg_focused_stream = right_focus_g
     var margin_focused = {top: 0, right: 0, bottom: 0, left: 0},
         width_stream_focused = focusStremTartgetRight -30
         height_stream_focused = focusStremTartgetTop - focusStremTartgetBottom +5
@@ -1391,6 +1436,7 @@ d3.select("#main_container")
     drawStreamGraph(country_in_focus_1, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
 
     updateStreamSlider()
+    updatePanelCountry()
 
     function getFocusedValidSteps(){
         var start_index = Math.max(current_date_ind - rectWidthLeftSteps, 0)
@@ -1573,10 +1619,10 @@ d3.select("#main_container")
 
 
         var clickedStreamFocused = function(d){
-
-            filterString = d.key
-            filterTagsByString()
+            console.log("clicked stream focus")
             document.getElementById("filterInput").value = d.key
+            filterTagsByString()
+            
         }
 
         var clickFunction = level == "category"?clickedStream:clickedStreamFocused
@@ -1729,7 +1775,8 @@ d3.select("#main_container")
         }
 
         var clickedStreamFocused = function(d){
-            filterString = d.key
+            console.log("clicked stream focus")
+            document.getElementById("filterInput").value = d.key
             filterTagsByString()
         }
 
@@ -1784,35 +1831,7 @@ d3.select("#main_container")
                 .style("stroke", "black")
                 .attr('stroke-width', .2)
 		
-		d3.selectAll("#side-panel-country")
-		  .remove()
-		
-        left_panel
-		.append("text")
-		.attr("id", "side-panel-country")
-		.attr("fill", "black")
-		.attr("transform","translate(20,30)")
-		.text(function(d) {
-			if (country_in_focus_1 == "WORLD") {
-				return "The World";
-			} else {
-				return  country_in_focus_1;
-			}
-		})
-				
-		right_panel
-		.append("text")
-		.attr("fill", "black")
-		.attr("id", "side-panel-country")
-		.attr("transform","translate(20,30)")
-		.text(function(d) {
-			if (country_in_focus_2 == "WORLD") {
-				return "The World";
-			} else {
-				return country_in_focus_2;
-			}
-		})
-		
+
 		
     }
 
