@@ -1575,31 +1575,49 @@ d3.select("#main_container")
         var y = getY(yRange, height_stream_graph)
 
         // List of groups = header of the csv files
-        if(ticksEnabled){
-            svg_stream.append("g")
+        svg_stream.append("g")
             .attr("transform", "translate(0," + height_stream_graph*0.8 + ")")
-            .call(d3.axisBottom(x)
-			.tickSize(-height_stream_graph*.7)
+            .call(d3.axisBottom(x).tickSize(-height_stream_graph*.7)
 			.tickValues(validTimeSteps_graph)
 			.tickFormat(function(d, i){
-			    var year = d.substring(0,4);
-				var month = d.substring(5, 7);
-				if (d.substring(5,6) === '1'){
-					return year;			
-				}
+                if(ticksEnabled){
+                    var year = d.substring(0,4);
+				    if (!(i % 4)) return year;
+                }else{
+                    return ""
+                }
+		
 			})
 			)
-			
             .select(".domain").remove()
         // Customization
+
         svg_stream.selectAll(".tick line")
         .attr("stroke", "grey")
         if(level == "category"){
             svg_stream.selectAll(".tick line")
-            .attr("stroke-opacity", 0);
-        }
+            .attr("stroke-opacity", 0.8);
         }
 
+
+			
+		svg_stream_2.selectAll(".tick line")
+        .attr("stroke", "grey")
+        if(level == "category"){
+            svg_stream.selectAll(".tick line")
+            .attr("stroke-opacity", 0.8);
+        }
+		
+		if(ticksEnabled){
+            // Add X axis label:
+            svg_stream_2.append("text")
+                .attr("text-anchor", "end")
+                .attr("x", width_stream_graph)
+                .attr("y", height_stream_graph -3 )
+                .attr('font-size', 12)
+                .text("Year");
+        }
+		
 
 
         //stack the data?
