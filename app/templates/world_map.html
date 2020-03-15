@@ -273,12 +273,10 @@
 }
 
 		#background-left {
-			fill: rgb(245, 245, 245);
 			fill-opacity: 0.7;
 			stroke: lightgray;
 		}
 		#background-right		{
-			fill: rgb(245, 245, 245);
 			fill-opacity: 0.7;
 			stroke: lightgray;
 		}
@@ -490,6 +488,9 @@
             var mapdata = {};
             var popular_tags = true;
 
+            var selectedColor = "white"
+            var selectionColor = "lightgrey"
+
 
             var width_main = window.innerWidth -17
 			
@@ -502,7 +503,7 @@
             var filterString = null
             var filterCategory = "animal"
 
-            var sliderGPosX = -width_side_panel
+            var sliderGPosX = 0
 
 
             $(document).ready(function() {
@@ -570,12 +571,15 @@
             var left_panel =  main_container.append("g")
                         .attr("height", height_main)    // set the height
                         .attr("width", width_side_panel)
-                        .attr("id", "left_panel");
+                        .attr("id", "left_panel")
+                        .attr("fill", selectionColor)
+
             var rightPanelOffset = width_main - width_side_panel
             var right_panel =  main_container.append("g")
                         .attr("height", height_main)    // set the height
                         .attr("width", width_side_panel)
                         .attr("id", "right_panel")
+                        .attr("fill", selectedColor)
                         .attr("transform",
                             "translate(" + rightPanelOffset + "," + 0 + ")");
             
@@ -764,7 +768,6 @@
                     tip.show(datum);
                 }
                
-                console.log("data: ",datum);
                 if (popular_tags) {
                     refreshPie1(datum);
                     getTagPerCategories(datum);
@@ -857,9 +860,9 @@
                 refreshStreamGraph(d.id, current_selection_svg, validTimeSteps, width_stream, height_stream, "category", current_selection_ticks_enabled)
                 refreshStreamGraph(d.id, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
                 //refreshCategoryDonut(d.id, dataset)
+                console.log("in clicked, changing selection")
                 changeCurrentSelections(d.id)
-                console.log("clicked!!");
-                console.log(active)
+
 
             }
 
@@ -922,8 +925,7 @@
                             Object.keys(catObj.all_tags).forEach((key, keyInd) => {
                                 
                                 if(key == filterString){
-                                    console.log("category is")
-                                    console.log(cat)
+                             
                                     filterCategory =  cat
                                     return
                                 }
@@ -936,8 +938,7 @@
             }
 
             function filterTagsByString(){
-                console.log("filtering tags")
-                console.log(filterString)
+
                 getFilterCategory()
     
                 refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
@@ -993,8 +994,7 @@
                             current_date_ind++;
                             current_date = validTimeSteps[current_date_ind]
                             current_year_data = countries_mock_data.timesteps[current_date]
-                            console.log("updated date")
-                            console.log(current_date)
+                          
                             draw(world_countries,current_year_data);
                             updateStreamSlider()
                         }else{
@@ -1023,8 +1023,7 @@
 
 
             function getStreamData(country_key, timeSteps, level){
-                console.log("time steps for data")
-                console.log(timeSteps)
+     
 
                 var d = []
                 var keys = new Set()
@@ -1178,6 +1177,46 @@ d3.select("#main_container")
         .attr("transform",
             "translate(" + margin.left + "," + (height+10 ) + ")")
         .attr("id", "stream_1");
+
+    var selected_indicator = d3.selectAll("#streamContainer")
+        .append("rect")
+        .attr("id", "selected-ind")
+        .style("fill", selectedColor)
+        .attr("rx", 3)
+        .attr("ry", 3)
+        .style("stroke", "gray")
+        .attr("width", 50)
+        .attr("height", 10)
+        .attr("x", width_stream)
+        .attr("y",   (height+height_stream+(height_stream/2) ));
+
+    var selected_indicator_text = d3.selectAll("#streamContainer")
+
+        .append("text")
+		.attr("id", "selected-ind-text")
+        .attr("x", width_stream)
+        .attr("y",   (height+height_stream+(height_stream/2) ))
+        .text("Selected")
+
+    var selection_indicator = d3.selectAll("#streamContainer")
+        .append("rect")
+        .attr("id", "selection-ind")
+        .style("fill", selectionColor)
+        .attr("rx", 3)
+        .attr("ry", 3)
+        .style("stroke", "gray")
+        .attr("width", 50)
+        .attr("height", 10)
+        .attr("x", width_stream)
+        .attr("y",   (height+(height_stream/2) ));
+
+    var selection_indicator_text = d3.selectAll("#streamContainer")
+
+        .append("text")
+		.attr("id", "selection-ind-text")
+        .attr("x", width_stream)
+        .attr("y",   (height+(height_stream/2) ))
+        .text("Selecting")
     
 	
     height_stream_2 = height_stream
@@ -1193,16 +1232,34 @@ d3.select("#main_container")
     
     function changeCurrentSelections(countryID){
         if(current_selection_svg == svg_stream){
+            console.log("prev is 1")
             current_selection_svg = svg_stream_2
             svg_focused_stream = right_focus_g
-            current_selection_ticks_enabled = false
+            current_selection_ticks_enabled = true
             country_in_focus_1 = countryID
+            selected_ind_height = height  + height_stream/2
+            selection_ind_height = height + height_stream + height_stream/2
+            leftColor = selectedColor
+            rightColor = selectionColor
         }else{
+            console.log("prev is 2")
             current_selection_svg = svg_stream
             svg_focused_stream = left_focus_g
             current_selection_ticks_enabled = false
             country_in_focus_2 = countryID
+            selected_ind_height = height + height_stream +  height_stream/2
+            selection_ind_height = height + height_stream/2
+            leftColor = selectionColor
+            rightColor = selectedColor
         }
+        d3.selectAll("#selection-ind").transition().duration(750).attr("y", selection_ind_height)
+        d3.selectAll("#selected-ind").transition().duration(750).attr("y", selected_ind_height)
+
+        d3.selectAll("#selection-ind-text").transition().duration(750).attr("y", selection_ind_height)
+        d3.selectAll("#selected-ind-text").transition().duration(750).attr("y", selected_ind_height)
+
+        d3.selectAll("#background-left").transition().duration(750).attr("fill", leftColor)
+        d3.selectAll("#background-right").transition().duration(750).attr("fill", rightColor)
     }
 
 
@@ -1282,7 +1339,7 @@ d3.select("#main_container")
 
     var svg_focused_stream = left_focus_g
     var margin_focused = {top: 0, right: 0, bottom: 0, left: 0},
-        width_stream_focused = focusStremTartgetRight -8
+        width_stream_focused = focusStremTartgetRight -30
         height_stream_focused = focusStremTartgetTop - focusStremTartgetBottom +5
 
     function getX(validTimeSteps_x, width_stream_x){
@@ -1351,21 +1408,24 @@ d3.select("#main_container")
     }
 
     function dragged(d) {
-        console.log("d is")
-        console.log(d)
+        /*
         console.log("d x is")
         console.log(d.x)
-
+        console.log("mouse pos x")
+        console.log(d3.event.x )
+        */
         sliderGPosX = d3.event.x - width_side_panel
+        d3.selectAll("#sliderG")
+        .data([{x: sliderGPosX, y: 0}]);
 
-        current_date = invertX(d3.event.x ) 
+        current_date = invertX(d3.event.x  - width_side_panel) 
         current_date_ind = validTimeSteps.findIndex((element) => element == current_date)
         updateStreamSlider()
     }
 
     function draggedLeft(d) {
         current_time_pos = x_main_stream(current_date)
-        current_mouse_pos = d3.event.x - rectWidthLeft
+        current_mouse_pos = d3.event.x - rectWidthLeft - width_side_panel
         time_step_size = (width_stream / validTimeSteps.length)
         if(current_time_pos - current_mouse_pos > time_step_size * (rectWidthLeftSteps+1)){
             rectWidthLeftSteps = Math.min(rectWidthLeftSteps+1, current_date_ind )
@@ -1381,7 +1441,7 @@ d3.select("#main_container")
 
     function draggedRight(d) {
         current_time_pos = x_main_stream(current_date)
-        current_mouse_pos = d3.event.x + rectWidthRight
+        current_mouse_pos = d3.event.x + rectWidthRight - width_side_panel
         time_step_size = (width_stream / validTimeSteps.length)
         if(current_mouse_pos - current_time_pos > time_step_size * (rectWidthRightSteps+1)){
             rectWidthRightSteps = Math.min(rectWidthRightSteps+1, validTimeSteps.length - current_date_ind - 1)
@@ -1505,8 +1565,7 @@ d3.select("#main_container")
         }
 
         var clickedStream = function(d){
-            console.log("clicked pos")
-            console.log(d3.mouse(this)[0])
+
             current_date = invertX(d3.mouse(this)[0])
             current_date_ind = validTimeSteps_graph.findIndex((element) => element == current_date)
             updateStreamSlider()
@@ -1517,7 +1576,6 @@ d3.select("#main_container")
 
             filterString = d.key
             filterTagsByString()
-            console.log("setting element to " + d.key)
             document.getElementById("filterInput").value = d.key
         }
 
@@ -1562,7 +1620,6 @@ d3.select("#main_container")
     }
 
     function refreshStreamGraph(country_key, svg_stream, validTimeSteps_graph, width_stream_graph, height_stream_graph, level, ticksEnabled = true){
-        console.log(level)
         svg_stream.selectAll(".tick").remove()
 
         // Parse the Data
@@ -1663,9 +1720,6 @@ d3.select("#main_container")
         }
 
         function logLenSelection(d){
-            console.log("calc len selection")
-            console.log(d)
-            console.log(d._groups.length)
         }
 
         var clickedStream = function(d){
@@ -1709,8 +1763,7 @@ d3.select("#main_container")
                     .style("fill", function(d) { 
                     
                     if(filterString != null){
-                        console.log("getting color for filter")
-                        console.log(filterCategory)
+           
                         return myColor(filterCategory)
                     }
                     else if(!d){
@@ -1771,8 +1824,7 @@ d3.select("#main_container")
         var focusRectCornerTop = height + height_stream + 15
         var focusRectCornerRight = x_main_stream(current_date) + (rectWidthRight)
         var focusRectCornerLeft = x_main_stream(current_date) - (rectWidthLeft)
-        console.log("rect left")
-        console.log(focusRectCornerLeft)
+
         d3.select("#sliderG").remove()
         d3.selectAll("#line-focus").remove()
 
@@ -1824,7 +1876,7 @@ d3.select("#main_container")
         main_container
             .append("line")
             .attr('id', "line-focus")
-            .attr('stroke', '#E3E3E3')
+            .attr('stroke', 'grey')
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
             .attr('x1', focusRectCornerLeft + width_side_panel + margin.left)
@@ -1835,7 +1887,7 @@ d3.select("#main_container")
         main_container
             .append("line")
             .attr('id', "line-focus")
-            .attr('stroke', '#E3E3E3')
+            .attr('stroke', 'grey')
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
             .attr('x1', focusRectCornerRight + width_side_panel + margin.left)
@@ -1848,7 +1900,7 @@ d3.select("#main_container")
         main_container
             .append("line")
             .attr('id', "line-focus")
-            .attr('stroke', '#E3E3E3')
+            .attr('stroke', 'grey')
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
             .attr('x1', focusRectCornerLeft + width_side_panel + margin.left)
@@ -1859,7 +1911,7 @@ d3.select("#main_container")
         main_container
             .append("line")
             .attr('id', "line-focus")
-            .attr('stroke', '#E3E3E3')
+            .attr('stroke', 'grey')
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
             .attr('x1', focusRectCornerRight + width_side_panel + margin.left)
@@ -1969,9 +2021,7 @@ return retData;
 
 function refreshDonut1(dat){
 
-    console.log(dat);
 var donut1data = convertToDonut1(dat);
-console.log(donut1data);
 
 
 // Create the chart
@@ -2046,9 +2096,7 @@ Highcharts.chart('tipDiv', {
 
 function refreshDonutDiv(dat){
 
-console.log(dat);
 var donut1data = convertToDonut1(dat);
-console.log(donut1data);
 
 
 // Create the chart
@@ -2129,7 +2177,6 @@ for (var key in chkData) {
   obj.name = key;
   obj.y = chkData[key];
   newDat.push(obj);
-  console.log("color: ",myColor(key));
   colors.push(myColor(key));
 }
 
@@ -2188,7 +2235,6 @@ for (var key in chkData) {
   obj.name = key;
   obj.y = chkData[key];
   newDat.push(obj);
-  console.log("color: ",myColor(key));
   colors.push(myColor(key));
 }
 
@@ -2264,7 +2310,6 @@ function getTagPerCategories(dat) {
     }
 
 
-    console.log("tags: ",tagMap);
 
     for (var key in tagMap){
         var obj = {};
@@ -2273,7 +2318,6 @@ function getTagPerCategories(dat) {
         seriesData.push(obj);
     }
 
-    console.log("seriesData: ",seriesData);
     
     Highcharts.chart('tipDiv2', {
     chart: {
@@ -2395,11 +2439,9 @@ function isEmpty(obj) {
     
         dataset = {};
         for(var key_st in countries_mock_data.timesteps) {
-        console.log("sa",key_st);
         if (key_st != null && key_st != undefined) {
             var timeArray = [];
             var tp = countries_mock_data.timesteps[key_st].country_data.buckets;
-            console.log("sas");
         //Select the country..
         // for( var idx=0; idx<=countries_mock_data.timesteps[key_st].country_data.buckets.length; ++idx) {
             var country_bucket = countries_mock_data.timesteps[key_st].country_data.buckets.find( function (e){
@@ -2442,7 +2484,6 @@ function isEmpty(obj) {
         //   { count: 40, category: "camera", device: "Nikon", timestep: "2002" }
         // ]};
 
-        console.log("dat len",Object.keys(dataset).length);
 
         var width2 = width_main;
         var height2 = height_main;
