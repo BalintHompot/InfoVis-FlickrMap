@@ -1116,6 +1116,30 @@ d3.select("#main_container")
     current_selection_svg = svg_stream
     prev_selection_svg = svg_stream_2
     current_selection_ticks_enabled = false
+
+    function resetSideBar(side){
+        if(side == "left"){
+            country_in_focus_1 = "WORLD"
+            refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category", false)
+            refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+            if(current_selection_svg == svg_stream_2){
+                changeCurrentSelections()
+            }
+            
+        }else{
+            country_in_focus_2 = "WORLD"
+            refreshStreamGraph(country_in_focus_2, svg_stream_2, validTimeSteps, width_stream, height_stream, "category", true)
+            refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+            if(current_selection_svg == svg_stream){
+                changeCurrentSelections()
+            }
+        }
+        svg.transition()
+                    .duration(750)
+                    // .call( zoom.transform, d3.zoomIdentity.translate(0, 0).scale(1) ); // not in d3 v4
+                    .call( zoom.transform, d3.zoomIdentity ); // updated for d3 v4
+        updatePanelCountry()
+    }
     
     function changeCurrentSelections(countryID){
         if(current_selection_svg == svg_stream){
@@ -1166,8 +1190,8 @@ d3.select("#main_container")
 			} else {
 				return  country_in_focus_1;
 			}
-		})
-				
+        })
+
 		right_panel
 		.append("text")
 		.attr("fill", "black")
@@ -1225,7 +1249,26 @@ d3.select("#main_container")
             .attr("height", focusStremTartgetTop - focusStremTartgetBottom)
             .attr("x", focusMargin)
             .attr("y", focusStremTartgetBottom);
+        
+    left_panel
+            .append("rect")
+            .attr('id', "rect-close-left")
+            .style("fill", "black")
+            .attr("width", 10)
+            .attr("height", 10)
+            .attr("x", 10)
+            .attr("y", 10)
+            .on("click", function(){resetSideBar("left")})
 		
+    right_panel
+            .append("rect")
+            .attr('id', "rect-close-right")
+            .style("fill", "black")
+            .attr("width", 10)
+            .attr("height", 10)
+            .attr("x", 10)
+            .attr("y", 10)
+            .on("click", function(){resetSideBar("right")})
     
     var left_focus_g = d3.select("#left_panel")
         .append("g")
