@@ -861,8 +861,7 @@
                 refreshStreamGraph(d.id, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
                 //refreshCategoryDonut(d.id, dataset)
                 changeCurrentSelections(d.id)
-                updatedMultiDonut(d.id);
-
+                //updatedMultiDonut(d.id);
 
             }
 
@@ -1023,7 +1022,7 @@
 
 
             function getStreamData(country_key, timeSteps, level){
-     
+                updatedMultiDonut(country_key, timeSteps);
 
                 var d = []
                 var keys = new Set()
@@ -1900,7 +1899,7 @@ d3.select("#main_container")
         main_container
             .append("line")
             .attr('id', "line-focus")
-            .attr('stroke', 'grey')
+            .attr('stroke', '#E3E3E3')
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
             .attr('x1', focusRectCornerLeft + width_side_panel + margin.left)
@@ -2437,141 +2436,132 @@ function isEmpty(obj) {
 //         ];
         
     
-        dataset = {};
-        for(var key_st in countries_mock_data.timesteps) {
-        //console.log("sa",key_st);
-        if (key_st != null && key_st != undefined) {
-            var timeArray = [];
-            var tp = countries_mock_data.timesteps[key_st].country_data.buckets;
-            //console.log("sas");
-        //Select the country..
-        // for( var idx=0; idx<=countries_mock_data.timesteps[key_st].country_data.buckets.length; ++idx) {
-            var country_bucket = countries_mock_data.timesteps[key_st].country_data.buckets.find( function (e){
-                            return e.key.toUpperCase == "WORLD".toUpperCase
-                        })
-            if (country_bucket) {
-                var deviceData = country_bucket.device_data;
+    //     dataset = {};
+    //     for(var key_st in countries_mock_data.timesteps) {
+    //     //console.log("sa",key_st);
+    //     if (key_st != null && key_st != undefined) {
+    //         var timeArray = [];
+    //         var tp = countries_mock_data.timesteps[key_st].country_data.buckets;
+    //         //console.log("sas");
+    //     //Select the country..
+    //     // for( var idx=0; idx<=countries_mock_data.timesteps[key_st].country_data.buckets.length; ++idx) {
+    //         var country_bucket = countries_mock_data.timesteps[key_st].country_data.buckets.find( function (e){
+    //                         return e.key.toUpperCase == "WORLD".toUpperCase
+    //                     })
+    //         if (country_bucket) {
+    //             var deviceData = country_bucket.device_data;
 
-                for (var deviceCategory in deviceData) {
-                    if(!isEmpty(deviceData[deviceCategory])) {
-                        for (var devices in deviceData[deviceCategory]) {
-                            var obj2 = {};
-                            obj2.count = deviceData[deviceCategory][devices];
-                            obj2.category = deviceCategory;
-                            obj2.device = devices;
-                            obj2.timestep = key_st;
-                            timeArray.push(obj2);
-                        }
+    //             for (var deviceCategory in deviceData) {
+    //                 if(!isEmpty(deviceData[deviceCategory])) {
+    //                     for (var devices in deviceData[deviceCategory]) {
+    //                         var obj2 = {};
+    //                         obj2.count = deviceData[deviceCategory][devices];
+    //                         obj2.category = deviceCategory;
+    //                         obj2.device = devices;
+    //                         obj2.timestep = key_st;
+    //                         timeArray.push(obj2);
+    //                     }
                         
-                    }
-                }
-                dataset[key_st] = timeArray;
-            }
+    //                 }
+    //             }
+    //             dataset[key_st] = timeArray;
+    //         }
                 
-        //}
-        }
+    //     //}
+    //     }
         
         
-    }
+    // }
 
 
-        // var dataset = {"2001":[
-        //   { count: 5, category: "unknown", device: "instax", timestep: "2001" }, 
-        //   { count: 15, category: "phone", device: "OnePlus", timestep: "2001" }, 
-        //   { count: 25, category: "camera", device: "Nikon", timestep: "2001" },
-        //   { count: 35, category: "camera", device: "Canon", timestep: "2001" },
-        //   { count: 45, category: "camera", device: "Sony", timestep: "2001" }],
-        //   "2002":[
-        //   { count: 10, category: "phone", device: "Samsung", timestep: "2002" }, 
-        //   { count: 20, category: "phone", device: "Sony", timestep: "2002"},
-        //   { count: 30, category: "camera", device: "Canon", timestep: "2002" },
-        //   { count: 40, category: "camera", device: "Nikon", timestep: "2002" }
-        // ]};
+    //     // var dataset = {"2001":[
+    //     //   { count: 5, category: "unknown", device: "instax", timestep: "2001" }, 
+    //     //   { count: 15, category: "phone", device: "OnePlus", timestep: "2001" }, 
+    //     //   { count: 25, category: "camera", device: "Nikon", timestep: "2001" },
+    //     //   { count: 35, category: "camera", device: "Canon", timestep: "2001" },
+    //     //   { count: 45, category: "camera", device: "Sony", timestep: "2001" }],
+    //     //   "2002":[
+    //     //   { count: 10, category: "phone", device: "Samsung", timestep: "2002" }, 
+    //     //   { count: 20, category: "phone", device: "Sony", timestep: "2002"},
+    //     //   { count: 30, category: "camera", device: "Canon", timestep: "2002" },
+    //     //   { count: 40, category: "camera", device: "Nikon", timestep: "2002" }
+    //     // ]};
 
-        //console.log("dat len",Object.keys(dataset).length);
+    //     //console.log("dat len",Object.keys(dataset).length);
 
-        var width2 = width_main;
-        var height2 = height_main;
-        var donutWidth = 15;
-        var radius1 = Math.min(width2, height2) / 32;
-        var radius2 = radius1 + donutWidth + 5;
+    //     var width2 = width_main;
+    //     var height2 = height_main;
+    //     var donutWidth = 15;
+    //     var radius1 = Math.min(width2, height2) / 32;
+    //     var radius2 = radius1 + donutWidth + 5;
         
 
-        var svgDonut = d3.select('#chart')
-          .append('svg')
-          .attr('width', width2)
-          .attr('height', height2);
+    //     var svgDonut = d3.select('#chart')
+    //       .append('svg')
+    //       .attr('width', width2)
+    //       .attr('height', height2);
 
 
-        //Creating dynamic arcs..
+    //     //Creating dynamic arcs..
 
-        var pie = d3.pie()
-          .value(function(d) { return d.count; })
-          .sort(null)
-	      .startAngle(1.1*Math.PI)
-          .endAngle(3.1*Math.PI);
+    //     var pie = d3.pie()
+    //       .value(function(d) { return d.count; })
+    //       .sort(null)
+	//       .startAngle(1.1*Math.PI)
+    //       .endAngle(3.1*Math.PI);
 
-        var dataset_count = Object.keys(dataset).length;
-        var svg2 = [];
-        var k=0;
+    //     var dataset_count = Object.keys(dataset).length;
+    //     var svg2 = [];
+    //     var k=0;
 
-        //Draw for the first time..
-        for (var timestepKey in dataset) {
-            svg2[k] = svgDonut.append('g')
-            .attr('transform', 'translate(' + (width2 / 2) + 
-            ',' + (height2 / 2) + ')');
+    //     //Draw for the first time..
+    //     for (var timestepKey in dataset) {
+    //         svg2[k] = svgDonut.append('g')
+    //         .attr('transform', 'translate(' + (width2 / 2) + 
+    //         ',' + (height2 / 2) + ')');
 
-            var arc2 = d3.arc()
-                .innerRadius(radius1 - donutWidth)  
-                .outerRadius(radius1);
+    //         var arc2 = d3.arc()
+    //             .innerRadius(radius1 - donutWidth)  
+    //             .outerRadius(radius1);
 
             
 
             
 
-          var path2 = svg2[k].selectAll('path')
-          .data(pie(dataset[timestepKey]))
-          .enter()
-          .append('path')
-          .attr('d', arc2)
-          .attr("class", "donut-path")
-          .style("stroke", "#eee")
-          .style("stroke-width", 3)
-          .attr('fill', function(d, i) { 
-            return catColor[d.data.category];
-          });
-        //   .transition().delay(function(d,i) {
-        //       return i*500;
-        //   })
-        //   .duration(500)
-        //   .attrTween('d', function(d) {
-        //     var i = d3.interpolate(d.startAngle+0.1, d.endAngle);
-        //     return function(t) {
-        //         d.endAngle = i(t);
-        //         return arc2(d)
-        //     }
-        //   });
+    //       var path2 = svg2[k].selectAll('path')
+    //       .data(pie(dataset[timestepKey]))
+    //       .enter()
+    //       .append('path')
+    //       .attr('d', arc2)
+    //       .attr("class", "donut-path")
+    //       .style("stroke", "#eee")
+    //       .style("stroke-width", 3)
+    //       .attr('fill', function(d, i) { 
+    //         return catColor[d.data.category];
+    //       });
+    //     //   .transition().delay(function(d,i) {
+    //     //       return i*500;
+    //     //   })
+    //     //   .duration(500)
+    //     //   .attrTween('d', function(d) {
+    //     //     var i = d3.interpolate(d.startAngle+0.1, d.endAngle);
+    //     //     return function(t) {
+    //     //         d.endAngle = i(t);
+    //     //         return arc2(d)
+    //     //     }
+    //     //   });
 
-          radius1 = radius1 + donutWidth + 5;
+    //       radius1 = radius1 + donutWidth + 5;
 
-          k++;
+    //       k++;
 
-        }
+    //     }
 
-        //console.log(JSON.stringify(dataset));
+    //     //console.log(JSON.stringify(dataset));
         
 
     
-	d3.selectAll(".donut-path").on("mousemove", function(d) {
-	    div.style("left", d3.event.pageX+10+"px");
-		  div.style("top", d3.event.pageY-25+"px");
-		  div.style("display", "inline-block");
-    div.html("Timestep: "+(d.data.timestep)+"<br>"+(d.data.device)+"<br>"+(d.data.count) + "<br>Category: "+(d.data.category));
-});
 
-    d3.selectAll(".donut-pathh").on("mouseout", function(d){
-    div.style("display", "none");
-});
 
 
 
@@ -2588,6 +2578,10 @@ function reDrawMultiDonut(newData) {
         svg2[i].exit().remove();
     }
 
+
+        var width2 = width_main;
+        var height2 = height_main;
+        var donutWidth = 15;
     var svgDonut = d3.select('#chart')
           .append('svg')
           .attr('width', width2)
@@ -2602,10 +2596,10 @@ function reDrawMultiDonut(newData) {
 
     //Removing all path donut elements..
     //d3.select(".donut-path").selectAll("*").remove();
-    svg2 = [];
-    k=0;
-    radius1 = Math.min(width2, height2) / 32;
-    radius2 = radius1 + donutWidth + 5;
+    var svg2 = [];
+    var k=0;
+    var radius1 = Math.min(width2, height2) / 32;
+    var radius2 = radius1 + donutWidth + 5;
             //Draw for the first time..
             for (var timestepKey in newData) {
             svg2[k] = svgDonut.append('g')
@@ -2648,13 +2642,27 @@ function reDrawMultiDonut(newData) {
           k++;
 
         }
+
+        d3.selectAll(".donut-path").on("mousemove", function(d) {
+	    div.style("left", d3.event.pageX+10+"px");
+		  div.style("top", d3.event.pageY-25+"px");
+		  div.style("display", "inline-block");
+    div.html("Timestep: "+(d.data.timestep)+"<br>"+(d.data.device)+"<br>"+(d.data.count) + "<br>Category: "+(d.data.category));
+    console.log("in: ",d);
+});
+
+    d3.selectAll(".donut-path").on("mouseout", function(d){
+    div.style("display", "none");
+});
+
 }
 
-function updatedMultiDonut(country_code) {
+function updatedMultiDonut(country_code, timeSteps) {
     var newData = {};
     console.log("ccode: ",country_code)
         for(var key_st in countries_mock_data.timesteps) {
-        if (key_st != null && key_st != undefined) {
+            if (timeSteps.includes(key_st)) {
+                if (key_st != null && key_st != undefined) {
             var timeArray = [];
             var tp = countries_mock_data.timesteps[key_st].country_data.buckets;
         //Select the country..
@@ -2683,6 +2691,7 @@ function updatedMultiDonut(country_code) {
                 
         //}
         }
+            }
         
         
     }
