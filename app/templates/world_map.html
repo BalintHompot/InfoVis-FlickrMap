@@ -550,7 +550,7 @@
                 .attr("class", "d3-tip")
                 .attr("id", "d3-tip")
                 .style("width", "350 px")
-			    .offset([150, 0])
+			    .offset([0, -200])
     	        .html(function(d)
 			    {
                     // var x = +d.properties.value;
@@ -558,7 +558,7 @@
                     return "<strong>Country: &nbsp;</strong><span>" + d.properties.name + "<br></span>"
                         + "<strong>Most popular category: &nbsp;</strong><span>" + d.properties.most_popular_tag + "<br></span>"
                         + "<strong>No. of images: &nbsp;</strong><span>" + d.properties.user_freq + "<br><br></span>"
-                        + "<div style='display: inline-flex;'><div id='tipDiv'></div><div id='tipDiv2'></div></div>";
+                        + "<div style='display: inline-flex;'><div id='tipDiv'></div><div id='tipDiv2'><div style='text-align: center;'><h5>Top tags</h5></div><svg id='my_dataviz2'></svg></div></div>";
                 });
             
             
@@ -1788,9 +1788,9 @@ Highcharts.chart('tipDiv', {
             for (var category in catTagData) {
                 var top5 = catTagData[category].top_5;
                 for (var tagName in top5) {
-                    var obj = {};
-                    obj.data = [];
-                    obj.data[0] = top5[tagName];
+                    //legData[tagName] = top5[tagName];
+                    var obj = {}; 
+                    obj.data = top5[tagName];
                     obj.name = tagName;
                     obj.color = myColor(category);
                     legData.push(JSON.parse(JSON.stringify(obj)));
@@ -1798,44 +1798,55 @@ Highcharts.chart('tipDiv', {
             }
 
 
-    
-    Highcharts.chart('tipDiv2', {
-        chart: {
-      type: 'line',
-      spacing: [0, 0, 0, 0],
-      marginTop: 15,
-      marginBottom: 0,
-      spacingTop: 0,
-	  height: 220
-    },
-    title: {
-		text: 'Most popular tags',
-        style: {
-            color: '#2e2e2e',
-            fontSize: 12,
-			marginTop: 15,
-        }
-    },
-    yAxis: {
-      visible: false
-    },
-    xAxis: {
-        visible: false
-    },
-    credits: {
-        enabled: false
-    },
-    legend: {
-      padding: 0,
-      margin: 0,
-      verticalAlign: 'middle',
-      maxHeight: 200
-    },
-    series: legData,
-    exporting: {
-        enabled: false
-    }
-});
+            console.log("legData: ",legData);
+//         x.sort(function(a, b) {
+// return b.score - a.score;
+// });
+        var topValues = legData.sort(function(a, b) {
+                return b.data - a.data;
+        }).slice(0,5);
+        console.log("topValues: ",topValues);
+
+
+        // select the svg area
+var Svg = d3.select("#my_dataviz2")
+
+var tpKeys = [];
+for (var idx = 0; idx < topValues.length; ++idx) {
+    tpKeys.push(topValues[idx].name);
+}
+
+// Usually you have a color scale in your chart already
+// var color = d3.scaleOrdinal()
+//   .domain(tpKeys)
+//   .range(d3.schemeSet2);
+
+// Add one dot in the legend for each name.
+Svg.selectAll("mydots")
+  .data(tpKeys)
+  .enter()
+  .append("circle")
+    .attr("cx", 14)
+    .attr("cy", function(d,i){ return (i+1)*20})
+    .attr("r", 7)
+    .style("fill", function(d){ return myColor(reverseTagCatIndex[d])})
+
+// Add one dot in the legend for each name.
+Svg.selectAll("mylabels")
+  .data(tpKeys)
+  .enter()
+  .append("text")
+    .attr("x", 28)
+    .attr("y", function(d,i){ return (i+1)*20}) // 100 is where the first dot appears. 25 is the distance between dots
+    .style("fill", function(d){ return "#000"})
+    .text(function(d){ return d})
+    .attr("text-anchor", "left")
+    .style("alignment-baseline", "middle")
+
+
+
+
+
     }
 
     
