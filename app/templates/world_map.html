@@ -209,7 +209,6 @@
 			font-size: 5px;
 			line-height: 1;
 			/*color: rgba(204, 188, 188, 0.836);*/
-			background-color: lavender;
 			content: "\25BC";
 			position: absolute;
 			text-align: center;
@@ -405,8 +404,6 @@
 		font-size:14px;
 }	
 
-
-
 	#close_text {
 	stroke: white;
 	font-size: 8px;
@@ -553,7 +550,7 @@
                 .attr("class", "d3-tip")
                 .attr("id", "d3-tip")
                 .style("width", "350 px")
-			    .offset([0, -200])
+			    .offset([150, 0])
     	        .html(function(d)
 			    {
                     // var x = +d.properties.value;
@@ -561,7 +558,7 @@
                     return "<strong>Country: &nbsp;</strong><span>" + d.properties.name + "<br></span>"
                         + "<strong>Most popular category: &nbsp;</strong><span>" + d.properties.most_popular_tag + "<br></span>"
                         + "<strong>No. of images: &nbsp;</strong><span>" + d.properties.user_freq + "<br><br></span>"
-                        + "<div style='display: inline-flex;'><div id='tipDiv'></div><div id='tipDiv2'><div style='text-align: center;'><h5>Top tags</h5></div><svg id='my_dataviz2'></svg></div></div>";
+                        + "<div style='display: inline-flex;'><div id='tipDiv'></div><div id='tipDiv2'></div></div>";
                 });
             
             
@@ -884,7 +881,7 @@
                 refreshStreamGraph(d.id, current_selection_svg, validTimeSteps, width_stream, height_stream, "category", current_selection_ticks_enabled)
                 refreshStreamGraph(d.id, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
                 //refreshCategoryDonut(d.id, dataset)
-                changeCurrentSelections(d.id)
+                changeCurrentSelections(d.id, d.properties.name)
                 updatePanelCountry()
                 if (current_selection_svg == svg_stream) {
                     updatedMultiDonutRight(d.id, getFocusedValidSteps());
@@ -1170,7 +1167,7 @@ d3.select("#main_container")
         updatePanelCountry()
     }
     
-    function changeCurrentSelections(countryID){
+    function changeCurrentSelections(countryID, countryname){
         if(current_selection_svg == svg_stream){
             current_selection_svg = svg_stream_2
             prev_selection_svg = svg_stream
@@ -1178,6 +1175,7 @@ d3.select("#main_container")
             prev_svg_focused_stream = left_focus_g
             current_selection_ticks_enabled = true
             country_in_focus_1 = countryID
+			country_name_1 = countryname
             selected_ind_height = height  + height_stream/2
             selection_ind_height = height + height_stream + height_stream/2 -3
             leftColor = selectedColor
@@ -1189,6 +1187,7 @@ d3.select("#main_container")
             prev_svg_focused_stream = right_focus_g
             current_selection_ticks_enabled = false
             country_in_focus_2 = countryID
+			country_name_2 = countryname
             selected_ind_height = height + height_stream +  height_stream/2
             selection_ind_height = height + height_stream/2 
             leftColor = selectionColor
@@ -1217,7 +1216,7 @@ d3.select("#main_container")
 			if (country_in_focus_1 == "WORLD") {
 				return "The World";
 			} else {
-				return  country_in_focus_1;
+				return  country_name_1;
 			}
         })
 
@@ -1230,7 +1229,7 @@ d3.select("#main_container")
 			if (country_in_focus_2 == "WORLD") {
 				return "The World";
 			} else {
-				return country_in_focus_2;
+				return country_name_2;
 			}
 		})
     }
@@ -1784,9 +1783,9 @@ Highcharts.chart('tipDiv', {
             for (var category in catTagData) {
                 var top5 = catTagData[category].top_5;
                 for (var tagName in top5) {
-                    //legData[tagName] = top5[tagName];
-                    var obj = {}; 
-                    obj.data = top5[tagName];
+                    var obj = {};
+                    obj.data = [];
+                    obj.data[0] = top5[tagName];
                     obj.name = tagName;
                     obj.color = myColor(category);
                     legData.push(JSON.parse(JSON.stringify(obj)));
@@ -1794,84 +1793,44 @@ Highcharts.chart('tipDiv', {
             }
 
 
-        console.log("legData: ",legData);
-//         x.sort(function(a, b) {
-// return b.score - a.score;
-// });
-        var topValues = legData.sort(function(a, b) {
-                return b.data - a.data;
-        }).slice(0,5);
-        console.log("topValues: ",topValues);
-
-
-        // select the svg area
-var Svg = d3.select("#my_dataviz2")
-
-var tpKeys = [];
-for (var idx = 0; idx < topValues.length; ++idx) {
-    tpKeys.push(topValues[idx].name);
-}
-
-// Usually you have a color scale in your chart already
-// var color = d3.scaleOrdinal()
-//   .domain(tpKeys)
-//   .range(d3.schemeSet2);
-
-// Add one dot in the legend for each name.
-Svg.selectAll("mydots")
-  .data(tpKeys)
-  .enter()
-  .append("circle")
-    .attr("cx", 14)
-    .attr("cy", function(d,i){ return (i+1)*20})
-    .attr("r", 7)
-    .style("fill", function(d){ return myColor(reverseTagCatIndex[d])})
-
-// Add one dot in the legend for each name.
-Svg.selectAll("mylabels")
-  .data(tpKeys)
-  .enter()
-  .append("text")
-    .attr("x", 28)
-    .attr("y", function(d,i){ return (i+1)*20}) // 100 is where the first dot appears. 25 is the distance between dots
-    .style("fill", function(d){ return "#000"})
-    .text(function(d){ return d})
-    .attr("text-anchor", "left")
-    .style("alignment-baseline", "middle")
-
-
     
-//     Highcharts.chart('tipDiv2', {
-//         chart: {
-//       type: 'line',
-//       spacing: [0, 0, 0, 0],
-//       marginTop: 0,
-//       marginBottom: 0,
-//       spacingTop: 0
-//     },
-//     title: {
-//         text: 'Most Popular Tags'
-//     },
-//     yAxis: {
-//       visible: false
-//     },
-//     xAxis: {
-//         visible: false
-//     },
-//     credits: {
-//         enabled: false
-//     },
-//     legend: {
-//       padding: 0,
-//       margin: 0,
-//       verticalAlign: 'middle',
-//       maxHeight: 200
-//     },
-//     series: legData,
-//     exporting: {
-//         enabled: false
-//     }
-// });
+    Highcharts.chart('tipDiv2', {
+        chart: {
+      type: 'line',
+      spacing: [0, 0, 0, 0],
+      marginTop: 15,
+      marginBottom: 0,
+      spacingTop: 0,
+	  height: 220
+    },
+    title: {
+		text: 'Most popular tags',
+        style: {
+            color: '#2e2e2e',
+            fontSize: 12,
+			marginTop: 15,
+        }
+    },
+    yAxis: {
+      visible: false
+    },
+    xAxis: {
+        visible: false
+    },
+    credits: {
+        enabled: false
+    },
+    legend: {
+      padding: 0,
+      margin: 0,
+      verticalAlign: 'middle',
+      maxHeight: 200
+    },
+    series: legData,
+    exporting: {
+        enabled: false
+    }
+});
     }
 
     
