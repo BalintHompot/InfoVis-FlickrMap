@@ -445,6 +445,7 @@
         // create a tooltip
         var Tooltip = svg_stream
             .append("text")
+			.attr("id", "tooltip-text")
             .attr("x", 0)
             .attr("y", 20)
             .style("opacity", 0)
@@ -606,7 +607,7 @@
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
             .attr('x1', focusRectCornerLeft + width_side_panel + margin.left)
-            .attr('y1', focusRectCornerTop)
+            .attr('y1', focusRectCornerTop +10)
             .attr('x2', focusStremTartgetLeft)
             .attr('y2', focusStremTartgetTop)
             .call(drag);
@@ -617,7 +618,7 @@
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
             .attr('x1', focusRectCornerRight + width_side_panel + margin.left)
-            .attr('y1', focusRectCornerTop)
+            .attr('y1', focusRectCornerTop+10)
             .attr('x2', focusStremTartgetRight)
             .attr('y2', focusStremTartgetTop)
             .call(drag);
@@ -630,7 +631,7 @@
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
             .attr('x1', focusRectCornerLeft + width_side_panel + margin.left)
-            .attr('y1', focusRectCornerTop + height_stream - rectAdd)
+            .attr('y1', focusRectCornerTop + height_stream - rectAdd + 22)
             .attr('x2', focusStremTartgetLeft + width + width_side_panel - focusMargin)
             .attr('y2', focusStremTartgetTop)
             .call(drag);
@@ -641,7 +642,7 @@
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
             .attr('x1', focusRectCornerRight + width_side_panel + margin.left)
-            .attr('y1', focusRectCornerTop+ height_stream - rectAdd)
+            .attr('y1', focusRectCornerTop+ height_stream - rectAdd+22)
             .attr('x2', focusStremTartgetRight  + width + width_side_panel- focusMargin)
             .attr('y2', focusStremTartgetTop)
             .call(drag);
