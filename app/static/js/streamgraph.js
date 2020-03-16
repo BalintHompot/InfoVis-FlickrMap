@@ -1,6 +1,6 @@
 
         function getStreamData(country_key, timeSteps, level){
-            updatedMultiDonut(country_key, timeSteps);
+            //updatedMultiDonut(country_key, timeSteps);
 
             var d = []
             var keys = new Set()
@@ -230,7 +230,7 @@
 // append the svg object to the body of the page
 
         //svg_stream.selectAll("path").remove()
-
+        console.log("valid ts: ",validTimeSteps_graph);
 
         // Parse the Data
         var [data, yRange, keys] = getStreamData(country_key, validTimeSteps_graph, level)
@@ -685,11 +685,14 @@
 		
 
         //calling update on map
-        current_year_data = countries_mock_data.timesteps[current_date]
+        current_year_data = countries_mock_data.timesteps[current_date];
+
         draw(world_countries ,current_year_data)
         
         refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
         refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+        updatedMultiDonut(country_in_focus_1, getFocusedValidSteps());
+        updatedMultiDonutRight(country_in_focus_2, getFocusedValidSteps());
           
     }
 

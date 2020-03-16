@@ -447,23 +447,8 @@
             </span>
 
             <!-- <div id="chartContainer" class="well"></div> -->
-            <span class="chart-parent"><div id="chart"></div></span>
+            <!-- <span class="chart-parent"><div id="chart"></div></span> -->
 
-
-            <div id="tooltip" class="tooltip">
-                <div class="tooltip-range" id="range"></div>
-                <div class="tooltip-examples" id="examples"></div>
-                <div class="tooltip-value">
-                    ...of <span id="count"></span> tasks
-                </div>
-                <div class="tooltip-bar-value">
-                    <b><span id="tooltip-bar-value"></span>%</b>
-                    of the work was done by developers
-                </div>
-                <div class="tooltip-bar">
-                    <div class="tooltip-bar-fill" id="tooltip-bar-fill"></div>
-                </div>
-            </div>
         </div>
 
 
@@ -862,7 +847,11 @@
                 //refreshCategoryDonut(d.id, dataset)
                 changeCurrentSelections(d.id)
                 updatePanelCountry()
-                updatedMultiDonut(d.id);
+                if (current_selection_svg == svg_stream) {
+                    updatedMultiDonutRight(d.id, getFocusedValidSteps());
+                } else {
+                    updatedMultiDonut(d.id, getFocusedValidSteps());
+                }
 
 
             }
@@ -883,11 +872,14 @@
                 refreshStreamGraph("WORLD", prev_svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
                 if(current_selection_svg == svg_stream){
                     country_in_focus_2 = "WORLD"
+                    updatedMultiDonutRight("WORLD", getFocusedValidSteps());
                 }else{
                     country_in_focus_1 = "WORLD"
+                    updatedMultiDonut("WORLD", getFocusedValidSteps());
                 }
-                updatePanelCountry()
-                dataset = {};
+                updatePanelCountry();
+                
+                
                 //refreshCategoryDonut("WORLD",dataset);
                 //TODO have to add reset functionality for pie and donut..
 
@@ -1259,6 +1251,8 @@ d3.select("#main_container")
             .attr("x", 10)
             .attr("y", 10)
             .on("click", function(){resetSideBar("left")})
+
+    
 		
     right_panel
             .append("rect")
@@ -1326,6 +1320,7 @@ d3.select("#main_container")
     let dragRight = d3.drag()
         .on('drag', draggedRight)
 
+
     drawStreamGraph(country_in_focus_1, current_selection_svg, validTimeSteps, width_stream, height_stream, "category", ticksEnabled = current_selection_ticks_enabled)
     drawStreamGraph(country_in_focus_1, svg_stream_2, validTimeSteps, width_stream, height_stream, "category")
 
@@ -1334,6 +1329,8 @@ d3.select("#main_container")
 
     updateStreamSlider()
     updatePanelCountry()
+    updatedMultiDonut("WORLD",getFocusedValidSteps());
+    updatedMultiDonutRight("WORLD", getFocusedValidSteps());
 
 
     //Donut chart 1 ...
@@ -1939,20 +1936,21 @@ function isEmpty(obj) {
 function reDrawMultiDonut(newData) {
 
     //console.log(JSON.stringify(newData));
-    d3.selectAll("#chart").selectAll("svg").remove();
-    d3.selectAll('#chart-parent')
-        .append("div")
-        .attr("class", "chart");
-    for (var i=0; i<k; ++i) {
-        svg2[i].exit().remove();
-    }
+    d3.selectAll("#left_panel").selectAll("#donut-class").remove();
+    // d3.selectAll('#chart-parent')
+    //     .append("div")
+    //     .attr("class", "chart");
+    // for (var i=0; i<k; ++i) {
+    //     svg2[i].exit().remove();
+    // }
 
 
-        var width2 = width_main;
-        var height2 = height_main;
+        var width2 = 280; //width_main;
+        var height2 = 400; //height_main;
         var donutWidth = 15;
-    var svgDonut = d3.select('#chart')
+    var svgDonut = d3.select('#left_panel')
           .append('svg')
+          .attr("id","donut-class")
           .attr('width', width2)
           .attr('height', height2);
 
@@ -1967,7 +1965,7 @@ function reDrawMultiDonut(newData) {
     //d3.select(".donut-path").selectAll("*").remove();
     var svg2 = [];
     var k=0;
-    var radius1 = Math.min(width2, height2) / 32;
+    var radius1 = Math.min(width2, height2) / 8;
     var radius2 = radius1 + donutWidth + 5;
             //Draw for the first time..
             for (var timestepKey in newData) {
@@ -2026,6 +2024,8 @@ function reDrawMultiDonut(newData) {
 }
 
 function updatedMultiDonut(country_code, timeSteps) {
+    console.log("country code: ",country_code);
+    console.log("timestep: ",timeSteps);
     var newData = {};
         for(var key_st in countries_mock_data.timesteps) {
             if (timeSteps.includes(key_st)) {
@@ -2065,6 +2065,141 @@ function updatedMultiDonut(country_code, timeSteps) {
 
     //newData = {};
     reDrawMultiDonut(newData);
+}
+
+function reDrawMultiDonutRight(newData) {
+
+//console.log(JSON.stringify(newData));
+d3.selectAll("#right_panel").selectAll("#donut-class").remove();
+// d3.selectAll('#chart-parent')
+//     .append("div")
+//     .attr("class", "chart");
+// for (var i=0; i<k; ++i) {
+//     svg2[i].exit().remove();
+// }
+
+
+    var width2 = 280; //width_main;
+    var height2 = 400; //height_main;
+    var donutWidth = 15;
+var svgDonut = d3.select('#right_panel')
+      .append('svg')
+      .attr("id","donut-class")
+      .attr('width', width2)
+      .attr('height', height2);
+
+
+      var pie = d3.pie()
+      .value(function(d) { return d.count; })
+      .sort(null)
+      .startAngle(1.1*Math.PI)
+      .endAngle(3.1*Math.PI);
+
+//Removing all path donut elements..
+//d3.select(".donut-path").selectAll("*").remove();
+var svg2 = [];
+var k=0;
+var radius1 = Math.min(width2, height2) / 8;
+var radius2 = radius1 + donutWidth + 5;
+        //Draw for the first time..
+        for (var timestepKey in newData) {
+        svg2[k] = svgDonut.append('g')
+        .attr('transform', 'translate(' + (width2 / 2) + 
+        ',' + (height2 / 2) + ')');
+
+        var arc2 = d3.arc()
+            .innerRadius(radius1 - donutWidth)  
+            .outerRadius(radius1);
+
+        
+
+        
+
+      var path2 = svg2[k].selectAll('path')
+      .data(pie(newData[timestepKey]))
+      .enter()
+      .append('path')
+      .attr('d', arc2)
+      .attr("class", "donut-path")
+      .style("stroke", "#eee")
+      .style("stroke-width", 3)
+      .attr('fill', function(d, i) { 
+        return catColor[d.data.category];
+      });
+    //   .transition().delay(function(d,i) {
+    //       return i*500;
+    //   })
+    //   .duration(500)
+    //   .attrTween('d', function(d) {
+    //     var i = d3.interpolate(d.startAngle+0.1, d.endAngle);
+    //     return function(t) {
+    //         d.endAngle = i(t);
+    //         return arc2(d)
+    //     }
+    //   });
+
+      radius1 = radius1 + donutWidth + 5;
+
+      k++;
+
+    }
+
+    d3.selectAll(".donut-path").on("mousemove", function(d) {
+    div.style("left", d3.event.pageX+10+"px");
+      div.style("top", d3.event.pageY-25+"px");
+      div.style("display", "inline-block");
+div.html("Timestep: "+(d.data.timestep)+"<br>"+(d.data.device)+"<br>"+(d.data.count) + "<br>Category: "+(d.data.category));
+});
+
+d3.selectAll(".donut-path").on("mouseout", function(d){
+div.style("display", "none");
+});
+
+}
+
+
+function updatedMultiDonutRight(country_code, timeSteps) {
+    console.log("country code R: ",country_code);
+    console.log("timestep R: ",timeSteps);
+    var newData = {};
+        for(var key_st in countries_mock_data.timesteps) {
+            if (timeSteps.includes(key_st)) {
+                if (key_st != null && key_st != undefined) {
+            var timeArray = [];
+            var tp = countries_mock_data.timesteps[key_st].country_data.buckets;
+        //Select the country..
+        // for( var idx=0; idx<=countries_mock_data.timesteps[key_st].country_data.buckets.length; ++idx) {
+            var country_bucket = tp.find( function (e){
+                            return e.key.toUpperCase() == country_code.toUpperCase()
+                        })
+            if (country_bucket) {
+                var deviceData = country_bucket.device_data;
+
+                for (var deviceCategory in deviceData) {
+                    if(!isEmpty(deviceData[deviceCategory])) {
+                        for (var devices in deviceData[deviceCategory]) {
+                            var obj2 = {};
+                            obj2.count = deviceData[deviceCategory][devices];
+                            obj2.category = deviceCategory;
+                            obj2.device = devices;
+                            obj2.timestep = key_st;
+                            timeArray.push(JSON.parse(JSON.stringify(obj2)));
+                        }
+                        
+                    }
+                }
+                newData[key_st] = JSON.parse(JSON.stringify(timeArray));
+            }
+                
+        //}
+        }
+            }
+        
+        
+    }
+
+    //newData = {};
+    reDrawMultiDonutRight(newData);
 }
 
 
