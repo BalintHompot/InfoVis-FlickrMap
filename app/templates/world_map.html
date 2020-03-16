@@ -183,6 +183,11 @@
 			left:20px;
 			top:30px;
 		}
+
+        #legend {
+            position: absolute;
+            bottom: 0px;
+        }
 		  
 		.d3-tip
 		{
@@ -357,11 +362,16 @@
 	svg#legend {
 	position: absolute;
 	left: 75%;
-	bottom: 61%;
+	bottom: 0%;
 	-webkit-transform: translateX(-50%);
 	-ms-transform: translateX(-50%);
 	transform: translateX(-50%);
 	display:inline-block;
+	}
+
+    svg#donutLegend {
+	position: absolute;
+	bottom: 0%;
 	}
 
 	#filter-options {
@@ -439,6 +449,9 @@
             
 				<div>
                     <svg id="legend" height=50 width=300></svg>
+                </div>
+                <div>
+                    <svg id="donutLegend" height=50 width=300></svg>
                 </div>
                 <div id="my_dataviz"></div>
 
@@ -755,7 +768,7 @@
                
                 if (popular_tags) {
                     refreshPie1(datum);
-                    getTagPerCategories(datum);
+                    refreshTopTags(datum);
                 }
                 else
                     refreshDonut1(datum);
@@ -912,8 +925,6 @@
                 .attr("fill-opacity","0.2")
             */
             function getFilterCategory(){
-                console.log("getting cat for " + filterString)
-                console.log(reverseTagCatIndex)
                 if(reverseTagCatIndex[filterString]){
                     filterCategory = reverseTagCatIndex[filterString]
                     return
@@ -1459,79 +1470,79 @@ Highcharts.chart('tipDiv', {
 }
 
 
-function refreshDonutDiv(dat){
+// function refreshDonutDiv(dat){
 
-var donut1data = convertToDonut1(dat);
-
-
-// Create the chart
-Highcharts.chart('donut', {
-chart: {
-    type: 'pie'
-},
-title: {
-    text: 'Device usage trend'
-},
-subtitle: {
-    text: 'Source: Flickr dataset'
-},
-credits: {
-    enabled: false
-},
-plotOptions: {
-    pie: {
-        shadow: false,
-        center: ['50%', '50%']
-    }
-},
-tooltip: {
-    valueSuffix: '%'
-},
-series: [{
-    name: 'Device',
-    data: donut1data.typeData,
-    size: '60%',
-    dataLabels: {
-        formatter: function () {
-            return this.y > 5 ? this.point.name : null;
-        },
-        color: '#ffffff',
-        distance: -30
-    }
-}, {
-    name: 'Models',
-    data: donut1data.deviceData,
-    size: '80%',
-    innerSize: '60%',
-    dataLabels: {
-        formatter: function () {
-            // display only if larger than 1
-            return this.y > 1 ? '<b>' + this.point.name + ':</b> ' +
-                this.y + '' : null;
-        }
-    },
-    id: 'versions'
-}],
-responsive: {
-    rules: [{
-        condition: {
-            maxWidth: 400
-        },
-        chartOptions: {
-            series: [{
-            }, {
-                id: 'versions',
-                dataLabels: {
-                    enabled: false
-                }
-            }]
-        }
-    }]
-}
-});
+// var donut1data = convertToDonut1(dat);
 
 
-}
+// // Create the chart
+// Highcharts.chart('donut', {
+// chart: {
+//     type: 'pie'
+// },
+// title: {
+//     text: 'Device usage trend'
+// },
+// subtitle: {
+//     text: 'Source: Flickr dataset'
+// },
+// credits: {
+//     enabled: false
+// },
+// plotOptions: {
+//     pie: {
+//         shadow: false,
+//         center: ['50%', '50%']
+//     }
+// },
+// tooltip: {
+//     valueSuffix: '%'
+// },
+// series: [{
+//     name: 'Device',
+//     data: donut1data.typeData,
+//     size: '60%',
+//     dataLabels: {
+//         formatter: function () {
+//             return this.y > 5 ? this.point.name : null;
+//         },
+//         color: '#ffffff',
+//         distance: -30
+//     }
+// }, {
+//     name: 'Models',
+//     data: donut1data.deviceData,
+//     size: '80%',
+//     innerSize: '60%',
+//     dataLabels: {
+//         formatter: function () {
+//             // display only if larger than 1
+//             return this.y > 1 ? '<b>' + this.point.name + ':</b> ' +
+//                 this.y + '' : null;
+//         }
+//     },
+//     id: 'versions'
+// }],
+// responsive: {
+//     rules: [{
+//         condition: {
+//             maxWidth: 400
+//         },
+//         chartOptions: {
+//             series: [{
+//             }, {
+//                 id: 'versions',
+//                 dataLabels: {
+//                     enabled: false
+//                 }
+//             }]
+//         }
+//     }]
+// }
+// });
+
+
+// }
 
 function refreshPie1(dat) {
     var newDat = [];
@@ -1553,7 +1564,7 @@ Highcharts.chart('tipDiv', {
         type: 'pie'
     },
     title: {
-        text: 'Top 5 category trends'
+        text: 'Category Trends'
     },
     credits: {
         enabled: false
@@ -1591,159 +1602,176 @@ Highcharts.chart('tipDiv', {
 });
 }
 
-function refreshPieDiv(dat) {
-    var newDat = [];
-    var colors = [];
-var chkData = dat.properties.most_popular_5;
-for (var key in chkData) {
-	var obj = {};
-  obj.name = key;
-  obj.y = chkData[key];
-  newDat.push(obj);
-  colors.push(myColor(key));
-}
+// function refreshPieDiv(dat) {
+//     var newDat = [];
+//     var colors = [];
+// var chkData = dat.properties.most_popular_5;
+// for (var key in chkData) {
+// 	var obj = {};
+//   obj.name = key;
+//   obj.y = chkData[key];
+//   newDat.push(obj);
+//   colors.push(myColor(key));
+// }
 
-Highcharts.chart('pie', {
-    chart: {
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
-        plotShadow: false,
-        type: 'pie'
-    },
-    title: {
-        text: 'Top 5 category trends'
-    },
-    credits: {
-        enabled: false
-    },
-    tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-    },
-    accessibility: {
-        point: {
-            valueSuffix: '%'
-        }
-    },
-    plotOptions: {
-        pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-                enabled: true,
-                format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-            },
-            showInLegend: true
-        }
-    },
-    series: [{
-        name: 'Flickr Tags',
-        colorByPoint: true,
-        colors: colors,
-        data: newDat
-    }]
-});
-}
+// Highcharts.chart('pie', {
+//     chart: {
+//         plotBackgroundColor: null,
+//         plotBorderWidth: null,
+//         plotShadow: false,
+//         type: 'pie'
+//     },
+//     title: {
+//         text: 'Top 5 category trends'
+//     },
+//     credits: {
+//         enabled: false
+//     },
+//     tooltip: {
+//         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+//     },
+//     accessibility: {
+//         point: {
+//             valueSuffix: '%'
+//         }
+//     },
+//     plotOptions: {
+//         pie: {
+//             allowPointSelect: true,
+//             cursor: 'pointer',
+//             dataLabels: {
+//                 enabled: true,
+//                 format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+//             },
+//             showInLegend: true
+//         }
+//     },
+//     series: [{
+//         name: 'Flickr Tags',
+//         colorByPoint: true,
+//         colors: colors,
+//         data: newDat
+//     }]
+// });
+// }
 
 
-function getTagPerCategories(dat) {
+// function getTagPerCategories(dat) {
 
-    catArray = [];
-    var tempData = dat.properties.most_popular_5;
-    var map = [];
-    var i=0;
-    for (var key in tempData) {
-        if (key != 'unknown' && tempData[key] != 0) {
-            catArray.push(key);
-            map[key] = i++;
-        }
-    }
-    var seriesData = [];
-    var categoryData = dat.properties.category_trend;
-    var tagMap = [];
-    for (var cat in catArray) {
-        var catTags = categoryData[catArray[cat]].top_5;
-        for (var tags in catTags) {
-            if (tagMap[tags] == null) {
-                //First Time..
-                tagMap[tags] = Array(catArray.length).fill(0);
-                tagMap[tags][map[catArray[cat]]] = catTags[tags];
-            } 
-            else {
-                tagMap[tags][map[catArray[cat]]] = catTags[tags];
+//     catArray = [];
+//     var tempData = dat.properties.most_popular_5;
+//     var map = [];
+//     var i=0;
+//     for (var key in tempData) {
+//         if (key != 'unknown' && tempData[key] != 0) {
+//             catArray.push(key);
+//             map[key] = i++;
+//         }
+//     }
+//     var seriesData = [];
+//     var categoryData = dat.properties.category_trend;
+//     var tagMap = [];
+//     for (var cat in catArray) {
+//         var catTags = categoryData[catArray[cat]].top_5;
+//         for (var tags in catTags) {
+//             if (tagMap[tags] == null) {
+//                 //First Time..
+//                 tagMap[tags] = Array(catArray.length).fill(0);
+//                 tagMap[tags][map[catArray[cat]]] = catTags[tags];
+//             } 
+//             else {
+//                 tagMap[tags][map[catArray[cat]]] = catTags[tags];
+//             }
+//         }
+//     }
+
+
+
+//     for (var key in tagMap){
+//         var obj = {};
+//         obj.name = key;
+//         obj.data = tagMap[key];
+//         seriesData.push(obj);
+//     }
+
+
+/*series: [{
+      data: [],
+      name: ,
+      color
+    }, {
+      data: []
+    }, {
+      data: []
+    }, {
+      data: []
+    }, {
+      data: []
+    }, {
+      data: []
+    }, {
+      data: []
+    }, {
+      data: []
+    }, {
+      data: []
+    }, {
+      data: []
+    }]*/
+
+    function refreshTopTags(dat) {
+        //var catTagData = countries_mock_data.timesteps[ts].country_data.buckets[0].categories;
+        var catTagData = dat.properties.category_trend;
+        var legData = [];
+            for (var category in catTagData) {
+                var top5 = catTagData[category].top_5;
+                for (var tagName in top5) {
+                    var obj = {};
+                    obj.data = [];
+                    obj.data[0] = top5[tagName];
+                    obj.name = tagName;
+                    obj.color = myColor(category);
+                    legData.push(JSON.parse(JSON.stringify(obj)));
+                }
             }
-        }
-    }
 
-
-
-    for (var key in tagMap){
-        var obj = {};
-        obj.name = key;
-        obj.data = tagMap[key];
-        seriesData.push(obj);
-    }
 
     
     Highcharts.chart('tipDiv2', {
-    chart: {
-        type: 'column'
+        chart: {
+      type: 'line',
+      spacing: [0, 0, 0, 0],
+      marginTop: 0,
+      marginBottom: 0,
+      spacingTop: 0
     },
     title: {
-        text: 'Tag Per Category Trends'
-    },
-    xAxis: {
-        categories: catArray
+        text: 'Most Popular Tags'
     },
     yAxis: {
-        min: 0,
-        // title: {
-        //     text: 'Total fruit consumpti'
-        // },
-        stackLabels: {
-            enabled: true,
-            style: {
-                fontWeight: 'bold',
-                color: ( // theme
-                    Highcharts.defaultOptions.title.style &&
-                    Highcharts.defaultOptions.title.style.color
-                ) || 'gray'
-            }
-        }
+      visible: false
+    },
+    xAxis: {
+        visible: false
     },
     credits: {
         enabled: false
     },
     legend: {
-        align: 'right',
-        x: -30,
-        verticalAlign: 'top',
-        y: 25,
-        floating: true,
-        backgroundColor:
-            Highcharts.defaultOptions.legend.backgroundColor || 'white',
-        borderColor: '#CCC',
-        borderWidth: 1,
-        shadow: false
+      padding: 0,
+      margin: 0,
+      verticalAlign: 'middle',
+      maxHeight: 200
     },
-    tooltip: {
-        headerFormat: '<b>{point.x}</b><br/>',
-        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
-    },
-    plotOptions: {
-        column: {
-            stacking: 'normal',
-            dataLabels: {
-                enabled: true
-            },
-            animation: false
-        }
-    },
-    series: seriesData,
+    series: legData,
     exporting: {
         enabled: false
     }
 });
-}
+    }
+
+    
+// }
 
 
 var randomColor = (function(){
@@ -2024,8 +2052,6 @@ function reDrawMultiDonut(newData) {
 }
 
 function updatedMultiDonut(country_code, timeSteps) {
-    console.log("country code: ",country_code);
-    console.log("timestep: ",timeSteps);
     var newData = {};
         for(var key_st in countries_mock_data.timesteps) {
             if (timeSteps.includes(key_st)) {
@@ -2159,8 +2185,6 @@ div.style("display", "none");
 
 
 function updatedMultiDonutRight(country_code, timeSteps) {
-    console.log("country code R: ",country_code);
-    console.log("timestep R: ",timeSteps);
     var newData = {};
         for(var key_st in countries_mock_data.timesteps) {
             if (timeSteps.includes(key_st)) {
@@ -2328,6 +2352,31 @@ svgLegend.selectAll("mylabels")
     .attr("text-anchor", "left")
     .style("alignment-baseline", "middle")
 
+
+
+    var svgDonutLegend = d3.select("#donutLegend");
+
+// Add one dot in the legend for each name.
+svgDonutLegend.selectAll("mydots")
+  .data(Object.keys(catColor))
+  .enter()
+  .append("circle")
+    .attr("cy", 12)
+    .attr("cx", function(d,i){ return 15 + i*50}) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("r", 7)
+    .style("fill", function(d){ return catColor[d]})
+
+// Add one dot in the legend for each name.
+svgDonutLegend.selectAll("mylabels")
+  .data(Object.keys(catColor))
+  .enter()
+  .append("text")
+    .attr("y", 30)
+    .attr("x", function(d,i){ return 10+ i*50-10}) // 100 is where the first dot appears. 25 is the distance between dots
+    //.style("fill", function(d){ return color(d)})
+    .text(function(d){ return d})
+    .attr("text-anchor", "left")
+    .style("alignment-baseline", "middle")
         
 
     </script>

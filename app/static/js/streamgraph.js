@@ -229,8 +229,6 @@
     function drawStreamGraph(country_key, svg_stream, validTimeSteps_graph, width_stream_graph, height_stream_graph, level, ticksEnabled = true){
 // append the svg object to the body of the page
 
-        //svg_stream.selectAll("path").remove()
-        console.log("valid ts: ",validTimeSteps_graph);
 
         // Parse the Data
         var [data, yRange, keys] = getStreamData(country_key, validTimeSteps_graph, level)
