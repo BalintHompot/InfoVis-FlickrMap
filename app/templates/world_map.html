@@ -2044,6 +2044,12 @@ function reDrawMultiDonut(newData) {
         var width2 = 250; //width_main;
         var height2 = 250; //height_main;
         var donutWidth = 15;
+        var idx=0;
+        if (Object.keys(newData).length > 5) {
+            console.log("sad");
+            idx = Object.keys(newData).length - 5;   
+
+        }
     var svgDonut = d3.select('#left_panel')
           .append('svg')
           .attr("id","donut-class")
@@ -2065,8 +2071,14 @@ function reDrawMultiDonut(newData) {
     var k=0;
     var radius1 = Math.min(width2, height2) / 8;
     var radius2 = radius1 + donutWidth + 5;
+    var arc_bound = 5;
             //Draw for the first time..
+            var iloop = 0;
             for (var timestepKey in newData) {
+                if (iloop < idx) {
+                    iloop++;
+                    continue;
+                }
             svg2[k] = svgDonut.append('g')
             .attr('transform', 'translate(' + (width2 / 2) + 
             ',' + (height2 /2 ) + ')');
@@ -2102,7 +2114,7 @@ function reDrawMultiDonut(newData) {
         //     }
         //   });
 
-          radius1 = radius1 + donutWidth + 5;
+          radius1 = radius1 + donutWidth + arc_bound;
 
           k++;
 
@@ -2178,6 +2190,13 @@ d3.selectAll("#right_panel").selectAll("#donut-class").remove();
     var width2 = 250; //width_main;
     var height2 = 250; //height_main;
     var donutWidth = 15;
+    var idx=0;
+        if (Object.keys(newData).length > 5) {
+            console.log("sad");
+            idx = Object.keys(newData).length - 5;   
+
+        }
+    
 var svgDonut = d3.select('#right_panel')
       .append('svg')
       .attr("id","donut-class")
@@ -2199,8 +2218,16 @@ var svg2 = [];
 var k=0;
 var radius1 = Math.min(width2, height2) / 8;
 var radius2 = radius1 + donutWidth + 5;
+var arc_bound = 5;
+            //Draw for the first time..
+            var iloop = 0;
+            
         //Draw for the first time..
         for (var timestepKey in newData) {
+            if (iloop < idx) {
+                    iloop++;
+                    continue;
+                }
         svg2[k] = svgDonut.append('g')
         .attr('transform', 'translate(' + (width2 / 2) + 
         ',' + (height2 / 2) + ')');
@@ -2236,7 +2263,7 @@ var radius2 = radius1 + donutWidth + 5;
     //     }
     //   });
 
-      radius1 = radius1 + donutWidth + 5;
+      radius1 = radius1 + donutWidth + arc_bound;
 
       k++;
 
