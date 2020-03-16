@@ -334,7 +334,7 @@
 		#button-wrapper {
 		position: absolute;
 		margin-left: 335px;
-		top: 480px;
+		top: 470px;
 		}
 		
 		button {
@@ -1088,7 +1088,12 @@ d3.select("#main_container")
         .append("g")
         .attr("transform",
             "translate(" + (margin.left*5) + "," + (height+10 ) + ")")
-        .attr("id", "stream_1");
+        .attr("id", "stream_1")
+		
+	svg_stream
+		.append("text")
+		.text("Trend of images per category")
+		.attr("class", "graph_title_panel")
 
     var selected_indicator = d3.selectAll("#streamContainer")
         .append("rect")
