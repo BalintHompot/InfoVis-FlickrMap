@@ -401,6 +401,7 @@
 	.graph_title_panel {
 		font-family: -apple-system, BlinkMacSystemFontsystem-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; 
 	}
+	
 
         </style>
     </head>
@@ -1039,7 +1040,7 @@
     
 
     var margin = {top: 60, right: 20, bottom: 5, left: 20},
-    width_stream = width_main *0.55
+    width_stream = width_main *0.5
     height_stream = 70
 
     
@@ -1047,24 +1048,24 @@
 
 d3.select("#main_container")
     .append("g")
-        .attr("width", width_stream + margin.left + margin.right)
-        .attr("height", height_stream * 2.5 + margin.top + margin.bottom)
+        .attr("width", width_stream  + margin.left + margin.right)
+        .attr("height", height_stream * 2.5 + margin.top)
         .attr("id", "streamContainer")
         .attr("transform",
-            "translate(" + width_side_panel + "," + 0 + ")")
+            "translate(" + width_side_panel + "," + -30 + ")")
     
     d3.select("#streamContainer")
         .append("rect")
         .attr("id", "background-stream")
-        .attr("width", width_stream + margin.left + margin.right)
-        .attr("height", height_stream * 2.5 + margin.top + margin.bottom+60)
+        .attr("width", width_stream *1.1 + margin.left + margin.right)
+        .attr("height", height_stream * 2.5 + margin.top)
         .attr("transform",
-            "translate(" + margin.left + "," + (height-30) + ")")
+            "translate(" + margin.left + "," + (height-10) + ")")
     
     svg_stream = d3.selectAll("#streamContainer")
         .append("g")
         .attr("transform",
-            "translate(" + margin.left + "," + (height+10 ) + ")")
+            "translate(" + (margin.left*5) + "," + (height+10 ) + ")")
         .attr("id", "stream_1");
 
     var selected_indicator = d3.selectAll("#streamContainer")
@@ -1076,14 +1077,14 @@ d3.select("#main_container")
         .style("stroke", "gray")
         .attr("width", 50)
         .attr("height", 10)
-        .attr("x", width_stream)
-        .attr("y",   (height+height_stream+(height_stream/2) ));
+        .attr("x", width_stream + margin.left*4)
+        .attr("y",   (height+height_stream+(height_stream/2) +3 ));
 
     var selected_indicator_text = d3.selectAll("#streamContainer")
 
         .append("text")
 		.attr("id", "selected-ind-text")
-        .attr("x", width_stream)
+        .attr("x", width_stream + margin.left*4)
         .attr("y",   (height+height_stream+(height_stream/2) ))
         .text("Selected")
 
@@ -1096,14 +1097,14 @@ d3.select("#main_container")
         .style("stroke", "gray")
         .attr("width", 50)
         .attr("height", 10)
-        .attr("x", width_stream)
-        .attr("y",   (height+(height_stream/2) ));
+        .attr("x", width_stream + margin.left*4)
+        .attr("y",   (height+(height_stream/2) +3));
 
     var selection_indicator_text = d3.selectAll("#streamContainer")
 
         .append("text")
 		.attr("id", "selection-ind-text")
-        .attr("x", width_stream)
+        .attr("x", width_stream + margin.left*4)
         .attr("y",   (height+(height_stream/2) ))
         .text("Selecting")
     
@@ -1113,7 +1114,7 @@ d3.select("#main_container")
     var svg_stream_2 = d3.selectAll("#streamContainer")
             .append("g")
             .attr("transform",
-                    "translate(" + margin.left + "," + (offset_top_stream_2 +15)+ ")")
+                    "translate(" + (margin.left*5) + "," + (offset_top_stream_2 +15)+ ")")
             .attr("id", "stream_2");
 
     current_selection_svg = svg_stream
@@ -1153,7 +1154,7 @@ d3.select("#main_container")
             current_selection_ticks_enabled = true
             country_in_focus_1 = countryID
             selected_ind_height = height  + height_stream/2
-            selection_ind_height = height + height_stream + height_stream/2
+            selection_ind_height = height + height_stream + height_stream/2 -3
             leftColor = selectedColor
             rightColor = selectionColor
         }else{
@@ -1164,12 +1165,12 @@ d3.select("#main_container")
             current_selection_ticks_enabled = false
             country_in_focus_2 = countryID
             selected_ind_height = height + height_stream +  height_stream/2
-            selection_ind_height = height + height_stream/2
+            selection_ind_height = height + height_stream/2 
             leftColor = selectionColor
             rightColor = selectedColor
         }
-        d3.selectAll("#selection-ind").transition().duration(750).attr("y", selection_ind_height)
-        d3.selectAll("#selected-ind").transition().duration(750).attr("y", selected_ind_height)
+        d3.selectAll("#selection-ind").transition().duration(750).attr("y", selection_ind_height+3)
+        d3.selectAll("#selected-ind").transition().duration(750).attr("y", selected_ind_height+3)
 
         d3.selectAll("#selection-ind-text").transition().duration(750).attr("y", selection_ind_height)
         d3.selectAll("#selected-ind-text").transition().duration(750).attr("y", selected_ind_height)
@@ -1973,8 +1974,8 @@ function reDrawMultiDonut(newData) {
     // }
 
 
-        var width2 = 280; //width_main;
-        var height2 = 400; //height_main;
+        var width2 = 250; //width_main;
+        var height2 = 250; //height_main;
         var donutWidth = 15;
     var svgDonut = d3.select('#left_panel')
           .append('svg')
@@ -1999,7 +2000,7 @@ function reDrawMultiDonut(newData) {
             for (var timestepKey in newData) {
             svg2[k] = svgDonut.append('g')
             .attr('transform', 'translate(' + (width2 / 2) + 
-            ',' + (height2 / 2) + ')');
+            ',' + (height2 /2 ) + ')');
 
             var arc2 = d3.arc()
                 .innerRadius(radius1 - donutWidth)  
@@ -2105,8 +2106,8 @@ d3.selectAll("#right_panel").selectAll("#donut-class").remove();
 // }
 
 
-    var width2 = 280; //width_main;
-    var height2 = 400; //height_main;
+    var width2 = 250; //width_main;
+    var height2 = 250; //height_main;
     var donutWidth = 15;
 var svgDonut = d3.select('#right_panel')
       .append('svg')

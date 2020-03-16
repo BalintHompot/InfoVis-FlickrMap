@@ -545,9 +545,9 @@
 
 
     function updateStreamSlider(){
-        var rectGrabBottom = height 
-        var rectGrabTop = height - height_stream_2 - height_stream +2
-        var focusRectCornerTop = height + height_stream + 15
+        var rectGrabBottom = height 	
+        var rectGrabTop = height - height_stream_2 - height_stream -10
+        var focusRectCornerTop = height + height_stream-40
         var focusRectCornerRight = x_main_stream(current_date) + (rectWidthRight)
         var focusRectCornerLeft = x_main_stream(current_date) - (rectWidthLeft)
 
@@ -579,9 +579,9 @@
             .attr('stroke', lineCol0or)
             .attr('stroke-width', 0.5)
             .attr('x1', focusRectCornerLeft)
-            .attr('y1', height - height_stream + 5)
+            .attr('y1', height - height_stream-5 )
             .attr('x2', focusRectCornerRight)
-            .attr('y2', height - height_stream + 5 )
+            .attr('y2', height - height_stream -5  )
         sliderG
             .append("rect")
             .attr('id', "rect-grab")
@@ -656,7 +656,7 @@
             .attr("width",grabberWidth)
             .attr("height", grabberHeight)
             .attr("x", focusRectCornerLeft - 15)
-            .attr("y", height - height_stream -4)
+            .attr("y", height - height_stream -15)
             .call(dragLeft);
 			
         sliderG
@@ -665,20 +665,20 @@
             .attr("width", grabberWidth)
             .attr("height", grabberHeight)
             .attr("x", focusRectCornerRight-10)
-            .attr("y", height - height_stream -4 )
+            .attr("y", height - height_stream -15)
             .call(dragRight);
 			
 		sliderG
 			.append("text").text( "<>")
 			.attr('id', "focus-grab-text")
 			.attr("x", focusRectCornerRight-6)
-            .attr("y", height - height_stream +10 );
+            .attr("y", height - height_stream  )
 			
 		sliderG
 			.append("text").text( "<>")
 			.attr('id', "focus-grab-text")
-            .attr("x", focusRectCornerLeft - 12)
-            .attr("y", height - height_stream +10)
+            .attr("x", focusRectCornerLeft - 10)
+            .attr("y", height - height_stream )
 			
 		
 
