@@ -401,6 +401,13 @@
 	.graph_title_panel {
 		font-family: -apple-system, BlinkMacSystemFontsystem-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; 
 	}
+
+
+	#close_text {
+	stroke: white;
+	font-size: 8px;
+	text-anchor: end;
+}
 	
 
         </style>
@@ -1253,28 +1260,57 @@ d3.select("#main_container")
             .attr("height", focusStremTartgetTop - focusStremTartgetBottom)
             .attr("x", focusMargin)
             .attr("y", focusStremTartgetBottom);
-        
+       
+	var close_button_offset_left = 200
+	var close_button_offset_top = 10
+	var close_text_padding = 7.5
+	
     left_panel
-            .append("rect")
+            .append("g")
             .attr('id', "rect-close-left")
-            .style("fill", "black")
             .attr("width", 10)
             .attr("height", 10)
-            .attr("x", 10)
-            .attr("y", 10)
+			.attr("transform",
+				"translate(" + close_button_offset_left + "," + close_button_offset_top + ")")
+	
+	var close_button_left = d3.select("#rect-close-left")
+	close_button_left
+			.append("rect")
+	        .style("fill", "gray")
+            .attr("width", 10)
+            .attr("height", 10)
             .on("click", function(){resetSideBar("left")})
-
-    
+	
+    close_button_left
+			.append("text").text( "X")
+			.attr("x", close_text_padding)
+			.attr("y", close_text_padding)
+			.attr("id", "close_text")
 		
     right_panel
-            .append("rect")
-            .attr('id', "rect-close-right")
-            .style("fill", "black")
+            .append("g")
+			.attr('id', "rect-close-right")
             .attr("width", 10)
             .attr("height", 10)
-            .attr("x", 10)
-            .attr("y", 10)
+			.attr("transform",
+				"translate(" + close_button_offset_left + "," + close_button_offset_top + ")")
+	
+	var close_button_right = d3.select("#rect-close-right")
+	
+	close_button_right
+			.append("rect")
+            .style("fill", "gray")
+            .attr("width", 10)
+            .attr("height", 10)
             .on("click", function(){resetSideBar("right")})
+	
+	close_button_right
+			.append("text").text( "X")
+			.attr("x", close_text_padding)
+			.attr("y", close_text_padding)
+			.attr("id", "close_text")
+		
+	
     
     var left_focus_g = d3.select("#left_panel")
         .append("g")
