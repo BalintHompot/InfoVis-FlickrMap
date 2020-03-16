@@ -376,7 +376,7 @@
 
 	#filter-options {
 	position:absolute;
-	left: 60%;
+	left: 62%;
 	top: 1%
 	}
 	
@@ -394,19 +394,27 @@
 	margin-top: 60px;
 	margin-left: 10px;
 	font-size: 20px;
-	fill:gray;  
+	fill:#404040;  
 	text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
 	}
 	
-	.graph_title_panel {
+	text.graph_title_panel {
 		font-family: -apple-system, BlinkMacSystemFontsystem-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; 
-	}
+		fill:#2e2e2e;
+		text-shadow: 0 0.5px 0 #fff, 0.5px 0 0 #fff, 0 -0.5px 0 #fff, -0.5px 0 0 #fff;
+		font-size:14px;
+}	
+
 
 
 	#close_text {
 	stroke: white;
 	font-size: 8px;
 	text-anchor: end;
+}
+
+	#g-focus-left {
+	color: black;
 }
 	
 
@@ -1323,9 +1331,8 @@ d3.select("#main_container")
 		.attr("class", "graph_title_panel")
 		.attr("x", -14)             
         .attr("y", -8)
-        .attr("text-anchor", "left")  
-        .style("font-size", "12px")   
-        .text("Most popular tags");
+        .attr("text-anchor", "left")    
+        .text("Most popular tags")
 
     var right_focus_g = d3.select("#right_panel")
         .append("g")
@@ -1338,8 +1345,7 @@ d3.select("#main_container")
 		.attr("class", "graph_title_panel")
 		.attr("x", -14)             
         .attr("y", -8)
-        .attr("text-anchor", "left")  
-        .style("font-size", "12px")   
+        .attr("text-anchor", "left")    
         .text("Most popular tags");
 
     var svg_focused_stream = left_focus_g
@@ -2373,7 +2379,7 @@ svgLegend.selectAll("mydots")
   .enter()
   .append("circle")
     .attr("cy", 12)
-    .attr("cx", function(d,i){ return 15 + i*50}) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("cx", function(d,i){ return 20 + i*50}) // 100 is where the first dot appears. 25 is the distance between dots
     .attr("r", 7)
     .style("fill", function(d){ return myColor(d)})
 
@@ -2383,7 +2389,7 @@ svgLegend.selectAll("mylabels")
   .enter()
   .append("text")
     .attr("y", 30)
-    .attr("x", function(d,i){ return 10+ i*50-10}) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("x", function(d,i){ return 15+ i*50-10}) // 100 is where the first dot appears. 25 is the distance between dots
     //.style("fill", function(d){ return color(d)})
     .text(function(d){ return d})
     .attr("text-anchor", "left")
