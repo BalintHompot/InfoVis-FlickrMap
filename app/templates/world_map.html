@@ -192,7 +192,7 @@
 		.d3-tip
 		{
 			line-height: 1;
-			width: 400px;
+			width: 328px;
 			height: fit-content;
 			padding: 12px;
 			/*background: rgba(204, 188, 188, 0.836)*/
@@ -204,12 +204,11 @@
 		.d3-tip:after
 		{
 			box-sizing: border-box;
-			width: 400px;
+			width: 328px;
 			height: fit-content;
 			font-size: 5px;
 			line-height: 1;
 			/*color: rgba(204, 188, 188, 0.836);*/
-			background-color: lavender;
 			content: "\25BC";
 			position: absolute;
 			text-align: center;
@@ -218,7 +217,7 @@
 		.d3-tip.n:after
 		{
 			margin: -1px 0 0 0;
-			width: 400px;
+			width: 328px;
 			height: fit-content;
 			top: 100%;
 			left: 0;
@@ -226,12 +225,12 @@
 		  
 		#tipDiv
 		{
-			width: 200px;
+			width: 150px;
 		}
 
 		#tipDiv2
 		{
-			width: 190px;
+			width: 150px;
 		}
 
 		#button {
@@ -416,9 +415,13 @@
 }
 
 	#stream-tooltip {
-
-	fill:#2e2e2e;
-	text-shadow: 0 0.5px 0 #fff, 0.5px 0 0 #fff, 0 -0.5px 0 #fff, -0.5px 0 0 #fff;
+		fill:#2e2e2e;
+		text-shadow: 0 0.5px 0 #fff, 0.5px 0 0 #fff, 0 -0.5px 0 #fff, -0.5px 0 0 #fff;
+	}
+	
+	#tooltip-text {
+		fill:#2e2e2e;
+		text-shadow: 0 0.5px 0 #fff, 0.5px 0 0 #fff, 0 -0.5px 0 #fff, -0.5px 0 0 #fff;
 	}
 	
 
@@ -1608,17 +1611,22 @@ Highcharts.chart('tipDiv', {
         plotBackgroundColor: null,
         plotBorderWidth: null,
         plotShadow: false,
-        type: 'pie'
+        type: 'pie',
+		height: 220
     },
     title: {
-        text: 'Category Trends'
+		text: 'Distribution of categories',
+        style: {
+            color: '#2e2e2e',
+            fontSize: 12
+        }
     },
     credits: {
         enabled: false
     },
     tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-    },
+    },	
     accessibility: {
         point: {
             valueSuffix: '%'
@@ -1630,7 +1638,7 @@ Highcharts.chart('tipDiv', {
             cursor: 'pointer',
             dataLabels: {
                 enabled: true,
-                distance: -50,
+                distance: -25,
                 format: '{point.y}'
             },
             showInLegend: false,
@@ -1788,12 +1796,18 @@ Highcharts.chart('tipDiv', {
         chart: {
       type: 'line',
       spacing: [0, 0, 0, 0],
-      marginTop: 0,
+      marginTop: 15,
       marginBottom: 0,
-      spacingTop: 0
+      spacingTop: 0,
+	  height: 220
     },
     title: {
-        text: 'Most Popular Tags'
+		text: 'Most popular tags',
+        style: {
+            color: '#2e2e2e',
+            fontSize: 12,
+			marginTop: 15,
+        }
     },
     yAxis: {
       visible: false
