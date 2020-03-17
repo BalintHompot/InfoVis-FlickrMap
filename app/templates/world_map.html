@@ -490,7 +490,7 @@
                 left: 21.091px;'>
                     <strong>Most popular category: &nbsp;</strong><span id="popcat1"></span><br>
                     <strong>No. of images: &nbsp;</strong><span id="imageno1"></span><br><br>
-                    <div style='display: inline-flex;'><div id='1tipDiv'></div><div id='1tipDiv2'><div style='text-align: center;'><p>Top tags</p></div><svg id='svgPie1'></svg></div></div>
+                    <div style='display: -webkit-inline-box;'><div id='1tipDiv'></div><div id='1tipDiv2'><div style='text-align: center;'><p>Top tags</p></div><svg id='svgPie1'></svg></div></div>
                 </div>
                 <div style='position: absolute;
                 top: 36.4134px;
@@ -500,7 +500,7 @@
                 left: 1250.091px;'>
                     <strong>Most popular category: &nbsp;</strong><span id="popcat2"></span><br>
                     <strong>No. of images: &nbsp;</strong><span id="imageno2"></span><br><br>
-                    <div style='display: inline-flex;'><div id='2tipDiv'></div><div id='2tipDiv2'><div style='text-align: center;'><p>Top tags</p></div><svg id='svgPie2'></svg></div></div>
+                    <div style='display: -webkit-inline-box;'><div id='2tipDiv'></div><div id='2tipDiv2'><div style='text-align: center;'><p>Top tags</p></div><svg id='svgPie2'></svg></div></div>
                 </div>
                 
 
@@ -1644,6 +1644,7 @@ function refreshSidePanelPie1(dat) {
     }
 
 
+    console.log("pie")
 
 
     Highcharts.chart('1tipDiv', {
