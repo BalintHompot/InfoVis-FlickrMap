@@ -373,21 +373,13 @@
 
     }
 
-    function refreshStreamGraph(country_key, svg_stream, validTimeSteps_graph, width_stream_graph, height_stream_graph, level, chartpanel, ticksEnabled = true){
+    function refreshStreamGraph(country_key, svg_stream, validTimeSteps_graph, width_stream_graph, height_stream_graph, level, ticksEnabled = true){
         svg_stream.selectAll(".tick").remove()
 
         // Parse the Data
 
 
         var [data, yRange, keys] = getStreamData(country_key, validTimeSteps_graph, level)
-        
-        if(chartpanel == "left") {
-            refreshSidePanelPie1(data);
-        } else {
-            refreshSidePanelPie2(data);
-        }
-
-        
 
 
         var x = getX(validTimeSteps_graph, width_stream_graph)
@@ -635,7 +627,7 @@
         main_container
             .append("line")
             .attr('id', "line-focus")
-            .attr('stroke', '#E3E3E3')
+            .attr('stroke', 'grey')
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
             .attr('x1', focusRectCornerLeft + width_side_panel + margin.left)
@@ -696,8 +688,8 @@
 
         draw(world_countries ,current_year_data)
         
-        refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag", "left")
-        refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag", "right")
+        refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+        refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
         updatedMultiDonut(country_in_focus_1, getFocusedValidSteps());
         updatedMultiDonutRight(country_in_focus_2, getFocusedValidSteps());
           
