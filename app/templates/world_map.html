@@ -890,18 +890,22 @@ div.style("display", "none");
                 //refreshDonutDiv(d);
                 //refreshPieDiv(d);
                 
-                refreshStreamGraph(d.id, current_selection_svg, validTimeSteps, width_stream, height_stream, "category", current_selection_ticks_enabled)
-                refreshStreamGraph(d.id, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+                
+                
                 //refreshCategoryDonut(d.id, dataset)
                 changeCurrentSelections(d.id, d.properties.name)
                 updatePanelCountry()
                 if (current_selection_svg == svg_stream) {
+                    refreshStreamGraph(d.id, current_selection_svg, validTimeSteps, width_stream, height_stream, "category", "right", current_selection_ticks_enabled)
+                    refreshStreamGraph(d.id, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag", "right")
                     updatedMultiDonutRight(d.id, getFocusedValidSteps());
-                    refreshSidePanelPie2(d);
+                    //refreshSidePanelPie2(d);
                     refreshSidePanelTopTags2(d);
                 } else {
+                    refreshStreamGraph(d.id, current_selection_svg, validTimeSteps, width_stream, height_stream, "category", "left", current_selection_ticks_enabled)
+                    refreshStreamGraph(d.id, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag", "left")
                     updatedMultiDonut(d.id, getFocusedValidSteps());
-                    refreshSidePanelPie1(d);
+                    //refreshSidePanelPie1(d);
                     refreshSidePanelTopTags1(d);
                 }
                 
@@ -920,17 +924,20 @@ div.style("display", "none");
                     .call( zoom.transform, d3.zoomIdentity ); // updated for d3 v4
 
                 
-                refreshStreamGraph("WORLD", prev_selection_svg, validTimeSteps, width_stream, height_stream, "category", current_selection_ticks_enabled)
-                refreshStreamGraph("WORLD", prev_svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+                
                 if(current_selection_svg == svg_stream){
                     country_in_focus_2 = "WORLD"
+                    refreshStreamGraph("WORLD", prev_selection_svg, validTimeSteps, width_stream, height_stream, "category", "right", current_selection_ticks_enabled)
+                    refreshStreamGraph("WORLD", prev_svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag", "right")
                     updatedMultiDonutRight("WORLD", getFocusedValidSteps());
-                    refreshSidePanelPie2("WORLD");
+                    //refreshSidePanelPie2("WORLD");
                     refreshSidePanelTopTags2("WORLD");
                 }else{
                     country_in_focus_1 = "WORLD"
+                    refreshStreamGraph("WORLD", prev_selection_svg, validTimeSteps, width_stream, height_stream, "category", "left", current_selection_ticks_enabled)
+                    refreshStreamGraph("WORLD", prev_svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag", "left")
                     updatedMultiDonut("WORLD", getFocusedValidSteps());
-                    refreshSidePanelPie1("WORLD");
+                    //refreshSidePanelPie1("WORLD");
                     refreshSidePanelTopTags1("WORLD");
                 }
                 updatePanelCountry();
@@ -998,11 +1005,11 @@ div.style("display", "none");
                 filterString = document.getElementById("filterInput").value
                 getFilterCategory()
     
-                refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
-                refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+                refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag", "left")
+                refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag", "right")
 
-                refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category", false)
-                refreshStreamGraph(country_in_focus_2, svg_stream_2, validTimeSteps, width_stream, height_stream, "category", true)
+                refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category", "left", false)
+                refreshStreamGraph(country_in_focus_2, svg_stream_2, validTimeSteps, width_stream, height_stream, "category", "right", true)
             
             }
 
@@ -1016,11 +1023,11 @@ div.style("display", "none");
 		
             document.getElementById("filterInput").value = ""
             filterString = null
-            refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
-            refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+            refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag", "left")
+            refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag", "right")
 
-            refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category", false)
-            refreshStreamGraph(country_in_focus_2, svg_stream_2, validTimeSteps, width_stream, height_stream, "category", true)
+            refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category", "left", false)
+            refreshStreamGraph(country_in_focus_2, svg_stream_2, validTimeSteps, width_stream, height_stream, "category", "right", true)
 
             
             
@@ -1171,22 +1178,22 @@ d3.select("#main_container")
     function resetSideBar(side){
         if(side == "left"){
             country_in_focus_1 = "WORLD"
-            refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category", false)
-            refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+            refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category", "left", false)
+            refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag", "left")
             if(current_selection_svg == svg_stream_2){
                 changeCurrentSelections();
-                refreshSidePanelPie1(country_in_focus_1);
+                //refreshSidePanelPie1(country_in_focus_1);
                 refreshSidePanelTopTags1(country_in_focus_1);
                 updatedMultiDonut(country_in_focus_1, getFocusedValidSteps());
             }
             
         }else{
             country_in_focus_2 = "WORLD"
-            refreshStreamGraph(country_in_focus_2, svg_stream_2, validTimeSteps, width_stream, height_stream, "category", true)
-            refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+            refreshStreamGraph(country_in_focus_2, svg_stream_2, validTimeSteps, width_stream, height_stream, "category", "right", true)
+            refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag", "right")
             if(current_selection_svg == svg_stream){
                 changeCurrentSelections();
-                refreshSidePanelPie2(country_in_focus_2);
+                //refreshSidePanelPie2(country_in_focus_2);
                 refreshSidePanelTopTags2(country_in_focus_2);
                 updatedMultiDonutRight(country_in_focus_2, getFocusedValidSteps());
             }
@@ -1558,19 +1565,54 @@ function refreshSidePanelPie1(dat) {
     var newDat = [];
     var colors = [];
     if (dat != "WORLD") {
-        var chkData = dat.properties.most_popular_5;
-for (var key in chkData) {
-	var obj = {};
-  obj.name = key;
-  obj.y = chkData[key];
-  newDat.push(obj);
-  colors.push(myColor(key));
-}
-    document.getElementById("popcat1").innerText = dat.properties.most_popular_tag;
-    document.getElementById("imageno1").innerText = dat.properties.user_freq;
+        var map2 = {};
+        for (var idx=0; idx<dat.length; ++idx) {
+            var inDat = dat[idx];
+            for (var tag in inDat) {
+                
+                if (tag != "time_step_graph") {
+                    if(map2[tag] == undefined) {
+                    //New 
+                    map2[tag] = inDat[tag];
+                } else {
+                    map2[tag] = map2[tag] + inDat[tag];
+                }
+                }
+
+            }
+        }
+
+        var catMap = {};
+        for (var keys in map2) {
+            if(catMap[reverseTagCatIndex[keys]] == undefined) {
+                catMap[reverseTagCatIndex[keys]] = map2[keys];
+            } else {
+                catMap[reverseTagCatIndex[keys]] = catMap[reverseTagCatIndex[keys]] + map2[keys];
+            }
+            
+        }
+
+        var max = 0;
+        var tot = 0;
+        var popularCat = "";
+        for (var categories in catMap) {
+            var obj = {};
+                    obj.name = categories;
+                    obj.y = catMap[categories];
+                    tot = tot + catMap[categories];
+                    if (catMap[categories] > max) {
+                        max = catMap[categories];
+                        popularCat = categories;
+                    }
+                    newDat.push(JSON.parse(JSON.stringify(obj)));
+                    colors.push(myColor(categories));
+                    document.getElementById("popcat1").innerText = popularCat;
+                    document.getElementById("imageno1").innerText = tot;
+
+        }
+
     } else {
         // WORLD data..
-        console.log("timestep: ",current_date);
         var countrydata = countries_mock_data.timesteps[current_date].country_data.buckets;
         
         for (var idx = 0; idx < countrydata.length; ++idx) {
@@ -1592,7 +1634,6 @@ for (var key in chkData) {
 
 
 
-    console.log("newas: ",newDat);
 
     Highcharts.chart('1tipDiv', {
     chart: {
@@ -1646,22 +1687,59 @@ for (var key in chkData) {
 }
 
 function refreshSidePanelPie2(dat) {
-    //var dat = [{"name":"animal","y":1},{"name":"citylife","y":9},{"name":"nature","y":13},{"name":"other","y":12},{"name":"people","y":28},{"name":"sports","y":0}];
+    //var dat = [];//[{"name":"animal","y":1},{"name":"citylife","y":9},{"name":"nature","y":13},{"name":"other","y":12},{"name":"people","y":28},{"name":"sports","y":0}];
     var newDat = [];
-    var colors = [];if (dat != "WORLD") {
-        var chkData = dat.properties.most_popular_5;
-for (var key in chkData) {
-	var obj = {};
-  obj.name = key;
-  obj.y = chkData[key];
-  newDat.push(obj);
-  colors.push(myColor(key));
-}
-document.getElementById("popcat2").innerText = dat.properties.most_popular_tag;
-    document.getElementById("imageno2").innerText = dat.properties.user_freq;
+    var colors = [];
+    if (dat != "WORLD") {
+        var map2 = {};
+        for (var idx=0; idx<dat.length; ++idx) {
+            var inDat = dat[idx];
+            for (var tag in inDat) {
+                
+                if (tag != "time_step_graph") {
+                    if(map2[tag] == undefined) {
+                    //New 
+                    map2[tag] = inDat[tag];
+                } else {
+                    map2[tag] = map2[tag] + inDat[tag];
+                }
+                }
+
+            }
+        }
+
+
+        var catMap = {};
+        for (var keys in map2) {
+            if(catMap[reverseTagCatIndex[keys]] == undefined) {
+                catMap[reverseTagCatIndex[keys]] = map2[keys];
+            } else {
+                catMap[reverseTagCatIndex[keys]] = catMap[reverseTagCatIndex[keys]] + map2[keys];
+            }
+            
+        }
+
+        var max = 0;
+        var tot = 0;
+        var popularCat = "";
+        for (var categories in catMap) {
+            var obj = {};
+                    obj.name = categories;
+                    obj.y = catMap[categories];
+                    tot = tot + catMap[categories];
+                    if (catMap[categories] > max) {
+                        max = catMap[categories];
+                        popularCat = categories;
+                    }
+                    newDat.push(JSON.parse(JSON.stringify(obj)));
+                    colors.push(myColor(categories));
+                    document.getElementById("popcat2").innerText = popularCat;
+                    document.getElementById("imageno2").innerText = tot;
+
+        }
+
     } else {
         // WORLD data..
-        console.log("timestep: ",current_date);
         var countrydata = countries_mock_data.timesteps[current_date].country_data.buckets;
         
         for (var idx = 0; idx < countrydata.length; ++idx) {
@@ -1680,6 +1758,7 @@ document.getElementById("popcat2").innerText = dat.properties.most_popular_tag;
             }
         }
     }
+
     Highcharts.chart('2tipDiv', {
     chart: {
         plotBackgroundColor: null,
@@ -1732,8 +1811,8 @@ document.getElementById("popcat2").innerText = dat.properties.most_popular_tag;
 }
 
 //Add world data..
-refreshSidePanelPie1("WORLD");
-refreshSidePanelPie2("WORLD");
+// refreshSidePanelPie1("WORLD");
+// refreshSidePanelPie2("WORLD");
 
 function refreshPie1(dat) {
     var newDat = [];
@@ -1747,7 +1826,6 @@ for (var key in chkData) {
   colors.push(myColor(key));
 }
 
-console.log(JSON.stringify(newDat));
 
 Highcharts.chart('tipDiv', {
     chart: {
@@ -1968,7 +2046,6 @@ for (var idx = 0; idx < topValues.length; ++idx) {
     tpKeys.push(topValues[idx].name);
 }
 
-console.log("tpKey: ",tpKeys);
 
 // Add one dot in the legend for each name.
 Svg.selectAll("mydots")
@@ -2103,14 +2180,12 @@ Svg.selectAll("mylabels")
             }
 
 
-            console.log("legData: ",legData);
 //         x.sort(function(a, b) {
 // return b.score - a.score;
 // });
         var topValues = legData.sort(function(a, b) {
                 return b.data - a.data;
         }).slice(0,5);
-        console.log("topValues: ",topValues);
 
 
         // select the svg area
@@ -2363,7 +2438,6 @@ function reDrawMultiDonut(newData) {
         var donutWidth = 15;
         var idx=0;
         if (Object.keys(newData).length > 5) {
-            console.log("sad");
             idx = Object.keys(newData).length - 5;   
 
         }
@@ -2509,7 +2583,6 @@ d3.selectAll("#right_panel").selectAll("#donut-class").remove();
     var donutWidth = 15;
     var idx=0;
         if (Object.keys(newData).length > 5) {
-            console.log("sad");
             idx = Object.keys(newData).length - 5;   
 
         }
