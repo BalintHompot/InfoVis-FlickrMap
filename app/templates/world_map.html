@@ -404,6 +404,13 @@
 		font-size:14px;
 }	
 
+	p {
+		font-family: -apple-system, BlinkMacSystemFontsystem-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; 
+		fill:#2e2e2e;
+		text-shadow: 0 0.5px 0 #fff, 0.5px 0 0 #fff, 0 -0.5px 0 #fff, -0.5px 0 0 #fff;
+		font-size:14px;
+}	
+
 	#close_text {
 	stroke: white;
 	font-size: 8px;
@@ -438,6 +445,11 @@
 	
 	font-size: 12px;
 	
+	}
+	
+	#1tipDiv2 {
+		padding-left: 20px;
+		padding-top: 5px;
 	}
 	
 	</style>
@@ -501,7 +513,7 @@
                 left: 21.091px;'>
                     <strong>Most popular category: &nbsp;</strong><span id="popcat1"></span><br>
                     <strong>No. of images: &nbsp;</strong><span id="imageno1"></span><br><br>
-                    <div style='display: -webkit-inline-box;'><div id='1tipDiv'></div><div id='1tipDiv2'><div class="graph_title_panel" style='text-align: center;'><p>Top tags</p></div><svg id='svgPie1'></svg></div></div>
+                    <div style='display: -webkit-inline-box;'><div id='1tipDiv'></div><div id='1tipDiv2' style="padding-left: 10px; padding-top: 5px"><div class="graph_title_panel" style='text-align: center;'><p>Top tags</p></div><svg id='svgPie1'></svg></div></div>
                 </div>
                 <div id="tipdiv-div" style='position: absolute;
                 top:60px;
@@ -511,7 +523,7 @@
                 left: 1540px;'>
                     <strong>Most popular category: &nbsp;</strong><span id="popcat2"></span><br>
                     <strong>No. of images: &nbsp;</strong><span id="imageno2"></span><br><br>
-                    <div style='display: -webkit-inline-box;'><div id='2tipDiv'></div><div id='2tipDiv2'><div style='text-align: center;'><p>Top tags</p></div><svg id='svgPie2'></svg></div></div>
+                    <div style='display: -webkit-inline-box;'><div id='2tipDiv'></div><div id='2tipDiv2' style="padding-left: 10px; padding-top: 5px"><div style='text-align: center;'><p>Top tags</p></div><svg id='svgPie2'></svg></div></div>
                 </div>
                 
 
@@ -1691,14 +1703,13 @@ for (var key in chkData) {
         plotBorderWidth: null,
         plotShadow: false,
         type: 'pie',
-        width: 150,
+        width: 185,
         backgroundColor: 'transparent'
     },
     title: {
 		text: 'Distribution of categories',
         style: {
-            color: '#2e2e2e',
-            fontSize: 12
+            fontSize: 14
         }
     },
     credits: {
@@ -1779,14 +1790,14 @@ document.getElementById("popcat2").innerText = dat.properties.most_popular_tag;
         plotBorderWidth: null,
         plotShadow: false,
         type: 'pie',
-        width: 150,
+        width: 185,
         backgroundColor: 'transparent'
     },
     title: {
 		text: 'Distribution of categories',
         style: {
             color: '#2e2e2e',
-            fontSize: 12
+            fontSize: 14
         }
     },
     credits: {
