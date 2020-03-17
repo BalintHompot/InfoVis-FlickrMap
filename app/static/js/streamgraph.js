@@ -558,7 +558,9 @@
 
         var sliderG = d3.select("#streamContainer").append("g").attr("id", "sliderG")
         .attr("transform",
-            "translate(" + 20 + "," + 150 + ")")
+            "translate(" + margin.left * 3.5 + "," + 150 + ")")
+            
+
         .data([{x: sliderGPosX, y: 0}]);
 
 		var lineCol0or = '#5e5e5e'
