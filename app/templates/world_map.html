@@ -285,7 +285,7 @@
 			stroke: lightgray;
 		}
 		
-		#background-stream		{
+		#background-stream {
 			fill: rgb(245, 245, 245);
 			fill-opacity: 0.7;
 			stroke: lightgray;
@@ -301,8 +301,9 @@
 		
 		
 		#focus-grab {
-			fill: rgba(255,255,255,0.7);
+			fill: rgba(115,115,115,0.9);
 			border-radius:2px;
+			border-color: gray;
 			rx: 2;
 			ry: 2;
 			 -webkit-box-shadow:1px 1px 8px rgba(0,0,0,0.3);
@@ -311,23 +312,22 @@
 			cursor: pointer;
 		}
 
-    
-			
-		}
+
 		
 		#focus-grab-text {
 			font-family: 'Anonymous Pro', sans-serif;
-			color: rgb(192,192,192);
-			text-shadow:1px 1px 2px rgba(255,255,255,1);
-			font-size: 1.2rem;
+			fill: white;
+  			cursor: pointer;
+			font-size: 0.8rem;
 			line-height: 20px;
 			color: rgba(0,0,0,0.5);
 			text-decoration: none;
 			letter-spacing: 3px;
-			  text-shadow:1px 1px 2px rgba(255,255,255,1);
-  -webkit-box-shadow:1px 1px 8px rgba(0,0,0,0.3);
-  -moz-box-shadow:   1px 1px 8px rgba(0,0,0,0.3);
-  box-shadow:        1px 1px 8px rgba(0,0,0,0.3);
+			text-shadow:1px 1px 1px rgba(255,255,255,0.5);
+			-webkit-box-shadow:1px 1px 8px rgba(0,0,0,0.3);
+			-moz-box-shadow:   1px 1px 8px rgba(0,0,0,0.3);
+			box-shadow:        1px 1px 8px rgba(0,0,0,0.3);
+
 		}
 		
 		
@@ -359,13 +359,13 @@
 		
 	
 	svg#legend {
-	position: absolute;
-	left: 75%;
-	bottom: 0%;
-	-webkit-transform: translateX(-50%);
-	-ms-transform: translateX(-50%);
-	transform: translateX(-50%);
-	display:inline-block;
+		position: absolute;
+		left: 75%;
+		bottom: 0%;
+		-webkit-transform: translateX(-50%);
+		-ms-transform: translateX(-50%);
+		transform: translateX(-50%);
+		display:inline-block;
 	}
 
     svg#donutLegend {

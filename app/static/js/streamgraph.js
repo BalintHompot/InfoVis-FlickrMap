@@ -604,10 +604,11 @@
             .append("line")
             .attr('id', "line-focus")
             .attr('stroke', 'grey')
+			.attr("opacity", 0.8)
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
             .attr('x1', focusRectCornerLeft + width_side_panel + margin.left)
-            .attr('y1', focusRectCornerTop +10)
+            .attr('y1', focusRectCornerTop +5)
             .attr('x2', focusStremTartgetLeft)
             .attr('y2', focusStremTartgetTop)
             .call(drag);
@@ -615,10 +616,11 @@
             .append("line")
             .attr('id', "line-focus")
             .attr('stroke', 'grey')
+			.attr("opacity", 0.8)
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
             .attr('x1', focusRectCornerRight + width_side_panel + margin.left)
-            .attr('y1', focusRectCornerTop+10)
+            .attr('y1', focusRectCornerTop+5)
             .attr('x2', focusStremTartgetRight)
             .attr('y2', focusStremTartgetTop)
             .call(drag);
@@ -628,22 +630,24 @@
             .append("line")
             .attr('id', "line-focus")
             .attr('stroke', 'grey')
+			.attr("opacity", 0.8)
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
             .attr('x1', focusRectCornerLeft + width_side_panel + margin.left)
             .attr('y1', focusRectCornerTop + height_stream - rectAdd + 22)
-            .attr('x2', focusStremTartgetLeft + width + width_side_panel - focusMargin)
+            .attr('x2', focusStremTartgetLeft + width + width_side_panel )
             .attr('y2', focusStremTartgetTop)
             .call(drag);
         main_container
             .append("line")
             .attr('id', "line-focus")
             .attr('stroke', 'grey')
+			.attr("opacity", 0.8)
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
             .attr('x1', focusRectCornerRight + width_side_panel + margin.left)
             .attr('y1', focusRectCornerTop+ height_stream - rectAdd+22)
-            .attr('x2', focusStremTartgetRight  + width + width_side_panel- focusMargin)
+            .attr('x2', focusStremTartgetRight  + width + width_side_panel)
             .attr('y2', focusStremTartgetTop)
             .call(drag);
 		
@@ -674,12 +678,14 @@
 			.attr('id', "focus-grab-text")
 			.attr("x", focusRectCornerRight-6)
             .attr("y", height - height_stream  )
+            .call(dragRight);
 			
 		sliderG
 			.append("text").text( "<>")
 			.attr('id', "focus-grab-text")
             .attr("x", focusRectCornerLeft - 10)
             .attr("y", height - height_stream )
+            .call(dragLeft);
 			
 		
 
