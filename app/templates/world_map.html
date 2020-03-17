@@ -496,7 +496,7 @@
                 pointer-events: none;
                 box-sizing: border-box;
                 width: 288px;
-                left: 1250.091px;'>
+                left: 1490.091px;'>
                     <strong>Most popular category: &nbsp;</strong><span id="popcat2"></span><br>
                     <strong>No. of images: &nbsp;</strong><span id="imageno2"></span><br><br>
                     <div style='display: -webkit-inline-box;'><div id='2tipDiv'></div><div id='2tipDiv2'><div style='text-align: center;'><p>Top tags</p></div><svg id='svgPie2'></svg></div></div>
@@ -2214,10 +2214,10 @@ Svg.selectAll("mylabels")
         // select the svg area
 var Svg = d3.select("#my_dataviz2")
 
-var tpKeys = [];
-for (var idx = 0; idx < topValues.length; ++idx) {
-    tpKeys.push(topValues[idx].name);
-}
+// var tpKeys = [];
+// for (var idx = 0; idx < topValues.length; ++idx) {
+//     tpKeys.push(topValues[idx].name);
+// }
 
 
 // Usually you have a color scale in your chart already
@@ -2227,23 +2227,23 @@ for (var idx = 0; idx < topValues.length; ++idx) {
 
 // Add one dot in the legend for each name.
 Svg.selectAll("mydots")
-  .data(tpKeys)
+  .data(topValues)
   .enter()
   .append("circle")
     .attr("cx", 14)
     .attr("cy", function(d,i){ return (i+1)*20})
     .attr("r", 7)
-    .style("fill", function(d){ return myColor(reverseTagCatIndex[d])})
+    .style("fill", function(d){ return d.color})
 
 // Add one dot in the legend for each name.
 Svg.selectAll("mylabels")
-  .data(tpKeys)
+  .data(topValues)
   .enter()
   .append("text")
     .attr("x", 28)
     .attr("y", function(d,i){ return (i+1)*20}) // 100 is where the first dot appears. 25 is the distance between dots
     .style("fill", function(d){ return "#000"})
-    .text(function(d){ return d})
+    .text(function(d){ return d.name})
     .attr("text-anchor", "left")
     .style("alignment-baseline", "middle")
 
