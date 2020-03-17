@@ -1128,13 +1128,13 @@ d3.select("#main_container")
             "translate(" + margin.left + "," + (height-10) + ")")
 	
 	d3.select("#button-wrapper")
-		.style("bottom",height_stream * 2.5 +"px")
-		.style("left", width_side_panel + 1.5*margin.left + "px")
+		.style("bottom", 15 +"px")
+		.style("left", width_side_panel + 1.6*margin.left + "px")
 
     svg_stream = d3.selectAll("#streamContainer")
         .append("g")
         .attr("transform",
-            "translate(" + (margin.left*5) + "," + (height+10 ) + ")")
+            "translate(" + (margin.left*3.5) + "," + (height+10 ) + ")")
         .attr("id", "stream_1")
 		
 	svg_stream
@@ -1189,7 +1189,7 @@ d3.select("#main_container")
     var svg_stream_2 = d3.selectAll("#streamContainer")
             .append("g")
             .attr("transform",
-                    "translate(" + (margin.left*5) + "," + (offset_top_stream_2 +15)+ ")")
+                    "translate(" + (margin.left*3.5) + "," + (offset_top_stream_2 +15)+ ")")
             .attr("id", "stream_2");
 
     current_selection_svg = svg_stream
