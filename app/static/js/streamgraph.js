@@ -190,7 +190,10 @@
 
         current_date = invertX(d3.event.x  - width_side_panel) 
         current_date_ind = validTimeSteps.findIndex((element) => element == current_date)
+        
         updateStreamSlider()
+        // refreshSidePanelPie1("drag");
+        // refreshSidePanelPie2("drag");
     }
 
     function draggedLeft(d) {
@@ -700,6 +703,10 @@
         refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
         updatedMultiDonut(country_in_focus_1, getFocusedValidSteps());
         updatedMultiDonutRight(country_in_focus_2, getFocusedValidSteps());
+        refreshSidePanelPie1(country_in_focus_1, true);
+        refreshSidePanelTopTags1(country_in_focus_1, true);
+        refreshSidePanelPie2(country_in_focus_2, true);
+        refreshSidePanelTopTags2(country_in_focus_2, true);
         updatePanelTime()
           
     }
