@@ -1111,7 +1111,7 @@ d3.select("#main_container")
         .attr("height", height_stream * 2.5 + margin.top)
         .attr("id", "streamContainer")
         .attr("transform",
-            "translate(" + width_side_panel + "," + -30 + ")")
+            "translate(" + width_side_panel + "," + -10 + ")")
     
     d3.select("#streamContainer")
         .append("rect")
@@ -1122,8 +1122,8 @@ d3.select("#main_container")
             "translate(" + margin.left + "," + (height-10) + ")")
 	
 	d3.select("#button-wrapper")
-		.style("bottom", 15 +"px")
-		.style("left", width_side_panel + 1.6*margin.left + "px")
+		.style("bottom", 40 +"px")
+		.style("left", width_side_panel + 2*margin.left + "px")
 
     svg_stream = d3.selectAll("#streamContainer")
         .append("g")
@@ -1135,6 +1135,9 @@ d3.select("#main_container")
 		.append("text")
 		.text("Trend of images per category")
 		.attr("class", "graph_title_panel")
+        .attr("transform",
+            "translate(" + 60+ "," + (height_stream * 2.5 ) + ")")
+
 		
 
     var selected_indicator = d3.selectAll("#streamContainer")
@@ -2853,7 +2856,7 @@ function updatedMultiDonutRight(country_code, timeSteps) {
 var svgLegend = d3.select("#legend");
 
 	d3.select("#legend")
-		.style("bottom", 40 +"px")
+		.style("bottom", 20 +"px")
 		.style("left", width_main*0.5 + "px")
 	
 // Add one dot in the legend for each name.
