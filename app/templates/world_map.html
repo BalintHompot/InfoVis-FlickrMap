@@ -498,7 +498,7 @@
                 pointer-events: none;
                 box-sizing: border-box;
                 width: 288px;
-                left: 1490.091px;'>
+                left: 1250.091px;'>
                     <strong>Most popular category: &nbsp;</strong><span id="popcat2"></span><br>
                     <strong>No. of images: &nbsp;</strong><span id="imageno2"></span><br><br>
                     <div style='display: -webkit-inline-box;'><div id='2tipDiv'></div><div id='2tipDiv2'><div style='text-align: center;'><p>Top tags</p></div><svg id='svgPie2'></svg></div></div>
@@ -531,7 +531,7 @@
             var div = d3.select("body").append("div").attr("class", "toolTip");
             var catColor = [];
             catColor["camera"] = "#a6cee3";
-            catColor["unknown"] = "#d9d9d9";
+            catColor["unknown"] = "#9c9c9c";
             catColor["phone"] = "#fb9a99";
 
             var mapdata = {};
@@ -814,7 +814,6 @@ div.style("display", "none");
                 // tip.style("left", d3.select(this).attr("cx") + "px")     
                 //     .style("top", d3.select(this).attr("cy") + "px");
                 if (!tooltipDisabled) {
-                    
                     tip.show(datum);
                     tip.style("left", d3.event.pageX+10+"px");
                     tip.style("top", d3.event.pageY-25+"px");
@@ -2199,7 +2198,6 @@ Svg.selectAll("mylabels")
             }
 
 
-
 //         x.sort(function(a, b) {
 // return b.score - a.score;
 // });
@@ -2208,15 +2206,13 @@ Svg.selectAll("mylabels")
         }).slice(0,5);
 
 
-
         // select the svg area
-        d3.select("#my_dataviz2").selectAll(".dot2").remove();
 var Svg = d3.select("#my_dataviz2")
 
-// var tpKeys = [];
-// for (var idx = 0; idx < topValues.length; ++idx) {
-//     tpKeys.push(topValues[idx].name);
-// }
+var tpKeys = [];
+for (var idx = 0; idx < topValues.length; ++idx) {
+    tpKeys.push(topValues[idx].name);
+}
 
 
 // Usually you have a color scale in your chart already
@@ -2226,27 +2222,24 @@ var Svg = d3.select("#my_dataviz2")
 
 // Add one dot in the legend for each name.
 Svg.selectAll("mydots")
-  .data(topValues)
+  .data(tpKeys)
   .enter()
   .append("circle")
     .attr("cx", 14)
     .attr("cy", function(d,i){ return (i+1)*20})
     .attr("r", 7)
-    .attr("attr","dot2")
-    .style("fill", function(d){ 
-        return d.color})
+    .style("fill", function(d){ return myColor(reverseTagCatIndex[d])})
 
 // Add one dot in the legend for each name.
 Svg.selectAll("mylabels")
-  .data(topValues)
+  .data(tpKeys)
   .enter()
   .append("text")
     .attr("x", 28)
     .attr("y", function(d,i){ return (i+1)*20}) // 100 is where the first dot appears. 25 is the distance between dots
     .style("fill", function(d){ return "#000"})
-    .text(function(d){ return d.name})
+    .text(function(d){ return d})
     .attr("text-anchor", "left")
-    .attr("class","dot2")
     .style("alignment-baseline", "middle")
 
 
