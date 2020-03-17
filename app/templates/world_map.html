@@ -1123,7 +1123,7 @@ d3.select("#main_container")
 	
 	d3.select("#button-wrapper")
 		.style("bottom", 40 +"px")
-		.style("left", width_side_panel + 2*margin.left + "px")
+		.style("left", width_side_panel +3*margin.left + "px")
 
     svg_stream = d3.selectAll("#streamContainer")
         .append("g")
@@ -1136,7 +1136,7 @@ d3.select("#main_container")
 		.text("Trend of images per category")
 		.attr("class", "graph_title_panel")
         .attr("transform",
-            "translate(" + 60+ "," + (height_stream * 2.5 ) + ")")
+            "translate(" + margin.left*6+ "," + (height_stream * 2.5 ) + ")")
 
 		
 
