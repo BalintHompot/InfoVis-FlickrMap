@@ -184,10 +184,6 @@
 			top:30px;
 		}
 
-        #legend {
-            position: absolute;
-            bottom: 0px;
-        }
 		  
 		.d3-tip
 		{
@@ -359,8 +355,6 @@
 	
 	svg#legend {
 		position: absolute;
-		left: 75%;
-		bottom: 0%;
 		-webkit-transform: translateX(-50%);
 		-ms-transform: translateX(-50%);
 		transform: translateX(-50%);
@@ -2858,6 +2852,10 @@ function updatedMultiDonutRight(country_code, timeSteps) {
 
 var svgLegend = d3.select("#legend");
 
+	d3.select("#legend")
+		.style("bottom", 15 +"px")
+		.style("left", width_main*0.5 + "px")
+	
 // Add one dot in the legend for each name.
 svgLegend.selectAll("mydots")
   .data(countries_mock_data.allCategories)
