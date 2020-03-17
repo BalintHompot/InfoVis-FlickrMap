@@ -479,6 +479,7 @@
                 <div>
                     <svg id="donutLegend" height=50 width=300></svg>
                 </div>
+
                 <div id="my_dataviz"></div>
                 <div style='position: absolute;
                 top: 36.4134px;
@@ -2455,9 +2456,9 @@ function reDrawMultiDonut(newData) {
     // }
 
 
-        var width2 = 220; //width_main;
-        var height2 = 220; //height_main;
-        var donutWidth = 10;
+        var width2 = width_side_panel; //width_main;
+        var height2 = 280; //height_main;
+        var donutWidth = 15;
         var idx=0;
         if (Object.keys(newData).length > 5) {
             idx = Object.keys(newData).length - 5;   
@@ -2468,13 +2469,13 @@ function reDrawMultiDonut(newData) {
           .attr("id","donut-class")
           .attr('width', width2)
           .attr('height', height2)
-          .attr("x", width_side_panel*0.1)
-          .attr("y", (height_main *0.62))
+          .attr("x", width_side_panel*0.01)
+          .attr("y", (height_main *0.63))
 		  
 	svgDonut
 		.append("text")
 		.attr("class", "graph_title_panel")
-		.attr("x", 0)             
+		.attr("x", 20)             
         .attr("y", 10)
         .attr("text-anchor", "left")    
         .text("Device category and brand")
@@ -2607,9 +2608,9 @@ d3.selectAll("#right_panel").selectAll("#donut-class").remove();
 // }
 
 
-    var width2 = 220; //width_main;
-    var height2 = 220; //height_main;
-    var donutWidth = 10;
+    var width2 = width_side_panel; //width_main;
+    var height2 = 280; //height_main;
+    var donutWidth = 15;
     var idx=0;
         if (Object.keys(newData).length > 5) {
             idx = Object.keys(newData).length - 5;   
@@ -2621,13 +2622,13 @@ var svgDonut = d3.select('#right_panel')
       .attr("id","donut-class")
       .attr('width', width2)
       .attr('height', height2)
-      .attr("x", width_side_panel*0.1)
-      .attr("y", (height_main *0.62));
+      .attr("x", width_side_panel*0.01)
+      .attr("y", (height_main *0.63));
 
 	svgDonut
 		.append("text")
 		.attr("class", "graph_title_panel")
-		.attr("x", 0)             
+		.attr("x", 20)             
         .attr("y", 10)
         .attr("text-anchor", "left")    
         .text("Device category and brand")
@@ -2864,7 +2865,7 @@ svgLegend.selectAll("mydots")
   .data(countries_mock_data.allCategories)
   .enter()
   .append("circle")
-    .attr("cy", 12)
+    .attr("cy", 8)
     .attr("cx", function(d,i){ return 20 + i*50}) // 100 is where the first dot appears. 25 is the distance between dots
     .attr("r", 7)
     .style("fill", function(d){ return myColor(d)})
@@ -2874,7 +2875,7 @@ svgLegend.selectAll("mylabels")
   .data(countries_mock_data.allCategories)
   .enter()
   .append("text")
-    .attr("y", 30)
+    .attr("y", 26)
     .attr("x", function(d,i){ return 15+ i*50-10}) // 100 is where the first dot appears. 25 is the distance between dots
     //.style("fill", function(d){ return color(d)})
     .text(function(d){ return d})
@@ -2883,15 +2884,15 @@ svgLegend.selectAll("mylabels")
 
 
 
-    var svgDonutLegend = d3.select("#donutLegend");
+var svgDonutLegend = d3.select("#donutLegend");
 
 // Add one dot in the legend for each name.
 svgDonutLegend.selectAll("mydots")
   .data(Object.keys(catColor))
   .enter()
   .append("circle")
-    .attr("cy", 12)
-    .attr("cx", function(d,i){ return 85 + i*50}) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("cy", 10)
+    .attr("cx", function(d,i){ return 135 + i*50}) // 100 is where the first dot appears. 25 is the distance between dots
     .attr("r", 7)
     .style("fill", function(d){ return catColor[d]})
 
@@ -2901,7 +2902,7 @@ svgDonutLegend.selectAll("mylabels")
   .enter()
   .append("text")
     .attr("y", 30)
-    .attr("x", function(d,i){ return 77+ i*52-10}) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("x", function(d,i){ return 120+i*52-10}) // 100 is where the first dot appears. 25 is the distance between dots
     //.style("fill", function(d){ return color(d)})
     .text(function(d){ return d})
     .attr("text-anchor", "left")
@@ -2920,8 +2921,8 @@ svgDonutLegend2.selectAll("mydots")
   .data(Object.keys(catColor))
   .enter()
   .append("circle")
-    .attr("cy", (height_main*.9)+32)
-    .attr("cx", function(d,i){ return 85 + i*50}) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("cy", height_main *0.95+10)
+    .attr("cx", function(d,i){ return 145 + i*50}) // 100 is where the first dot appears. 25 is the distance between dots
     .attr("r", 7)
     .style("fill", function(d){ return catColor[d]})
 
@@ -2930,8 +2931,8 @@ svgDonutLegend2.selectAll("mylabels")
   .data(Object.keys(catColor))
   .enter()
   .append("text")
-    .attr("y", (height_main*.9)+50)
-    .attr("x", function(d,i){ return 77+ i*52-10}) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("y", height_main *0.95 +30)
+    .attr("x", function(d,i){ return 130+ i*52-10}) // 100 is where the first dot appears. 25 is the distance between dots
     //.style("fill", function(d){ return color(d)})
     .text(function(d){ return d})
     .attr("text-anchor", "left")
