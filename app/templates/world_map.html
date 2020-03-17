@@ -1042,6 +1042,7 @@ div.style("display", "none");
             refreshStreamGraph(country_in_focus_2, svg_stream_2, validTimeSteps, width_stream, height_stream, "category", "right", true)
 
             
+			
             
                 
             } )
@@ -1330,7 +1331,7 @@ d3.select("#main_container")
             .attr("x", focusMargin)
             .attr("y", focusStremTartgetBottom);
        
-	var close_button_offset_left = 200
+	var close_button_offset_left = width_side_panel - 20
 	var close_button_offset_top = 10
 	var close_text_padding = 7.5
 	
@@ -1379,7 +1380,7 @@ d3.select("#main_container")
 			.attr("x", close_text_padding)
 			.attr("y", close_text_padding)
 			.attr("id", "close_text")
-            .on("click", function(){resetSideBar("left")})
+            .on("click", function(){resetSideBar("right")})
 
 		
 	
