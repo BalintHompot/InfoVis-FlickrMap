@@ -2459,10 +2459,17 @@ function reDrawMultiDonut(newData) {
           .attr('width', width2)
           .attr('height', height2)
           .attr("x", width_side_panel*0.1)
-          .attr("y", (height_main *0.62));
-
-
-          var pie = d3.pie()
+          .attr("y", (height_main *0.62))
+		  
+	svgDonut
+		.append("text")
+		.attr("class", "graph_title_panel")
+		.attr("x", 0)             
+        .attr("y", 10)
+        .attr("text-anchor", "left")    
+        .text("Device category and brand")
+		
+    var pie = d3.pie()
           .value(function(d) { return d.count; })
           .sort(null)
 	      .startAngle(1.1*Math.PI)
@@ -2607,7 +2614,14 @@ var svgDonut = d3.select('#right_panel')
       .attr("x", width_side_panel*0.1)
       .attr("y", (height_main *0.62));
 
-
+	svgDonut
+		.append("text")
+		.attr("class", "graph_title_panel")
+		.attr("x", 0)             
+        .attr("y", 10)
+        .attr("text-anchor", "left")    
+        .text("Device category and brand")
+	  
       var pie = d3.pie()
       .value(function(d) { return d.count; })
       .sort(null)
