@@ -698,6 +698,7 @@
         refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
         updatedMultiDonut(country_in_focus_1, getFocusedValidSteps());
         updatedMultiDonutRight(country_in_focus_2, getFocusedValidSteps());
+        updatePanelTime()
           
     }
 

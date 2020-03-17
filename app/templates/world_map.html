@@ -1268,7 +1268,7 @@ d3.select("#main_container")
 		.append("text")
 		.attr("id", "side-panel-country")
 		.attr("fill", "black")
-		.attr("transform","translate(20,30)")
+		.attr("transform","translate(20,20)")
 		.text(function(d) {
 			if (country_in_focus_1 == "WORLD") {
 				return "The World";
@@ -1281,7 +1281,7 @@ d3.select("#main_container")
 		.append("text")
 		.attr("fill", "black")
 		.attr("id", "side-panel-country")
-		.attr("transform","translate(20,30)")
+		.attr("transform","translate(20,20)")
 		.text(function(d) {
 			if (country_in_focus_2 == "WORLD") {
 				return "The World";
@@ -1291,7 +1291,58 @@ d3.select("#main_container")
 		})
     }
 
+    function updatePanelTime(){
 
+        d3.selectAll("#side-panel-time")
+		  .remove()
+
+        left_panel
+		.append("text")
+		.attr("id", "side-panel-time")
+		.attr("fill", "black")
+		.attr("transform","translate(20,35)")
+		.text(function(d) {
+			a = current_date.split("_")
+            return "Trend in " + a[0] + " Q" + a[1]
+        })
+
+		right_panel
+		.append("text")
+		.attr("fill", "black")
+		.attr("id", "side-panel-time")
+		.attr("transform","translate(20,35)")
+		.text(function(d) {
+			a = current_date.split("_")
+            return "Trend in "+ a[0] + " Q" + a[1]
+        })
+        
+        var a_start
+        var a_end
+
+        left_panel
+		.append("text")
+		.attr("id", "side-panel-time")
+		.attr("fill", "black")
+		.attr("transform","translate(20,335)")
+		.text(function(d) {
+            var start_index = Math.max(current_date_ind - rectWidthLeftSteps, 0)
+            var end_index = Math.min(current_date_ind + rectWidthRightSteps, validTimeSteps.length)
+            var start_date = validTimeSteps[start_index]
+            var end_date = validTimeSteps[end_index]
+            a_start = start_date.split("_")
+            a_end = end_date.split("_")
+            return "Trend between " + a_start[0] + " Q" + a_start[1] + " - " + a_end[0] + " Q" + a_end[1] 
+        })
+
+		right_panel
+		.append("text")
+		.attr("fill", "black")
+		.attr("id", "side-panel-time")
+		.attr("transform","translate(20,335)")
+		.text(function(d) {
+			return "Trend between " + a_start[0] + " Q" + a_start[1] + " - " + a_end[0] + " Q" + a_end[1] 
+		})
+    }
 
             /// adding variables and rect for the focused stream graph
 
