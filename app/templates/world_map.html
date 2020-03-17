@@ -413,6 +413,7 @@
 	stroke: white;
 	font-size: 8px;
 	text-anchor: end;
+	cursor: pointer;
 }
 
 	#g-focus-left {
@@ -1132,6 +1133,8 @@ d3.select("#main_container")
 		.append("text")
 		.text("Trend of images per category")
 		.attr("class", "graph_title_panel")
+	
+
 
     var selected_indicator = d3.selectAll("#streamContainer")
         .append("rect")
@@ -1352,6 +1355,7 @@ d3.select("#main_container")
 			.attr("x", close_text_padding)
 			.attr("y", close_text_padding)
 			.attr("id", "close_text")
+            .on("click", function(){resetSideBar("left")})
 		
     right_panel
             .append("g")
@@ -1375,6 +1379,8 @@ d3.select("#main_container")
 			.attr("x", close_text_padding)
 			.attr("y", close_text_padding)
 			.attr("id", "close_text")
+            .on("click", function(){resetSideBar("left")})
+
 		
 	
     
