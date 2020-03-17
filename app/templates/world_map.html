@@ -14,8 +14,14 @@
         <style>
             /* CSS goes here. */
 			
+			body {
+				overflow-x: hidden; //horizontal
+				overflow-y: hidden; //vertical
+			}
+			
 			text {
 				font-family: -apple-system, BlinkMacSystemFontsystem-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; 
+				font-size: 12px;
 			}
 			
 			#main-content-container {
@@ -366,6 +372,11 @@
 	position: absolute;
 	bottom: 0%;
 	}
+	
+	svg#donutLegend2 {
+	position: absolute;
+	bottom: 0%;
+	}
 
 	#filter-options {
 	position:absolute;
@@ -486,7 +497,7 @@
                 pointer-events: none;
                 box-sizing: border-box;
                 width: 288px;
-                left: 1490.091px;'>
+                left: 1250.091px;'>
                     <strong>Most popular category: &nbsp;</strong><span id="popcat2"></span><br>
                     <strong>No. of images: &nbsp;</strong><span id="imageno2"></span><br><br>
                     <div style='display: inline-flex;'><div id='2tipDiv'></div><div id='2tipDiv2'><div style='text-align: center;'><p>Top tags</p></div><svg id='svgPie2'></svg></div></div>
@@ -529,7 +540,7 @@
             var selectionColor = "white"
 
 
-            var width_main = window.innerWidth -17
+            var width_main = window.innerWidth -18
 			
 			var height_main = window.innerHeight -56
 
@@ -1056,7 +1067,7 @@ div.style("display", "none");
                 timer = setInterval( function(){
                         if (current_date != maxstep){
                             current_date_ind++;
-                            current_date = validTimeSteps[current_date_ind]
+                            current_date = validTimeSteps	[current_date_ind]
                             current_year_data = countries_mock_data.timesteps[current_date]
                           
                             draw(world_countries,current_year_data);
@@ -2433,9 +2444,9 @@ function reDrawMultiDonut(newData) {
     // }
 
 
-        var width2 = 250; //width_main;
-        var height2 = 250; //height_main;
-        var donutWidth = 15;
+        var width2 = 220; //width_main;
+        var height2 = 220; //height_main;
+        var donutWidth = 10;
         var idx=0;
         if (Object.keys(newData).length > 5) {
             idx = Object.keys(newData).length - 5;   
@@ -2446,8 +2457,8 @@ function reDrawMultiDonut(newData) {
           .attr("id","donut-class")
           .attr('width', width2)
           .attr('height', height2)
-          .attr("x", 50)
-          .attr("y", (height2*2)+100);
+          .attr("x", width_side_panel*0.1)
+          .attr("y", (height_main *0.62));
 
 
           var pie = d3.pie()
@@ -2578,9 +2589,9 @@ d3.selectAll("#right_panel").selectAll("#donut-class").remove();
 // }
 
 
-    var width2 = 250; //width_main;
-    var height2 = 250; //height_main;
-    var donutWidth = 15;
+    var width2 = 220; //width_main;
+    var height2 = 220; //height_main;
+    var donutWidth = 10;
     var idx=0;
         if (Object.keys(newData).length > 5) {
             idx = Object.keys(newData).length - 5;   
@@ -2592,8 +2603,8 @@ var svgDonut = d3.select('#right_panel')
       .attr("id","donut-class")
       .attr('width', width2)
       .attr('height', height2)
-      .attr("x", 70)
-      .attr("y", (height2*2)+100);
+      .attr("x", width_side_panel*0.1)
+      .attr("y", (height_main *0.62));
 
 
       var pie = d3.pie()
@@ -2851,7 +2862,7 @@ svgDonutLegend.selectAll("mydots")
   .enter()
   .append("circle")
     .attr("cy", 12)
-    .attr("cx", function(d,i){ return 15 + i*50}) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("cx", function(d,i){ return 85 + i*50}) // 100 is where the first dot appears. 25 is the distance between dots
     .attr("r", 7)
     .style("fill", function(d){ return catColor[d]})
 
@@ -2861,13 +2872,42 @@ svgDonutLegend.selectAll("mylabels")
   .enter()
   .append("text")
     .attr("y", 30)
-    .attr("x", function(d,i){ return 10+ i*50-10}) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("x", function(d,i){ return 80+ i*50-10}) // 100 is where the first dot appears. 25 is the distance between dots
     //.style("fill", function(d){ return color(d)})
     .text(function(d){ return d})
     .attr("text-anchor", "left")
     .style("alignment-baseline", "middle")
         
+right_panel
+	.append("g")
+	.attr("id", "donutLegend2")
+	.attr("width", 300)
+	.attr("height", 50)
 
+var svgDonutLegend2 = d3.selectAll("#donutLegend2");
+
+// Add one dot in the legend for each name.
+svgDonutLegend2.selectAll("mydots")
+  .data(Object.keys(catColor))
+  .enter()
+  .append("circle")
+    .attr("cy", (height_main*.9)+32)
+    .attr("cx", function(d,i){ return 85 + i*50}) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("r", 7)
+    .style("fill", function(d){ return catColor[d]})
+
+// Add one dot in the legend for each name.
+svgDonutLegend2.selectAll("mylabels")
+  .data(Object.keys(catColor))
+  .enter()
+  .append("text")
+    .attr("y", (height_main*.9)+50)
+    .attr("x", function(d,i){ return 80+ i*50-10}) // 100 is where the first dot appears. 25 is the distance between dots
+    //.style("fill", function(d){ return color(d)})
+    .text(function(d){ return d})
+    .attr("text-anchor", "left")
+    .style("alignment-baseline", "middle")
+	.style("fill", "black")
     </script>
 
         
