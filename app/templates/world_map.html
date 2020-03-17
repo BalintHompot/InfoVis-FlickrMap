@@ -5,16 +5,10 @@
 		
         <meta charset="utf-8">
  <!--       <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
-        <style>
-        {% include 'multidonut.css' %}
-        </style> 
 		<script type="text/javascript">
 			d3.selectAll(".nav-item").classed("active", false);
 			d3.select("#nav-link-map").classed("active", true);
 		</script>
-        <script>
-            {% include 'multidonut.js' %}
-        </script>
         <!-- <script type="text/javascript" src="psd3.js"></script> -->
         <!-- <link rel="stylesheet" type="text/css" href="psd3.css" /> -->
         <style>
@@ -477,6 +471,28 @@
                     <svg id="donutLegend" height=50 width=300></svg>
                 </div>
                 <div id="my_dataviz"></div>
+                <div style='position: absolute;
+                top: 36.4134px;
+                pointer-events: none;
+                box-sizing: border-box;
+                width: 288px;
+                left: 21.091px;'>
+                    <strong>Most popular category: &nbsp;</strong><span id="popcat1"></span><br>
+                    <strong>No. of images: &nbsp;</strong><span id="imageno1"></span><br><br>
+                    <div style='display: inline-flex;'><div id='1tipDiv'></div><div id='1tipDiv2'><div style='text-align: center;'><p>Top tags</p></div><svg id='svgPie1'></svg></div></div>
+                </div>
+                <div style='position: absolute;
+                top: 36.4134px;
+                pointer-events: none;
+                box-sizing: border-box;
+                width: 288px;
+                left: 1490.091px;'>
+                    <strong>Most popular category: &nbsp;</strong><span id="popcat2"></span><br>
+                    <strong>No. of images: &nbsp;</strong><span id="imageno2"></span><br><br>
+                    <div style='display: inline-flex;'><div id='2tipDiv'></div><div id='2tipDiv2'><div style='text-align: center;'><p>Top tags</p></div><svg id='svgPie2'></svg></div></div>
+                </div>
+                
+
 
               
         
@@ -550,7 +566,7 @@
                 .attr("class", "d3-tip")
                 .attr("id", "d3-tip")
                 .style("width", "350 px")
-			    .offset([0, -200])
+			    // .offset([0, -200])
     	        .html(function(d)
 			    {
                     // var x = +d.properties.value;
@@ -742,7 +758,7 @@
                         .attr('class', function(d) { return 'subunit ca'+d.id; })
                         .attr('d', path)
                         .on('mouseover',mouseoverLegend).on('mouseout',mouseoutLegend)
-                        .on('mouseenter',mouseenterFunction).on('mouseleave',mouseleaveFunction)
+                        .on('mousemove',mouseMoveFunction)
                         .on("click", clicked);
                     
                     countries.append('svg:text')
@@ -767,41 +783,36 @@
                     .duration(750)
                     .style("fill", heatColor)
 
+                        /*
+                            d3.selectAll(".donut-path").on("mousemove", function(d) {
+    div.style("left", d3.event.pageX+10+"px");
+      div.style("top", d3.event.pageY-25+"px");
+      div.style("display", "inline-block");
+div.html("Timestep: "+(d.data.timestep)+"<br>"+(d.data.device)+"<br>"+(d.data.count) + "<br>Category: "+(d.data.category));
+});
 
-                    // var upDatedData = {};
-                    //     upDatedData.properties = {};
-                    //     upDatedData.properties.device_data = {};
-                    //     upDatedData.properties.most_popular_5 = {};
-                    //     //TODO Have to change this logic, how to find out the key when sliding inside the countries..
-                    //     // For now only world changes..
-                    //     upDatedData.properties.device_data = data.country_data.buckets[0].device_data;
-                    //     upDatedData.properties.most_popular_5 = data.country_data.buckets[0].most_popular_5;
-                    //     refreshDonutDiv(upDatedData);
-                    //     refreshPieDiv(upDatedData);
-                    // console.log("data->",data)
+d3.selectAll(".donut-path").on("mouseout", function(d){
+div.style("display", "none");
+});
+                        */
              
             }
 
-            function mouseenterFunction(datum, index) {
+            function mouseMoveFunction(datum, index) {
                 // tip.style("left", d3.select(this).attr("cx") + "px")     
                 //     .style("top", d3.select(this).attr("cy") + "px");
                 if (!tooltipDisabled) {
                     tip.show(datum);
+                    tip.style("left", d3.event.pageX+10+"px");
+                    tip.style("top", d3.event.pageY-25+"px");
+                    tip.style("display", "inline-block");
+                    //tip.show(datum);
                 }
                
                 if (popular_tags) {
                     refreshPie1(datum);
                     refreshTopTags(datum);
                 }
-                else
-                    refreshDonut1(datum);
-            }
-
-            function mouseleaveFunction(datum, index) {
-                //if (!tooltipDisabled) {
-                    tip.hide();
-                //}
-                
             }
             
 
@@ -846,6 +857,7 @@
 
                 //tooltip.style("opacity", 0)
                 //tip.hide();
+                tip.style("display", "none");
             }
 
 
@@ -859,7 +871,7 @@
                     return reset();
                 }
                 active.classed("active", false);
-                tooltipDisabled = true;
+                //tooltipDisabled = true;
                 active = d3.select(this).classed("active", true);
                 d3.select("#d3-tip").attr("disabled", true);
 
@@ -885,16 +897,20 @@
                 updatePanelCountry()
                 if (current_selection_svg == svg_stream) {
                     updatedMultiDonutRight(d.id, getFocusedValidSteps());
+                    refreshSidePanelPie2(d);
+                    refreshSidePanelTopTags2(d);
                 } else {
                     updatedMultiDonut(d.id, getFocusedValidSteps());
+                    refreshSidePanelPie1(d);
+                    refreshSidePanelTopTags1(d);
                 }
-
+                
 
             }
 
             function reset() {
                 active.classed("active", false);
-                tooltipDisabled = false;
+                //tooltipDisabled = false;
                 //d3.select("#d3-tip").attr("disabled", false);
                 active = d3.select(null);
 
@@ -909,9 +925,13 @@
                 if(current_selection_svg == svg_stream){
                     country_in_focus_2 = "WORLD"
                     updatedMultiDonutRight("WORLD", getFocusedValidSteps());
+                    refreshSidePanelPie2("WORLD");
+                    refreshSidePanelTopTags2("WORLD");
                 }else{
                     country_in_focus_1 = "WORLD"
                     updatedMultiDonut("WORLD", getFocusedValidSteps());
+                    refreshSidePanelPie1("WORLD");
+                    refreshSidePanelTopTags1("WORLD");
                 }
                 updatePanelCountry();
                 
@@ -1154,7 +1174,10 @@ d3.select("#main_container")
             refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category", false)
             refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
             if(current_selection_svg == svg_stream_2){
-                changeCurrentSelections()
+                changeCurrentSelections();
+                refreshSidePanelPie1(country_in_focus_1);
+                refreshSidePanelTopTags1(country_in_focus_1);
+                updatedMultiDonut(country_in_focus_1, getFocusedValidSteps());
             }
             
         }else{
@@ -1162,7 +1185,10 @@ d3.select("#main_container")
             refreshStreamGraph(country_in_focus_2, svg_stream_2, validTimeSteps, width_stream, height_stream, "category", true)
             refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
             if(current_selection_svg == svg_stream){
-                changeCurrentSelections()
+                changeCurrentSelections();
+                refreshSidePanelPie2(country_in_focus_2);
+                refreshSidePanelTopTags2(country_in_focus_2);
+                updatedMultiDonutRight(country_in_focus_2, getFocusedValidSteps());
             }
         }
         svg.transition()
@@ -1452,80 +1478,6 @@ return retData;
 }
 
 
-function refreshDonut1(dat){
-
-var donut1data = convertToDonut1(dat);
-
-
-// Create the chart
-Highcharts.chart('tipDiv', {
-    chart: {
-        type: 'pie'
-    },
-    title: {
-        text: 'Device usage trend'
-    },
-    subtitle: {
-        text: 'Source: Flickr dataset'
-    },
-    credits: {
-        enabled: false
-    },
-    plotOptions: {
-        pie: {
-            shadow: false,
-            center: ['50%', '50%']
-        }
-    },
-    tooltip: {
-        valueSuffix: '%'
-    },
-    series: [{
-        name: 'Device',
-        data: donut1data.typeData,
-        size: '60%',
-        dataLabels: {
-            formatter: function () {
-                return this.y > 5 ? this.point.name : null;
-            },
-            color: '#ffffff',
-            distance: -30
-        }
-    }, {
-        name: 'Models',
-        data: donut1data.deviceData,
-        size: '80%',
-        innerSize: '60%',
-        dataLabels: {
-            formatter: function () {
-                // display only if larger than 1
-                return this.y > 1 ? '<b>' + this.point.name + ':</b> ' +
-                    this.y + '' : null;
-            }
-        },
-        id: 'versions'
-    }],
-    responsive: {
-        rules: [{
-            condition: {
-                maxWidth: 400
-            },
-            chartOptions: {
-                series: [{
-                }, {
-                    id: 'versions',
-                    dataLabels: {
-                        enabled: false
-                    }
-                }]
-            }
-        }]
-    }
-});
-
-
-}
-
 
 // function refreshDonutDiv(dat){
 
@@ -1601,6 +1553,188 @@ Highcharts.chart('tipDiv', {
 
 // }
 
+function refreshSidePanelPie1(dat) {
+    //var dat = [];//[{"name":"animal","y":1},{"name":"citylife","y":9},{"name":"nature","y":13},{"name":"other","y":12},{"name":"people","y":28},{"name":"sports","y":0}];
+    var newDat = [];
+    var colors = [];
+    if (dat != "WORLD") {
+        var chkData = dat.properties.most_popular_5;
+for (var key in chkData) {
+	var obj = {};
+  obj.name = key;
+  obj.y = chkData[key];
+  newDat.push(obj);
+  colors.push(myColor(key));
+}
+    document.getElementById("popcat1").innerText = dat.properties.most_popular_tag;
+    document.getElementById("imageno1").innerText = dat.properties.user_freq;
+    } else {
+        // WORLD data..
+        console.log("timestep: ",current_date);
+        var countrydata = countries_mock_data.timesteps[current_date].country_data.buckets;
+        
+        for (var idx = 0; idx < countrydata.length; ++idx) {
+            if (countrydata[idx].key.toUpperCase() === "WORLD".toUpperCase()) {
+                document.getElementById("popcat1").innerText = countrydata[idx].most_popular_category;
+                document.getElementById("imageno1").innerText = countrydata[idx].user_freq;
+                var worldCatData = countrydata[idx].categories_sum;
+                for (var categories in worldCatData) {
+                    var obj = {};
+                    obj.name = categories;
+                    obj.y = worldCatData[categories];
+                    newDat.push(JSON.parse(JSON.stringify(obj)));
+                    colors.push(myColor(categories));
+                }
+                break;
+            }
+        }
+    }
+
+
+
+    console.log("newas: ",newDat);
+
+    Highcharts.chart('1tipDiv', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie',
+        width: 150
+    },
+    title: {
+		text: 'Distribution of categories',
+        style: {
+            color: '#2e2e2e',
+            fontSize: 12
+        }
+    },
+    credits: {
+        enabled: false
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },	
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                distance: -25,
+                format: '{point.y}'
+            },
+            showInLegend: false,
+            animation: true
+        }
+    },
+    series: [{
+        name: 'Flickr Tags',
+        colorByPoint: true,
+        colors: colors,
+        data: newDat
+    }],
+    exporting: {
+        enabled: false
+    }
+});   
+}
+
+function refreshSidePanelPie2(dat) {
+    //var dat = [{"name":"animal","y":1},{"name":"citylife","y":9},{"name":"nature","y":13},{"name":"other","y":12},{"name":"people","y":28},{"name":"sports","y":0}];
+    var newDat = [];
+    var colors = [];if (dat != "WORLD") {
+        var chkData = dat.properties.most_popular_5;
+for (var key in chkData) {
+	var obj = {};
+  obj.name = key;
+  obj.y = chkData[key];
+  newDat.push(obj);
+  colors.push(myColor(key));
+}
+document.getElementById("popcat2").innerText = dat.properties.most_popular_tag;
+    document.getElementById("imageno2").innerText = dat.properties.user_freq;
+    } else {
+        // WORLD data..
+        console.log("timestep: ",current_date);
+        var countrydata = countries_mock_data.timesteps[current_date].country_data.buckets;
+        
+        for (var idx = 0; idx < countrydata.length; ++idx) {
+            if (countrydata[idx].key.toUpperCase() === "WORLD".toUpperCase()) {
+                document.getElementById("popcat2").innerText = countrydata[idx].most_popular_category;
+                document.getElementById("imageno2").innerText = countrydata[idx].user_freq;
+                var worldCatData = countrydata[idx].categories_sum;
+                for (var categories in worldCatData) {
+                    var obj = {};
+                    obj.name = categories;
+                    obj.y = worldCatData[categories];
+                    newDat.push(JSON.parse(JSON.stringify(obj)));
+                    colors.push(myColor(categories));
+                }
+                break;
+            }
+        }
+    }
+    Highcharts.chart('2tipDiv', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie',
+        width: 150
+    },
+    title: {
+		text: 'Distribution of categories',
+        style: {
+            color: '#2e2e2e',
+            fontSize: 12
+        }
+    },
+    credits: {
+        enabled: false
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },	
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                distance: -25,
+                format: '{point.y}'
+            },
+            showInLegend: false,
+            animation: true
+        }
+    },
+    series: [{
+        name: 'Flickr Tags',
+        colorByPoint: true,
+        colors: colors,
+        data: newDat
+    }],
+    exporting: {
+        enabled: false
+    }
+});   
+}
+
+//Add world data..
+refreshSidePanelPie1("WORLD");
+refreshSidePanelPie2("WORLD");
+
 function refreshPie1(dat) {
     var newDat = [];
     var colors = [];
@@ -1612,6 +1746,8 @@ for (var key in chkData) {
   newDat.push(obj);
   colors.push(myColor(key));
 }
+
+console.log(JSON.stringify(newDat));
 
 Highcharts.chart('tipDiv', {
     chart: {
@@ -1781,6 +1917,175 @@ Highcharts.chart('tipDiv', {
       data: []
     }]*/
 
+    function refreshSidePanelTopTags1(dat) {
+        // select the svg area
+        d3.selectAll("#svgPie1").selectAll(".dot1").remove();
+var Svg = d3.select("#svgPie1")
+
+//var tpKeys = ["2004", "geotagged", "johnkerry", "politicalevent", "politicalevents"];
+var topValues = [];
+var legData = [];
+if (dat != "WORLD") {
+    var catTagData = dat.properties.category_trend;
+    for (var category in catTagData) {
+        var top5 = catTagData[category].top_5;
+        for (var tagName in top5) {
+            var obj = {};
+            obj.data = top5[tagName];
+            obj.name = tagName;
+            obj.color = myColor(category);
+            legData.push(JSON.parse(JSON.stringify(obj)));
+        }
+    }
+
+} else {
+    var bucketData = countries_mock_data.timesteps[current_date].country_data.buckets;
+    for (var idx=0; idx<bucketData.length; ++idx) {
+        if (bucketData[idx].key.toUpperCase() === "WORLD".toUpperCase()) {
+            
+            var countData = bucketData[idx].categories;
+            for (var category2 in countData) {
+                var top5 = countData[category2].top_5;
+                for (var tagName2 in top5) {
+                    var obj2 = {};
+                    obj2.data = top5[tagName2];
+                    obj2.name = tagName2;
+                    obj2.color = myColor(category2);
+                    legData.push(JSON.parse(JSON.stringify(obj2)));
+                }
+            }
+            break;
+        }
+    }
+}
+
+topValues = legData.sort(function(a, b) {
+        return b.data - a.data;
+    }).slice(0,5);
+
+    var tpKeys = [];
+for (var idx = 0; idx < topValues.length; ++idx) {
+    tpKeys.push(topValues[idx].name);
+}
+
+console.log("tpKey: ",tpKeys);
+
+// Add one dot in the legend for each name.
+Svg.selectAll("mydots")
+  .data(tpKeys)
+  .enter()
+  .append("circle")
+    .attr("cx", 14)
+    .attr("cy", function(d,i){ return (i+1)*20})
+    .attr("r", 7)
+    .attr("class","dot1")
+    .style("fill", function(d){ return myColor(reverseTagCatIndex[d])})
+
+// Add one dot in the legend for each name.
+Svg.selectAll("mylabels")
+  .data(tpKeys)
+  .enter()
+  .append("text")
+    .attr("x", 28)
+    .attr("y", function(d,i){ return (i+1)*20}) // 100 is where the first dot appears. 25 is the distance between dots
+    .style("fill", function(d){ return "#000"})
+    .text(function(d){ return d})
+    .attr("text-anchor", "left")
+    .attr("class", "dot1")
+    .style("alignment-baseline", "middle")
+
+
+
+
+
+    }
+
+
+    function refreshSidePanelTopTags2(dat) {
+        // select the svg area
+        d3.selectAll("#svgPie2").selectAll(".dot2").remove();
+var Svg = d3.select("#svgPie2")
+
+//var tpKeys = ["2004", "geotagged", "johnkerry", "politicalevent", "politicalevents"];
+var topValues = [];
+var legData = [];
+if (dat != "WORLD") {
+    var catTagData = dat.properties.category_trend;
+    for (var category in catTagData) {
+        var top5 = catTagData[category].top_5;
+        for (var tagName in top5) {
+            var obj = {};
+            obj.data = top5[tagName];
+            obj.name = tagName;
+            obj.color = myColor(category);
+            legData.push(JSON.parse(JSON.stringify(obj)));
+        }
+    }
+
+} else {
+    var bucketData = countries_mock_data.timesteps[current_date].country_data.buckets;
+    for (var idx=0; idx<bucketData.length; ++idx) {
+        if (bucketData[idx].key.toUpperCase() === "WORLD".toUpperCase()) {
+            
+            var countData = bucketData[idx].categories;
+            for (var category2 in countData) {
+                var top5 = countData[category2].top_5;
+                for (var tagName2 in top5) {
+                    var obj2 = {};
+                    obj2.data = top5[tagName2];
+                    obj2.name = tagName2;
+                    obj2.color = myColor(category2);
+                    legData.push(JSON.parse(JSON.stringify(obj2)));
+                }
+            }
+            break;
+        }
+    }
+}
+
+topValues = legData.sort(function(a, b) {
+        return b.data - a.data;
+    }).slice(0,5);
+
+    var tpKeys = [];
+for (var idx = 0; idx < topValues.length; ++idx) {
+    tpKeys.push(topValues[idx].name);
+}
+
+// Add one dot in the legend for each name.
+Svg.selectAll("mydots")
+  .data(tpKeys)
+  .enter()
+  .append("circle")
+    .attr("cx", 14)
+    .attr("cy", function(d,i){ return (i+1)*20})
+    .attr("r", 7)
+    .attr("class","dot2")
+    .style("fill", function(d){ return myColor(reverseTagCatIndex[d])})
+
+// Add one dot in the legend for each name.
+Svg.selectAll("mylabels")
+  .data(tpKeys)
+  .enter()
+  .append("text")
+    .attr("x", 28)
+    .attr("y", function(d,i){ return (i+1)*20}) // 100 is where the first dot appears. 25 is the distance between dots
+    .style("fill", function(d){ return "#000"})
+    .text(function(d){ return d})
+    .attr("text-anchor", "left")
+    .attr("class", "dot2")
+    .style("alignment-baseline", "middle")
+
+
+
+
+
+    }
+
+    refreshSidePanelTopTags1("WORLD");
+    refreshSidePanelTopTags2("WORLD");
+
+
     function refreshTopTags(dat) {
         //var catTagData = countries_mock_data.timesteps[ts].country_data.buckets[0].categories;
         var catTagData = dat.properties.category_trend;
@@ -1815,6 +2120,7 @@ var tpKeys = [];
 for (var idx = 0; idx < topValues.length; ++idx) {
     tpKeys.push(topValues[idx].name);
 }
+
 
 // Usually you have a color scale in your chart already
 // var color = d3.scaleOrdinal()
