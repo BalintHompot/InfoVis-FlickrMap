@@ -1169,15 +1169,17 @@ d3.select("#main_container")
         .attr("width", 50)
         .attr("height", 10)
         .attr("x", width_stream + margin.left*4)
-        .attr("y",   (height+height_stream+(height_stream/2) +3 ));
+        .attr("y",   (height+height_stream+(height_stream/2) +15 ));
 
     var selected_indicator_text = d3.selectAll("#streamContainer")
 
         .append("text")
 		.attr("id", "selected-ind-text")
         .attr("x", width_stream + margin.left*4)
-        .attr("y",   (height+height_stream+(height_stream/2) ))
+        .attr("y",   (height+height_stream+(height_stream/2)+12 ))
         .text("Selected")
+		
+
 
     var selection_indicator = d3.selectAll("#streamContainer")
         .append("rect")
@@ -1189,16 +1191,16 @@ d3.select("#main_container")
         .attr("width", 50)
         .attr("height", 10)
         .attr("x", width_stream + margin.left*4)
-        .attr("y",   (height+(height_stream/2) +3));
+        .attr("y",   (height+(height_stream/2) +15));
 
     var selection_indicator_text = d3.selectAll("#streamContainer")
 
         .append("text")
 		.attr("id", "selection-ind-text")
         .attr("x", width_stream + margin.left*4)
-        .attr("y",   (height+(height_stream/2) ))
+        .attr("y",   (height+(height_stream/2)+12 ))
         .text("Selecting")
-    
+				   
 	
     height_stream_2 = height_stream
     var offset_top_stream_2 = (height+margin.top)
@@ -1284,6 +1286,8 @@ d3.select("#main_container")
     function updatePanelCountry(){
         d3.selectAll("#side-panel-country")
 		  .remove()
+		  
+		d3.selectAll('#stream-panel-country').remove()
 		
         left_panel
 		.append("text")
@@ -1303,6 +1307,36 @@ d3.select("#main_container")
 		.attr("fill", "black")
 		.attr("id", "side-panel-country")
 		.attr("transform","translate(20,30)")
+		.text(function(d) {
+			if (country_in_focus_2 == "WORLD") {
+				return "The World";
+			} else {
+				return country_name_2;
+			}
+		})
+		
+		
+		var country_focus_1 = d3.selectAll("#streamContainer")
+		.append("text")
+		.attr("fill", "black")
+		.attr("id", "stream-panel-country")
+        .attr("x", width_stream + margin.left*2)
+        .attr("y",   (height+(height_stream/4) ))
+		.text(function(d) {
+			if (country_in_focus_1 == "WORLD") {
+				return "The World";
+			} else {
+				return  country_name_1;
+			}
+        })
+		
+			
+	 var country_focus_2 = d3.selectAll("#streamContainer")
+		.append("text")
+		.attr("fill", "black")
+		.attr("id", "stream-panel-country")
+        .attr("x", width_stream + margin.left*2)
+        .attr("y",   (height+height_stream+(height_stream/4)))
 		.text(function(d) {
 			if (country_in_focus_2 == "WORLD") {
 				return "The World";
