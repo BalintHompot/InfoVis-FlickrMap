@@ -67,30 +67,30 @@ Data - Martijn
 Streamgraph - Balint
   - focused stream graph should show tags (can only be done after update on data) Balint
   - Tag color should be a version of category color Balint
-	- add other tags per category to focused Balint
-	- exit data when refreshing focused Balint
-	- Add ticks to top streamgraph as well - Balint
-	- typeerror when dragged to the right side - Balint
-	- zooming out should revert focused graph Balint
-	- Chop off before 2003 or 2004. - Balint
-	- Make streamgraph.js - Balint
-	- zoom in and out fix to corresponding country - Balint
-	- when clicked filter, add tag to filter text - Balint
-	- make selection indicator  - Balint
+  - add other tags per category to focused Balint
+  - exit data when refreshing focused Balint
+  - Add ticks to top streamgraph as well - Balint
+  - typeerror when dragged to the right side - Balint
+  - zooming out should revert focused graph Balint
+  - Chop off before 2003 or 2004. - Balint
+  - Make streamgraph.js - Balint
+  - zoom in and out fix to corresponding country - Balint
+  - when clicked filter, add tag to filter text - Balint
+  - make selection indicator  - Balint
   - Bugs with filtering, functionality and colors - Balint
 	
 Tooltip - Neeraj and Vignesh
   - Tooltip positioning Neeraj
-	- add top tags (also requires data update) Neeraj
-	- handle countries with no data Neeraj
-	- add category distribution Neeraj
-	- reduce the tooltip size to at least half  Vicky 
+  - add top tags (also requires data update) Neeraj
+  - handle countries with no data Neeraj
+  - add category distribution Neeraj
+  - reduce the tooltip size to at least half  Vicky 
   - Fix the tiles of the tooltip (users → image, tags → category) - Urscha
-	- remove category color list (and put it next to the map permanently) Vicky
-	- disable tooltip during zoom Vicky
-	- tooltip content is completely missing from the side bars- Neeraj
-	- tooltip list should only have dots, not different symbols at the tags - Neeraj
-	- there are some random shapes appearing in the tooltip after loading - Neeraj
+  - remove category color list (and put it next to the map permanently) Vicky
+  - disable tooltip during zoom Vicky
+  - tooltip content is completely missing from the side bars- Neeraj
+  - tooltip list should only have dots, not different symbols at the tags - Neeraj
+  - there are some random shapes appearing in the tooltip after loading - Neeraj
   - Only show total top 5 tags in the tooltip, not per category since we cant scroll - Neeraj
   - Colors of the circles have to correspond to the category color- Neeraj
   - Make the positioning of the pie charts relative to the side panel svg’s - Neeraj
