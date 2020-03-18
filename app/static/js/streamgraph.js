@@ -612,8 +612,8 @@
 			.attr("opacity", 0.5)
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
-            .attr('x1', focusRectCornerLeft + width_side_panel + margin.left)
-            .attr('y1', focusRectCornerTop +5)
+            .attr('x1', focusRectCornerLeft + width_side_panel + margin.left+48)
+            .attr('y1', focusRectCornerTop +23)
             .attr('x2', focusStremTartgetLeft)
             .attr('y2', focusStremTartgetTop)
             .call(drag);
@@ -624,8 +624,8 @@
 			.attr("opacity", 0.5)
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
-            .attr('x1', focusRectCornerRight + width_side_panel + margin.left)
-            .attr('y1', focusRectCornerTop+5)
+            .attr('x1', focusRectCornerRight + width_side_panel + margin.left+48)
+            .attr('y1', focusRectCornerTop+23)
             .attr('x2', focusStremTartgetRight)
             .attr('y2', focusStremTartgetTop)
             .call(drag);
@@ -638,8 +638,8 @@
 			.attr("opacity", 0.5)
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
-            .attr('x1', focusRectCornerLeft + width_side_panel + margin.left)
-            .attr('y1', focusRectCornerTop + height_stream - rectAdd + 22)
+            .attr('x1', focusRectCornerLeft + width_side_panel + margin.left+49)
+            .attr('y1', focusRectCornerTop + height_stream - rectAdd + 45)
             .attr('x2', focusStremTartgetLeft + width + width_side_panel )
             .attr('y2', focusStremTartgetTop)
             .call(drag);
@@ -650,8 +650,8 @@
 			.attr("opacity", 0.5)
             .attr('stroke-width', 2)
             .style("stroke-dasharray", ("3, 3"))
-            .attr('x1', focusRectCornerRight + width_side_panel + margin.left)
-            .attr('y1', focusRectCornerTop+ height_stream - rectAdd+22)
+            .attr('x1', focusRectCornerRight + width_side_panel + margin.left+49)
+            .attr('y1', focusRectCornerTop+ height_stream - rectAdd+45)
             .attr('x2', focusStremTartgetRight  + width + width_side_panel)
             .attr('y2', focusStremTartgetTop)
             .call(drag);
