@@ -41,7 +41,7 @@ Martijn: adding top 5 tags per category (needed for tooltip, focused stream grap
 
 ## Week 7 To-Dos - Before 18-03-2020 ##
 
-Design - Mainly Urscha
+Design - Urscha
   - Placement of glyphs, font type, titles, colors etc. - Urscha
   - Fix stream graph design, ticks, titles - Urscha
   - Add information about visualization to the first page (from report) - Martijn
