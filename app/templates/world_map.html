@@ -2770,7 +2770,7 @@ svgLegend.selectAll("mylabels")
   .data(countries_mock_data.allCategories)
   .enter()
   .append("text")
-    .attr("y", -35)
+    .attr("y", 8)
     .attr("x", function(d,i){ return 45+ i*50-10}) // 100 is where the first dot appears. 25 is the distance between dots
     //.style("fill", function(d){ return color(d)})
     .text(function(d){ return d})
