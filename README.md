@@ -52,11 +52,12 @@ Design - Mainly Urscha
   - fix inherited text colors in side panels - Urscha
   - extra: reset button on side panels (to get back to World) - Balint
 
-Functions - Mainly Balint
+Functions - Balint
   - two instances of streamgraph - Balint
   - two instance of donut for comparison - Neeraj
   - allowing selection of 2 countries for the two sets of graphs - Balint
-  - add colored list of categories - Balint- On reload plot the world map in the middle of the screen - Urscha
+  - add colored list of categories - Balint
+  - On reload plot the world map in the middle of the screen - Urscha
 
 Data - Martijn
   - adding top 5 tags per category (needed for tooltip, focused stream graph) - Martijn
