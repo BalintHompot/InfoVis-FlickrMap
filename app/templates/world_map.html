@@ -2399,8 +2399,9 @@ function reDrawMultiDonut(newData) {
         d3.selectAll(".donut-path").on("mousemove", function(d) {
 	    div.style("left", d3.event.pageX+10+"px");
 		  div.style("top", d3.event.pageY-25+"px");
-		  div.style("display", "inline-block");
-    div.html("Timestep: "+(d.data.timestep)+"<br>"+(d.data.device)+"<br>"+(d.data.count) + "<br>Category: "+(d.data.category));
+          div.style("display", "inline-block");
+    var timeStepStringArr = d.data.timestep.split("_")
+    div.html("Timestep: "+timeStepStringArr[0] + " Q" + timeStepStringArr[1]+"<br>"+(d.data.device)+"<br>"+(d.data.count) + "<br>Category: "+(d.data.category));
 });
 
     d3.selectAll(".donut-path").on("mouseout", function(d){
@@ -2555,7 +2556,8 @@ var arc_bound = 5;
     div.style("left", d3.event.pageX+10+"px");
       div.style("top", d3.event.pageY-25+"px");
       div.style("display", "inline-block");
-div.html("Timestep: "+(d.data.timestep)+"<br>"+(d.data.device)+"<br>"+(d.data.count) + "<br>Category: "+(d.data.category));
+    var timeStepStringArr = d.data.timestep.split("_")
+    div.html("Timestep: "+timeStepStringArr[0] + " Q" + timeStepStringArr[1]+"<br>"+(d.data.device)+"<br>"+(d.data.count) + "<br>Category: "+(d.data.category));
 });
 
 d3.selectAll(".donut-path").on("mouseout", function(d){
