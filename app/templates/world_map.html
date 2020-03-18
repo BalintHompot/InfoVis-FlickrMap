@@ -919,17 +919,15 @@
                 
                 
                 //refreshCategoryDonut(d.id, dataset)
+                refreshStreamGraph(d.id, current_selection_svg, validTimeSteps, width_stream, height_stream, "category", current_selection_ticks_enabled)
+                refreshStreamGraph(d.id, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
                 changeCurrentSelections(d.id, d.properties.name)
                 updatePanelCountry()
                 if (current_selection_svg == svg_stream) {
-                    refreshStreamGraph(d.id, current_selection_svg, validTimeSteps, width_stream, height_stream, "category", current_selection_ticks_enabled)
-                    refreshStreamGraph(d.id, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
                     updatedMultiDonutRight(d.id, getFocusedValidSteps());
                     refreshSidePanelPie2(d);
                     refreshSidePanelTopTags2(d);
                 } else {
-                    refreshStreamGraph(d.id, current_selection_svg, validTimeSteps, width_stream, height_stream, "category", current_selection_ticks_enabled)
-                    refreshStreamGraph(d.id, svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
                     updatedMultiDonut(d.id, getFocusedValidSteps());
                     refreshSidePanelPie1(d);
                     refreshSidePanelTopTags1(d);
