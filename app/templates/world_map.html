@@ -1213,22 +1213,23 @@ d3.select("#main_container")
             country_in_focus_1 = "WORLD"
             refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category", false)
             refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+            refreshSidePanelPie1(country_in_focus_1);
+            refreshSidePanelTopTags1(country_in_focus_1);
+            updatedMultiDonut(country_in_focus_1, getFocusedValidSteps());
             if(current_selection_svg == svg_stream_2){
                 changeCurrentSelections();
-                refreshSidePanelPie1(country_in_focus_1);
-                refreshSidePanelTopTags1(country_in_focus_1);
-                updatedMultiDonut(country_in_focus_1, getFocusedValidSteps());
+
             }
             
         }else{
             country_in_focus_2 = "WORLD"
             refreshStreamGraph(country_in_focus_2, svg_stream_2, validTimeSteps, width_stream, height_stream, "category", true)
             refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
+            refreshSidePanelPie2(country_in_focus_2);
+            refreshSidePanelTopTags2(country_in_focus_2);
+            updatedMultiDonutRight(country_in_focus_2, getFocusedValidSteps());
             if(current_selection_svg == svg_stream){
                 changeCurrentSelections();
-                refreshSidePanelPie2(country_in_focus_2);
-                refreshSidePanelTopTags2(country_in_focus_2);
-                updatedMultiDonutRight(country_in_focus_2, getFocusedValidSteps());
             }
         }
         svg.transition()
