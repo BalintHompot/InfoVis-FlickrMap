@@ -245,7 +245,8 @@
 			.tickValues(validTimeSteps_graph)
 			.tickFormat(function(d, i){
                 if(ticksEnabled){
-                    var year = d.substring(0,4);
+                    var a = d.split("_")
+                    var year = a[0] + " Q" + a[1];
 				    if (!(i % 4)) return year;
                 }else{
                     return ""
@@ -395,7 +396,8 @@
 			.tickValues(validTimeSteps_graph)
 			.tickFormat(function(d, i){
                 if(ticksEnabled){
-                    var year = d.substring(0,4);
+                    var a = d.split("_")
+                    var year = a[0] + " Q" + a[1];
 				    if (!(i % 4)) return year;
                 }else{
                     return ""
