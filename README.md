@@ -39,7 +39,7 @@ Vignesh: Tooltip alterations and donut chart of device category distribution
 
 Martijn: adding top 5 tags per category (needed for tooltip, focused stream graph) 
 
-## Week 7 To-Dos - Before 18-03-2020 ##
+### Week 7 To-Dos - Before 18-03-2020 ###
 
 Design - Urscha
   - Placement of glyphs, font type, titles, colors etc. - Urscha
