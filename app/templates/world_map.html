@@ -957,6 +957,7 @@
                     refreshStreamGraph("WORLD", prev_svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
                     updatedMultiDonutRight("WORLD", getFocusedValidSteps());
                     refreshSidePanelPie2("WORLD");
+					updatePanelCountry(country_in_focus_2, "The World");
                     refreshSidePanelTopTags2("WORLD");
                 }else{
                     country_in_focus_1 = "WORLD"
@@ -964,9 +965,10 @@
                     refreshStreamGraph("WORLD", prev_svg_focused_stream, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
                     updatedMultiDonut("WORLD", getFocusedValidSteps());
                     refreshSidePanelPie1("WORLD");
+					updatePanelCountry(country_in_focus_1, "The World");
                     refreshSidePanelTopTags1("WORLD");
                 }
-                updatePanelCountry();
+                
                 
                 
                 //refreshCategoryDonut("WORLD",dataset);
@@ -1215,8 +1217,9 @@ d3.select("#main_container")
             country_in_focus_1 = "WORLD"
             refreshStreamGraph(country_in_focus_1, svg_stream, validTimeSteps, width_stream, height_stream, "category", false)
             refreshStreamGraph(country_in_focus_1, left_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
-            if(current_selection_svg == svg_stream_2){
-                changeCurrentSelections(country_in_focus_1, "The World");
+            updatePanelCountry(country_in_focus_1, "The World");
+			if(current_selection_svg == svg_stream_2){
+                changeCurrentSelections();
                 refreshSidePanelPie1(country_in_focus_1);
                 refreshSidePanelTopTags1(country_in_focus_1);
                 updatedMultiDonut(country_in_focus_1, getFocusedValidSteps());
@@ -1226,7 +1229,8 @@ d3.select("#main_container")
             country_in_focus_2 = "WORLD"
             refreshStreamGraph(country_in_focus_2, svg_stream_2, validTimeSteps, width_stream, height_stream, "category", false)
             refreshStreamGraph(country_in_focus_2, right_focus_g, getFocusedValidSteps(), width_stream_focused, height_stream_focused, "tag")
-            if(current_selection_svg == svg_stream){
+            updatePanelCountry(country_in_focus_2, "The World");
+			if(current_selection_svg == svg_stream){
                 changeCurrentSelections(country_in_focus_2, "The World");
                 refreshSidePanelPie2(country_in_focus_2);
                 refreshSidePanelTopTags2(country_in_focus_2);
@@ -1237,7 +1241,7 @@ d3.select("#main_container")
                     .duration(750)
                     // .call( zoom.transform, d3.zoomIdentity.translate(0, 0).scale(1) ); // not in d3 v4
                     .call( zoom.transform, d3.zoomIdentity ); // updated for d3 v4
-        updatePanelCountry()
+        
     }
     
     function changeCurrentSelections(countryID, countryname){
@@ -1266,6 +1270,7 @@ d3.select("#main_container")
             leftColor = selectionColor
             rightColor = selectedColor
         }
+		
         d3.selectAll("#selection-ind").transition().duration(750).attr("y", selection_ind_height+3)
         d3.selectAll("#selected-ind").transition().duration(750).attr("y", selected_ind_height+3)
 
